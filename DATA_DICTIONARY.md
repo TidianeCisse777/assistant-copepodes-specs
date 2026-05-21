@@ -1,5 +1,11 @@
 # Dictionnaire des colonnes
 
+
+
+Chercher dans greenedge
+
+
+
 Objectif : donner une definition claire des colonnes importantes pour EcoTaxa, EcoPart et Amundsen.
 
 Niveau de confiance :
