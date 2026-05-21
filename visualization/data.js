@@ -5,13 +5,45 @@
 //  CE FICHIER EST LA SEULE SOURCE À MODIFIER.
 //  index.html contient uniquement le rendu D3 — ne pas y toucher.
 //
-//  Pour ajouter un use case :
-//    1. Ajouter une entrée dans USE_CASES
-//    2. Ajouter le nœud correspondant dans TREE_DATA.children
+// ----------------------------------------------------------------
+//  AJOUTER UN USE CASE — checklist complète
+// ----------------------------------------------------------------
 //
-//  Pour modifier un titre ou une description :
-//    → Éditer USE_CASES, CAPABILITIES, RAG_DOCS, CONSTRAINTS ou
-//      BUSINESS_OBJECTIVES selon le cas.
+//  1. USE_CASES (ce fichier)
+//     → Ajouter une entrée "UC-SL-XX": { title, category, description,
+//       actors, preconditions, flow, postconditions, scope }
+//     → category : "platform" | "data" | "science" | "output"
+//
+//  2. TREE_DATA (ce fichier, section tout en bas)
+//     → Ajouter un nœud dans le bon objectif (SLA ou SLB) :
+//       { id: "UC-SL-XX", type: "usecase", children: [ ... ] }
+//     → Les enfants sont les capacités (AG-V1-XX), elles-mêmes
+//       parentes des docs RAG.
+//     → Si un UC est partagé entre SLA et SLB : dupliquer le nœud
+//       avec un id suffixé "_slb" et un champ ucId: "UC-SL-XX".
+//
+//  3. CAPABILITIES (ce fichier, si nouvelle capacité nécessaire)
+//     → Ajouter "AG-V1-XX": { title, description, usecases, ragdocs }
+//
+//  4. Documents RAG (ce fichier, si nouveau doc nécessaire)
+//     → Ajouter dans RAG_DOCS : { title, description, path }
+//
+//  5. Fichiers specs (hors visualisation — sync manuelle)
+//     → Use Cases — Assistant scientifique copépodes V1.md
+//     → Validation rédactionnelle — Use Cases V1.md
+//     → Capacites agent V1.md (si nouvelle capacité)
+//     → Validation rédactionnelle — Capacités agent V1.md
+//     → Contraintes agent V1.md (si nouvelle contrainte)
+//     → sources_en_ligne.md (si nouvelle source activée)
+//
+// ----------------------------------------------------------------
+//  MODIFIER UN TITRE OU UNE DESCRIPTION
+// ----------------------------------------------------------------
+//     → Éditer USE_CASES, CAPABILITIES, RAG_DOCS, CONSTRAINTS ou
+//       BUSINESS_OBJECTIVES selon le cas.
+//     → Si le titre d'un UC change : mettre à jour aussi TREE_DATA
+//       (le nœud n'a pas de titre propre — il hérite de USE_CASES
+//       via l'identifiant id / ucId).
 //
 //  Version : V1.1 (mai 2026)
 // ================================================================
