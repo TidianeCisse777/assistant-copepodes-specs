@@ -265,6 +265,49 @@ Quand un UC change, les fichiers suivants doivent être mis à jour pour rester 
 
 ---
 
+## Système de notes et révisions
+
+### Fichier `notes.js`
+
+Point d'entrée de chaque session de révision. Indexé par identifiant (`UC-SL-XX`, `AG-V1-XX`, `CT-AG-XX`, ou nom de doc RAG).
+
+```js
+const NOTES = {
+  "UC-SL-14": {
+    status: "ok",      // "ok" | "review" | "draft"
+    note: "Réécrit V1.1 — périmètre resserré."
+  },
+  "AG-V1-10": {
+    status: "review",
+    note: "Tester la comparaison OBIS en priorité."
+  }
+};
+```
+
+**Règle** : ne lister que ce qui a quelque chose à dire. Absence = draft implicite.
+
+### Indicateur visuel
+
+Un point coloré apparaît en haut à droite des nœuds qui ont une note :
+
+| Couleur | Statut |
+|---|---|
+| Vert | `ok` — validé |
+| Orange | `review` — à réviser |
+| Gris | `draft` — ébauche explicite |
+
+Le détail complet (statut + note) s'affiche en bas du panneau latéral quand on clique sur le nœud.
+
+### Utilisation par Claude en révision
+
+Donner `notes.js` à Claude en début de session :
+- Il traite d'abord tous les `"review"` (points ouverts)
+- Il pose des questions sur les `"draft"` explicites
+- Il confirme les `"ok"` sans les modifier
+- Il ignore les clés absentes sauf si demandé
+
+---
+
 ## Périmètre actuel (V1.1 — mai 2026)
 
 - 18 use cases : UC-SL-00 à UC-SL-17

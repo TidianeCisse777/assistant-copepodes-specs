@@ -91,6 +91,11 @@
     .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
     .hint { position: absolute; bottom: 16px; right: 16px; font-size: 10px; color: #334155; text-align: right; pointer-events: none; line-height: 1.7; }
+    .note-block { margin-top: 14px; padding: 10px 12px; border-radius: 6px; border-left: 3px solid; font-size: 11px; line-height: 1.6; }
+    .note-block.ok     { border-color: #22c55e; background: #052e16; color: #86efac; }
+    .note-block.review { border-color: #f97316; background: #431407; color: #fdba74; }
+    .note-block.draft  { border-color: #64748b; background: #1e293b; color: #94a3b8; }
+    .note-status { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
 
     /* Intro modal */
     #intro-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
@@ -220,6 +225,7 @@
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="data.js"></script>
+<script src="notes.js"></script>
 <script>
 // ================================================================
 //  RENDU UNIQUEMENT — ne pas modifier les données ici
@@ -231,6 +237,25 @@
 function getCapId(raw) { return raw.capId || raw.id; }
 function getUcId(raw)  { return raw.ucId  || raw.id; }
 function trunc(s, n)   { return s && s.length > n ? s.slice(0, n) + '…' : (s || ""); }
+
+function noteBlock(key) {
+  if (typeof NOTES === "undefined") return "";
+  const entry = NOTES[key];
+  if (!entry) return "";
+  const labels = { ok: "Validé", review: "À réviser", draft: "Ébauche" };
+  return `<div class="note-block ${entry.status}">
+    <div class="note-status">${labels[entry.status] || entry.status}</div>
+    ${entry.note ? `<div>${entry.note}</div>` : ""}
+  </div>`;
+}
+
+function getNoteKey(raw) {
+  if (raw.type === "usecase")    return raw.ucId  || raw.id;
+  if (raw.type === "capability") return raw.capId || raw.id;
+  if (raw.type === "ragdoc")     return raw.ragId;
+  return raw.id;
+}
+const STATUS_COLOR = { ok: "#22c55e", review: "#f97316", draft: "#64748b" };
 
 function getLabel(raw) {
   if (raw.type === "user")      return raw.name;
@@ -347,6 +372,12 @@ function update(source) {
     .attr("stroke", d => d3.color(nodeColor(d.data)).darker(0.6))
     .attr("stroke-width", 2);
 
+  nEnter.append("circle").attr("class", "status-dot")
+    .attr("r", 4)
+    .attr("stroke", "#0f1923")
+    .attr("stroke-width", 1.5)
+    .attr("pointer-events", "none");
+
   nEnter.append("text").attr("class", "mainlabel")
     .attr("x", 0)
     .attr("text-anchor", "middle")
@@ -369,6 +400,17 @@ function update(source) {
     .attr("r", d => nodeRadius(d.depth))
     .attr("fill", d => nodeColor(d.data))
     .attr("opacity", d => d._children ? 0.7 : 1);
+
+  node.merge(nEnter).selectAll("circle.status-dot").each(function(d) {
+    const key = getNoteKey(d.data);
+    const entry = (typeof NOTES !== "undefined") && NOTES[key];
+    const status = entry ? entry.status : null;
+    d3.select(this)
+      .attr("cx", d => nodeRadius(d.depth) - 2)
+      .attr("cy", d => -(nodeRadius(d.depth) - 2))
+      .attr("fill", status ? STATUS_COLOR[status] : "none")
+      .attr("opacity", status ? 1 : 0);
+  });
 
   node.merge(nEnter).selectAll("text.mainlabel")
     .attr("x", 0)
@@ -454,7 +496,8 @@ function showDetail(raw) {
       ${uc.preconditions ? `<h3>Préconditions</h3><p>${uc.preconditions}</p>` : ""}
       ${uc.flow ? `<h3>Flux principal</h3><p style="white-space:pre-line">${uc.flow}</p>` : ""}
       ${uc.postconditions ? `<h3>Postconditions</h3><p>${uc.postconditions}</p>` : ""}
-      ${uc.scope ? `<h3>Périmètre & règles</h3><p>${uc.scope}</p>` : ""}`;
+      ${uc.scope ? `<h3>Périmètre & règles</h3><p>${uc.scope}</p>` : ""}
+      ${noteBlock(getUcId(raw))}`;
 
   } else if (raw.type === "capability") {
     const capId = getCapId(raw);
@@ -474,7 +517,8 @@ function showDetail(raw) {
     body.innerHTML = `
       ${cap.description ? `<h3>Description</h3><p>${cap.description}</p>` : ""}
       ${ragHtml}
-      ${ctHtml}`;
+      ${ctHtml}
+      ${noteBlock(capId)}`;
 
   } else if (raw.type === "ragdoc") {
     const doc = RAG_DOCS[raw.ragId] || {};
@@ -486,7 +530,8 @@ function showDetail(raw) {
       ${doc.description ? `<h3>Description</h3><p>${doc.description}</p>` : ""}
       ${doc.chunks ? `<h3>Nombre de chunks</h3><p>${doc.chunks} chunks autonomes</p>` : ""}
       ${doc.usage ? `<h3>Quand consulté</h3><p>${doc.usage}</p>` : ""}
-      ${doc.keyContent ? `<h3>Contenu clé</h3><p>${doc.keyContent}</p>` : ""}`;
+      ${doc.keyContent ? `<h3>Contenu clé</h3><p>${doc.keyContent}</p>` : ""}
+      ${noteBlock(raw.ragId)}`;
   }
 }
 
