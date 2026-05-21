@@ -281,98 +281,112 @@ const CAPABILITIES = {
     description: "L'agent distingue les sources activées (EcoTaxa, EcoPart, Amundsen CTD, OBIS, CMEMS, fichiers lab) et explique leurs contenus, formats, clés de jointure et limitations.",
     usecases: ["UC-SL-04", "UC-SL-14"],
     constraints: ["CT-AG-01", "CT-AG-08"],
-    ragDocs: ["colonnes_sources", "sources_en_ligne"]
+    ragDocs: ["colonnes_sources", "sources_en_ligne"],
+    tools: ["sources.list_available", "sources.describe"]
   },
   "AG-V1-02": {
     title: "Aider à formuler le contexte scientifique",
     description: "En Mode Contexte, l'agent guide l'utilisateur par des questions structurées pour préciser l'espèce cible, la zone géographique, la variable d'intérêt, la période et les hypothèses.",
     usecases: ["UC-SL-07", "UC-SL-08"],
     constraints: ["CT-AG-04", "CT-AG-25", "CT-AG-26"],
-    ragDocs: ["copepodes_domaine"]
+    ragDocs: ["copepodes_domaine"],
+    tools: ["context.get_required_fields", "context.validate_species"]
   },
   "AG-V1-03": {
     title: "Valider les données chargées",
     description: "L'agent inspecte les données : liste des colonnes, types, unités, valeurs manquantes, cohérence. Retourne un rapport structuré avec niveau de confiance par colonne.",
     usecases: ["UC-SL-03", "UC-SL-05", "UC-SL-06"],
     constraints: ["CT-AG-03", "CT-AG-05", "CT-AG-10"],
-    ragDocs: ["colonnes_sources", "colonnes_instruments"]
+    ragDocs: ["colonnes_sources", "colonnes_instruments"],
+    tools: ["data.inspect", "data.validate", "data.profile_missing"]
   },
   "AG-V1-04": {
     title: "Interroger les sources activées",
     description: "L'agent exécute des requêtes sur les sources en ligne avec les paramètres validés par l'utilisateur, en respectant les limitations (volume, credentials, scope V1).",
     usecases: ["UC-SL-04", "UC-SL-13"],
     constraints: ["CT-AG-08", "CT-AG-11", "CT-AG-12"],
-    ragDocs: ["sources_en_ligne"]
+    ragDocs: ["sources_en_ligne"],
+    tools: ["sources.query_ecotaxa", "sources.query_amundsen_ctd", "sources.query_obis"]
   },
   "AG-V1-05": {
     title: "Expliquer les colonnes et unités",
     description: "L'agent fournit la définition, l'unité, le niveau de confiance et les distinctions critiques de toute colonne demandée, avec citation de la source.",
     usecases: ["UC-SL-05", "UC-SL-06", "UC-SL-12", "UC-SL-15"],
     constraints: ["CT-AG-01", "CT-AG-03", "CT-AG-27"],
-    ragDocs: ["colonnes_sources", "colonnes_instruments"]
+    ragDocs: ["colonnes_sources", "colonnes_instruments"],
+    tools: ["columns.describe", "columns.check_for_calculation"]
   },
   "AG-V1-06": {
     title: "Construire des tables de travail",
     description: "L'agent joint plusieurs sources en documentant les clés de jointure utilisées, les colonnes de sortie, la stratégie et les pertes de données.",
     usecases: ["UC-SL-09", "UC-SL-10", "UC-SL-11", "UC-SL-13"],
     constraints: ["CT-AG-05", "CT-AG-07", "CT-AG-10"],
-    ragDocs: ["colonnes_sources"]
+    ragDocs: ["colonnes_sources"],
+    tools: ["joins.plan", "joins.execute"]
   },
   "AG-V1-07": {
     title: "Calculer des variables dérivées",
     description: "L'agent calcule des métriques dérivées (concentration ind/m³, biomasse mg C/m², indice lipidique, longueur prosome) avec validation de la méthode avant exécution et traçabilité complète.",
     usecases: ["UC-SL-10", "UC-SL-15"],
     constraints: ["CT-AG-05", "CT-AG-06", "CT-AG-20"],
-    ragDocs: ["methodes_calcul"]
+    ragDocs: ["methodes_calcul"],
+    tools: ["calc.get_method", "calc.execute"]
   },
   "AG-V1-08": {
     title: "Générer des graphiques scientifiques",
     description: "L'agent produit des graphiques avec titre, axes titrés, unités, source de données, filtres appliqués et limites explicites. Résultat affiché comme rapport statique.",
     usecases: ["UC-SL-09"],
     constraints: ["CT-AG-14", "CT-AG-13", "CT-AG-01"],
-    ragDocs: ["methodes_calcul", "colonnes_sources"]
+    ragDocs: ["methodes_calcul", "colonnes_sources"],
+    tools: ["plot.plan", "plot.generate"]
   },
   "AG-V1-09": {
     title: "Produire une analyse exploratoire",
     description: "L'agent exécute des analyses (distribution, composition, corrélation) en distinguant explicitement observation, interprétation et hypothèse dans le rapport.",
     usecases: ["UC-SL-10", "UC-SL-11", "UC-SL-12", "UC-SL-13"],
     constraints: ["CT-AG-13", "CT-AG-19", "CT-AG-24"],
-    ragDocs: ["colonnes_sources", "methodes_calcul"]
+    ragDocs: ["colonnes_sources", "methodes_calcul"],
+    tools: ["analysis.explore"]
   },
   "AG-V1-10": {
     title: "Évaluer la complétude et synthétiser les lacunes",
     description: "L'agent évalue le taux de remplissage des colonnes clés, identifie les variables critiques inutilisables, compare avec OBIS si activé, et produit un rapport de lacunes structuré exportable.",
     usecases: ["UC-SL-14"],
     constraints: ["CT-AG-01", "CT-AG-03", "CT-AG-29"],
-    ragDocs: ["sources_en_ligne", "copepodes_domaine"]
+    ragDocs: ["sources_en_ligne", "copepodes_domaine"],
+    tools: ["completeness.evaluate", "completeness.compare_obis"]
   },
   "AG-V1-11": {
     title: "Répondre aux questions de domaine copépodes",
     description: "L'agent répond aux questions biologiques (espèces, stades, lipides, diapause, rôle écologique) en s'appuyant sur le corpus RAG et en signalant l'incertitude.",
     usecases: ["UC-SL-12"],
     constraints: ["CT-AG-19", "CT-AG-27", "CT-AG-02"],
-    ragDocs: ["copepodes_domaine"]
+    ragDocs: ["copepodes_domaine"],
+    tools: ["domain.answer"]
   },
   "AG-V1-12": {
     title: "Exporter les résumés de session",
     description: "L'agent compile un résumé structuré de la session (contexte, sources, méthodes, résultats, limites) sans narration excessive.",
     usecases: ["UC-SL-16"],
     constraints: ["CT-AG-20", "CT-AG-01", "CT-AG-18"],
-    ragDocs: []
+    ragDocs: [],
+    tools: ["session.build_summary", "session.export"]
   },
   "AG-V1-13": {
     title: "Préparer les livrables scientifiques",
     description: "L'agent génère un livrable structuré (contexte, résultats, figures, méthodes, citations, limites) pour soutenir la révision humaine et les demandes de subvention.",
     usecases: ["UC-SL-17"],
     constraints: ["CT-AG-15", "CT-AG-28", "CT-AG-01", "CT-AG-20"],
-    ragDocs: ["copepodes_domaine", "methodes_calcul", "colonnes_sources"]
+    ragDocs: ["copepodes_domaine", "methodes_calcul", "colonnes_sources"],
+    tools: ["deliverable.build"]
   },
   "AG-V1-14": {
     title: "Interface adaptée au mode de travail",
     description: "L'agent adapte son interface et son comportement selon le mode actif : discussion guidée en Mode Contexte, formulaire structuré → rapport statique en Mode Analyse.",
     usecases: ["UC-SL-02"],
     constraints: ["CT-AG-23", "CT-AG-24", "CT-AG-26"],
-    ragDocs: []
+    ragDocs: [],
+    tools: ["session.set_mode", "session.get_mode"]
   }
 };
 

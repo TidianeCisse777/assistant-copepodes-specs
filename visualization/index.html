@@ -60,6 +60,13 @@
     #detail-panel .tag { display: inline-block; background: #1e293b; border: 1px solid #2d3f55; border-radius: 4px; padding: 2px 8px; font-size: 11px; margin: 2px 2px 2px 0; color: #7dd3fc; font-family: monospace; cursor: default; }
     .constraint-chip { display: inline-block; background: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 3px 8px; font-size: 11px; margin: 2px 2px 2px 0; color: #94a3b8; cursor: pointer; line-height: 1.4; }
     .constraint-chip:hover { border-color: #64748b; color: #e2e8f0; background: #263547; }
+    .tool-bubble { display: inline-block; background: #0d2d1f; border: 1px solid #166534; border-radius: 20px; padding: 4px 12px; font-size: 11px; margin: 3px 3px 3px 0; color: #34d399; font-family: monospace; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+    .tool-bubble:hover { background: #14532d; border-color: #22c55e; color: #6ee7b7; }
+    .tool-detail { display: none; background: #0a1a13; border: 1px solid #166534; border-radius: 6px; padding: 10px 12px; margin: 4px 0 8px; font-size: 11px; color: #86efac; line-height: 1.6; }
+    .tool-detail.open { display: block; }
+    .tool-detail .tool-sig { color: #4ade80; font-family: monospace; font-size: 10px; margin-bottom: 4px; }
+    .tool-detail .tool-desc { color: #6b7280; }
+    .tool-bubble.active-tool { background: #14532d; border-color: #22c55e; color: #6ee7b7; }
     .close-btn { background: none; border: none; color: #475569; cursor: pointer; font-size: 20px; line-height: 1; padding: 2px 4px; flex-shrink: 0; margin-left: auto; }
     .close-btn:hover { color: #cbd5e1; }
     .divider { height: 1px; background: #1e293b; margin: 12px 0; }
@@ -86,9 +93,11 @@
 
     /* Legend */
     .legend { position: absolute; bottom: 16px; left: 16px; background: rgba(17,24,39,0.92); border: 1px solid #1e293b; border-radius: 8px; padding: 10px 14px; pointer-events: none; backdrop-filter: blur(4px); }
-    .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; color: #64748b; }
+    .legend-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 7px; font-size: 11px; color: #64748b; }
     .legend-item:last-child { margin-bottom: 0; }
-    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .legend-item strong { color: #cbd5e1; font-weight: 600; display: block; }
+    .legend-desc { color: #475569; display: block; font-size: 10px; margin-top: 1px; line-height: 1.4; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
 
     .hint { position: absolute; bottom: 16px; right: 16px; font-size: 10px; color: #334155; text-align: right; pointer-events: none; line-height: 1.7; }
     .note-block { margin-top: 14px; padding: 10px 12px; border-radius: 6px; border-left: 3px solid; font-size: 11px; line-height: 1.6; }
@@ -183,6 +192,7 @@
   <button class="btn" id="btn-collapse-all">Tout replier</button>
   <button class="btn" id="btn-ragdocs">Docs RAG (5)</button>
   <button class="btn" id="btn-constraints">Contraintes (29)</button>
+  <button class="btn" id="btn-tools">Tools (22)</button>
 </header>
 
 <div id="filter-bar">
@@ -198,15 +208,11 @@
   <div id="tree-container">
     <svg id="tree-svg"></svg>
     <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#7dd3fc"></div>Utilisateur</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Explorer et analyser une question scientifique</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#06b6d4"></div>Évaluer la couverture et les lacunes des données</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#64748b"></div>Plateforme</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>Données</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>Analyse scientifique</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#f43f5e"></div>Livrable</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div>Capacité Agent (AG-V1)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Document RAG</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7dd3fc"></div><span><strong>Utilisateur</strong><span class="legend-desc">Acteur déclenchant l'interaction</span></span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div><span><strong>Objectif Métier</strong><span class="legend-desc">Finalité visée par l'utilisateur</span></span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div><span><strong>Use Case</strong><span class="legend-desc">Action ou besoin identifié (18 cas)</span></span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div><span><strong>Capacité Agent</strong><span class="legend-desc">Comportement de l'agent mobilisé (14 capacités)</span></span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div><span><strong>Document RAG</strong><span class="legend-desc">Corpus de connaissance consulté (5 documents)</span></span></div>
     </div>
     <div class="hint">Clic sur nœud = détails + expand/collapse<br>Scroll = zoom · Glisser = déplacer</div>
   </div>
@@ -238,8 +244,18 @@
   <div id="ragdocs-list"></div>
 </div>
 
+<div id="tools-panel" class="side-panel">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+    <h2>Tools Agent (22)</h2>
+    <button class="close-btn" id="close-tools" style="margin-left:auto">×</button>
+  </div>
+  <p class="subtitle">Functions atomiques appelées par l'agent. Chaque tool correspond à une capacité (AG-V1-XX) et expose une signature d'entrée/sortie testable.</p>
+  <div id="tools-list"></div>
+</div>
+
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="data.js"></script>
+<script src="../TOOLS_SPEC.js"></script>
 <script src="notes.js"></script>
 <script>
 // ================================================================
@@ -546,10 +562,27 @@ function showDetail(raw) {
           return `<div class="constraint-chip" title="${ct?.description || ""}">${c} — ${ct?.title || ""}</div>`;
         }).join("")}</div>`
       : "";
+    const toolsHtml = (() => {
+      if (!cap.tools?.length) return "";
+      const bubbles = cap.tools.map(name => {
+        const spec = (typeof TOOLS_SPEC !== "undefined") && TOOLS_SPEC[name];
+        const inputStr = spec ? Object.entries(spec.input || {}).map(([k,v]) => `${k}: ${v}`).join(", ") : "";
+        const outputKeys = spec ? Object.keys(spec.output || {}).join(", ") : "";
+        const desc = spec?.description || "";
+        return `<span class="tool-bubble" data-tool="${name}">${name}</span>
+          <div class="tool-detail" id="tool-${name.replace(/\./g,"-")}">
+            ${desc ? `<div class="tool-desc">${desc}</div>` : ""}
+            ${inputStr ? `<div class="tool-sig">in: (${inputStr})</div>` : ""}
+            ${outputKeys ? `<div class="tool-sig">out: {${outputKeys}}</div>` : ""}
+          </div>`;
+      }).join("");
+      return `<h3>Tools</h3><div>${bubbles}</div>`;
+    })();
     body.innerHTML = `
       ${cap.description ? `<h3>Description</h3><p>${cap.description}</p>` : ""}
       ${ragHtml}
       ${ctHtml}
+      ${toolsHtml}
       ${noteEditor(capId)}`;
 
   } else if (raw.type === "ragdoc") {
@@ -569,6 +602,22 @@ function showDetail(raw) {
 
 document.getElementById("close-detail").addEventListener("click", () => {
   document.getElementById("detail-panel").classList.remove("open");
+});
+
+// ——— Tool bubble toggle ———
+document.getElementById("detail-panel").addEventListener("click", e => {
+  const bubble = e.target.closest(".tool-bubble");
+  if (!bubble) return;
+  const name = bubble.dataset.tool;
+  const detail = document.getElementById("tool-" + name.replace(/\./g, "-"));
+  if (!detail) return;
+  const isOpen = detail.classList.contains("open");
+  document.querySelectorAll(".tool-detail.open").forEach(el => el.classList.remove("open"));
+  document.querySelectorAll(".tool-bubble.active-tool").forEach(el => el.classList.remove("active-tool"));
+  if (!isOpen) {
+    detail.classList.add("open");
+    bubble.classList.add("active-tool");
+  }
 });
 
 // ——— Note editor interactions ———
@@ -634,11 +683,45 @@ Object.entries(RAG_DOCS).forEach(([key, doc]) => {
   ragList.appendChild(div);
 });
 
+// ——— Populate tools panel ———
+if (typeof TOOLS_SPEC !== "undefined") {
+  const toolsList = document.getElementById("tools-list");
+  // Group by capability
+  const byCap = {};
+  Object.entries(TOOLS_SPEC).forEach(([name, spec]) => {
+    const cap = spec.capability || "—";
+    if (!byCap[cap]) byCap[cap] = [];
+    byCap[cap].push({ name, spec });
+  });
+  Object.entries(byCap).sort(([a],[b]) => a.localeCompare(b)).forEach(([capId, tools]) => {
+    const capTitle = (typeof CAPABILITIES !== "undefined") && CAPABILITIES[capId]?.title || capId;
+    const header = document.createElement("div");
+    header.style.cssText = "font-size:10px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.6px;margin:14px 0 6px";
+    header.textContent = `${capId} · ${capTitle}`;
+    toolsList.appendChild(header);
+    tools.forEach(({ name, spec }) => {
+      const div = document.createElement("div");
+      div.className = "constraint-item";
+      div.style.borderColor = "#166534";
+      const inputStr = Object.entries(spec.input || {}).map(([k,v]) => `${k}: ${v}`).join(", ");
+      const outputKeys = Object.keys(spec.output || {}).join(", ");
+      div.innerHTML = `
+        <div class="cid" style="color:#34d399">${name}</div>
+        <div class="ctitle" style="font-size:12px">${spec.description || ""}</div>
+        ${inputStr ? `<div class="cdesc" style="font-size:10px;margin-top:4px"><span style="color:#475569">in:</span> (${inputStr})</div>` : ""}
+        ${outputKeys ? `<div class="cdesc" style="font-size:10px"><span style="color:#475569">out:</span> {${outputKeys}}</div>` : ""}`;
+      toolsList.appendChild(div);
+    });
+  });
+}
+
 function closePanels() {
   document.getElementById("constraints-panel").classList.remove("open");
   document.getElementById("ragdocs-panel").classList.remove("open");
+  document.getElementById("tools-panel").classList.remove("open");
   document.getElementById("btn-constraints").classList.remove("active");
   document.getElementById("btn-ragdocs").classList.remove("active");
+  document.getElementById("btn-tools").classList.remove("active");
 }
 
 document.getElementById("btn-constraints").addEventListener("click", () => {
@@ -660,6 +743,16 @@ document.getElementById("btn-ragdocs").addEventListener("click", () => {
   }
 });
 document.getElementById("close-ragdocs").addEventListener("click", closePanels);
+
+document.getElementById("btn-tools").addEventListener("click", () => {
+  const isOpen = document.getElementById("tools-panel").classList.contains("open");
+  closePanels();
+  if (!isOpen) {
+    document.getElementById("tools-panel").classList.add("open");
+    document.getElementById("btn-tools").classList.add("active");
+  }
+});
+document.getElementById("close-tools").addEventListener("click", closePanels);
 
 // ——— Intro modal ———
 document.getElementById("intro-btn-close").addEventListener("click", () => {
