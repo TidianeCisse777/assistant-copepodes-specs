@@ -1,0 +1,167 @@
+EcoPart / EcoTaxa link test — EcoTaxa project 1165
+
+1. EcoTaxa project 1165 accessible ? oui
+   - titre : UVP5 IPS Amundsen 2018
+   - instrument : UVP5SD
+   - objets : 47469
+2. Dataset EcoPart candidat trouve ? oui
+   - dataset_id : 105
+   - nom : uvp5_sn008_ips_amundsen_2018 (105)
+3. Liaison EcoPart -> EcoTaxa 1165 confirmee ? oui
+   - preuve : getsamplepopover mentionne 'Ecotaxa Project : UVP5 IPS Amundsen 2018 (1165)'
+4. Dataset EcoPart public/visible ? oui
+   - samples visibles : 7
+   - sample_ids : 18027, 18028, 18029, 18030, 18031, 18032, 18033
+5. Colonnes / champs EcoTaxa utiles :
+   - object_id
+   - acquisition_id
+   - sample_id
+   - project_id
+   - obj_orig_id
+   - obj_depth_min
+   - obj_depth_max
+   - obj_objdate
+   - obj_objtime
+   - obj_latitude
+   - obj_longitude
+   - fre_area
+   - fre_major
+   - fre_minor
+   - fre_feret
+   - fre_esd
+   - fre_width
+   - fre_height
+   - txo_display_name
+6. Champs morphometriques EcoTaxa declares :
+   - %area
+   - angle
+   - area
+   - area_exc
+   - areai
+   - bx
+   - by
+   - cdexc
+   - centroids
+   - circ.
+   - circex
+   - compentropy
+   - compm1
+   - compm2
+   - compm3
+   - compmean
+   - compslope
+   - convarea
+   - convarea_area
+   - convperim
+   - convperim_perim
+   - cv
+   - elongation
+   - esd
+   - fcons
+   - feret
+   - feretareaexc
+   - fractal
+   - height
+   - histcum1
+   - histcum2
+   - histcum3
+   - intden
+   - kurt
+   - kurt_mean
+   - major
+   - max
+   - mean
+   - meanpos
+   - median
+   - median_mean
+   - median_mean_range
+   - min
+   - minor
+   - mode
+   - nb1
+   - nb1_area
+   - nb1_range
+   - nb2
+   - nb2_area
+   - nb2_range
+   - nb3
+   - nb3_area
+   - nb3_range
+   - perim.
+   - perimareaexc
+   - perimferet
+   - perimmajor
+   - range
+   - skelarea
+   - skeleton_area
+   - skew
+   - skew_mean
+   - slope
+   - sr
+   - stddev
+   - symetrieh
+   - symetrieh_area
+   - symetriehc
+   - symetriev
+   - symetriev_area
+   - symetrievc
+   - tag
+   - thickr
+   - width
+   - x
+   - xm
+   - xmg5
+   - xstart
+   - y
+   - ym
+   - ymg5
+   - ystart
+7. Champs sample EcoTaxa declares :
+   - barcode
+   - bottomdepth
+   - comment
+   - cruise
+   - ctdrosettefilename
+   - dn
+   - nebuloussness
+   - profileid
+   - seastate
+   - ship
+   - stationid
+   - winddir
+   - windspeed
+   - yoyo
+8. CTD visible dans EcoPart :
+   - chloro_fluo = chloro fluo [mg chl m-3]
+   - conductivity = conductivity [ms cm-1]
+   - cpar = cpar [%]
+   - depth_salt_water = depth [m]
+   - fcdom_factory = fcdom [ppb qse]
+   - in_situ_density_anomaly = in situ density anomaly [kg m-3]
+   - nitrate = nitrate [umol l-1]
+   - oxygen_vol = oxygen [ml l-1]
+   - oxygen_mass = oxygen [umol kg-1]
+   - par = par [umol m-2 s-1]
+   - potential_density_anomaly = potential density anomaly [kg m-3]
+   - potential_temperature = potential temperature [degc]
+   - practical_salinity = practical salinity [psu]
+   - depth = pressure [db]
+   - qc_flag = qc flag
+   - spar = spar [umol m-2 s-1]
+   - temperature = temperature [degc]
+   - datetime = time [yyyymmddhhmmssmmm]
+9. Particules visibles/exportables dans EcoPart :
+   - histogramme reduit : 30 variables
+   - histogramme detaille : 90 variables
+10. Export EcoPart :
+   - route detectee : /Task/Create/TaskPartExport
+   - non lancee dans ce probe pour eviter de creer un job; la visibilite YY indique donnees visibles/exportables
+11. Conclusion :
+   - liaison directe possible ? oui
+   - jointure fiable probable ? oui
+   - EcoPart peut servir de source centrale UVP + CTD ? oui, pour ce dataset candidat
+   - EcoTaxa sert pour objets/taxonomie/morphometrie image ? oui
+   - requetes effectuees : 6/20
+
+Preuve popover EcoPart :
+- ID : 18027 Profile ID : ips_007 Project : uvp5_sn008_ips_amundsen_2018 (105) Ship : amundsen Cruise : sn008_ips_amundsen_2018 Ecotaxa Project : UVP5 IPS Amundsen 2018 (1165) Lat/Lon : 68.3094/-60.3926 Date/Time : 2018-07-16 13:54

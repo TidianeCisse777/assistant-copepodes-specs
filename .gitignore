@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+.env
+*.zip
+outputs/raw/
+**/outputs/raw/
+ecotaxa_loki_probe/.env
