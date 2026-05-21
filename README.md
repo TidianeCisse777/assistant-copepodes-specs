@@ -8,15 +8,35 @@ Objectif général : comprendre quelles données sont disponibles, comment les e
 
 ```text
 .
-├── RAPPORT_FINAL.md
-├── cartographie_donnée.md
-├── DATA_DICTIONARY.md
-├── DATA_ACCESS_METHODS.md
-├── TOOLS_AGENT_PLAN.md
-├── examples_tsv/
-├── ecotaxa_loki_probe/
-├── ecopart_1165_link_probe/
-└── amundsen_data_probe/
+├── CLAUDE.md                  ← point d'entrée pour Claude Code
+├── CONTEXT.md                 ← glossaire domaine
+├── DATA_DICTIONARY.md         ← colonnes importantes par source
+├── DATA_ACCESS_METHODS.md     ← comment les données ont été obtenues
+│
+├── TOOLS_AGENT_PLAN.md        ← architecture du package Python (rationale)
+├── TOOLS_SPEC.js              ← 22 tools : signatures, contraintes, tests A+B
+├── TEST_SCENARIOS.md          ← 17 scénarios comportementaux (cas limites first)
+├── IMPLEMENTATION_ORDER.md    ← 8 phases d'implémentation, Sprint 1 = Phase 0–3
+│
+├── docs/                      ← documents de fond (domaine, colonnes, sources)
+│   ├── CONTEXT.md             ← glossaire métier
+│   ├── DATA_DICTIONARY.md     ← dictionnaire des colonnes
+│   ├── DATA_ACCESS_METHODS.md ← comment les données ont été obtenues
+│   ├── cartographie_donnée.md ← cartographie des sources
+│   └── PROJET_IDEA_ZOOPLANCTON.md ← idée initiale du projet
+│
+├── visualization/             ← arbre D3.js interactif (UC → Capacité → RAG)
+│   ├── index.html
+│   ├── data.js                ← seul fichier à modifier
+│   ├── notes.js               ← brief de révision (sparse)
+│   └── README.md
+│
+├── data_exploration/          ← scripts et données d'exploration
+│   ├── examples_tsv/          ← fixtures TSV (safe to commit)
+│   ├── ecotaxa_loki_probe/    ← scripts EcoTaxa 2331
+│   ├── ecopart_1165_link_probe/ ← scripts jointure EcoPart 105 ↔ EcoTaxa 1165
+│   └── amundsen_data_probe/   ← scripts CTD Amundsen
+└── STAGE ULAVAL/              ← specs complètes (18 UC, 14 capacités, 29 contraintes)
 ```
 
 ## 1. LOKI EcoTaxa 2331
@@ -181,10 +201,13 @@ amundsen_data_probe/outputs/report.md
 ## 5. Documentation de travail
 
 ```text
-cartographie_donnée.md   synthese des sources, colonnes, liaisons validees
-DATA_DICTIONARY.md       dictionnaire des colonnes importantes
-DATA_ACCESS_METHODS.md   comment les donnees ont ete obtenues et comment en faire des tools
-TOOLS_AGENT_PLAN.md      plan des tools Python puis MCP pour un agent data/RAG
+docs/cartographie_donnée.md     synthese des sources, colonnes, liaisons validees
+docs/DATA_DICTIONARY.md         dictionnaire des colonnes importantes
+docs/DATA_ACCESS_METHODS.md     comment les donnees ont ete obtenues et comment en faire des tools
+TOOLS_AGENT_PLAN.md             architecture du package Python polar_data_tools/
+TOOLS_SPEC.js                   signatures complètes des 22 tools (input/output/contraintes/tests)
+TEST_SCENARIOS.md               17 scénarios comportementaux pour valider l'agent
+IMPLEMENTATION_ORDER.md         ordre d'implémentation en 8 phases
 ```
 
 ## 6. Données brutes

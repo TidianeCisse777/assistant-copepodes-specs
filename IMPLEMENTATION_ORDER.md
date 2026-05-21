@@ -21,6 +21,63 @@
 
 ---
 
+## PHASE 0.5 — Index RAG (déblocage colonnes + domaine)
+
+> Requis avant Phase 2 (`columns.describe`) et Phase 7 (`domain.answer`).
+> Sans index RAG, ces tools ne peuvent pas répondre aux questions sur les colonnes et les espèces.
+
+### Docs sources
+
+Les 5 documents existent déjà dans :
+```
+STAGE ULAVAL/Agent/Ressources scientifiques/Document RAG/
+  colonnes_sources.md       (8 chunks)
+  colonnes_instruments.md   (9 chunks)
+  copepodes_domaine.md      (13 chunks)
+  methodes_calcul.md        (10 chunks)
+  sources_en_ligne.md       (7 chunks)
+```
+
+### Stratégie de chunking
+
+- Découpe **manuelle par section `##`** — un chunk = une section markdown.
+- Pas de découpe automatique par token (les sections sont déjà pensées comme chunks autonomes).
+- Chaque chunk conserve : `doc_id`, `section_title`, `content`, `source_file`.
+
+### Stack RAG V1
+
+| Composant | Choix V1 | Raison |
+|---|---|---|
+| Vector store | `ChromaDB` | Local, sans serveur, fichiers persistants, Python natif |
+| Embeddings | `sentence-transformers/all-MiniLM-L6-v2` | Léger, hors ligne, bonne qualité pour texte scientifique court |
+| Retrieval | Top-3 chunks par similarité cosinus | Suffisant pour les questions de colonnes et domaine |
+| Migration future | Pinecone / Weaviate via MCP | Quand les signatures sont stables |
+
+### Étapes d'implémentation
+
+| Étape | Action |
+|---|---|
+| 0.5.1 | Script `rag/chunk_docs.py` — découpe les 5 .md en chunks, produit `rag/chunks.json` |
+| 0.5.2 | Script `rag/build_index.py` — embed les chunks, persiste l'index ChromaDB dans `rag/chroma_db/` |
+| 0.5.3 | Tool `rag.query(question, top_k=3)` — retourne les chunks les plus proches avec `doc_id` et `section_title` |
+| 0.5.4 | Test : `rag.query("que signifie acq_pixel ?")` → chunk contenant "acq_pixel" dans top-3 |
+
+### Structure cible
+
+```
+polar_data_tools/
+  rag/
+    chunk_docs.py      # découpe les .md en chunks
+    build_index.py     # construit l'index ChromaDB
+    query.py           # interface de requête
+    chunks.json        # chunks générés (committé)
+    chroma_db/         # index persisté (non committé — dans .gitignore)
+```
+
+**Livrable de phase :** `rag.query("acq_pixel")` retourne le bon chunk depuis `colonnes_instruments.md`. Les tools `columns.describe` et `domain.answer` peuvent s'appuyer sur l'index.
+
+---
+
 ## PHASE 1 — Chargement et validation des données locales
 
 > Fondation de toutes les analyses. Couvre les UC-SL-03/05/06.
@@ -31,7 +88,7 @@
 | 1.2 | `data.validate` | SC-07 |
 | 1.3 | `data.profile_missing` | SC-16 (partiel) |
 
-**Fixture de test :** `examples_tsv/ecotaxa_1165_sample.tsv`
+**Fixture de test :** `data_exploration/examples_tsv/ecotaxa_1165_sample.tsv`
 
 **Livrable de phase :** on peut charger un TSV EcoTaxa, obtenir un rapport de validation structuré, vérifier que les données brutes sont préservées.
 
@@ -88,7 +145,7 @@
 | 5.1 | `joins.plan` | SC-11 |
 | 5.2 | `joins.execute` | SC-11 |
 
-**Fixture de test :** `examples_tsv/ecotaxa_1165_sample.tsv` + `examples_tsv/ecopart_105_sample.tsv`
+**Fixture de test :** `data_exploration/examples_tsv/ecotaxa_1165_sample.tsv` + `data_exploration/examples_tsv/ecopart_105_sample.tsv`
 
 **Livrable de phase :** SC-11 passe — jointure non lancée sans validation du plan.
 
@@ -143,6 +200,7 @@
 | Phase | Scénarios débloqués |
 |---|---|
 | 0 | SC-10 (partiel) |
+| 0.5 | — (infrastructure RAG, débloque Phase 2 et 7) |
 | 1 | SC-07, SC-13 |
 | 2 | SC-01, SC-14, SC-15 |
 | 3 | SC-02, SC-03, SC-10 |
@@ -160,6 +218,7 @@
 
 ```
 polar_data_tools/
+  rag/             # index ChromaDB + interface de requête (Phase 0.5)
   session.py       # set_mode, get_mode, build_summary, export
   context.py       # get_required_fields, validate_species
   data.py          # inspect, validate, profile_missing
@@ -176,7 +235,7 @@ polar_data_tools/
   schemas.py       # types partagés : DataFrame, ValidationReport, etc.
 
 tests/
-  fixtures/        # TSV samples depuis examples_tsv/
+  fixtures/        # TSV samples depuis data_exploration/examples_tsv/
   test_session.py
   test_context.py
   test_data.py

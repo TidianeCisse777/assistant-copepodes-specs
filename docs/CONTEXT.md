@@ -1,4 +1,8 @@
 # Contexte métier — Assistant scientifique copépodes
+#
+# Ce fichier définit les termes métier du domaine.
+# Pour les specs complètes : STAGE ULAVAL/
+# Pour les tools et l'implémentation : TOOLS_SPEC.js, IMPLEMENTATION_ORDER.md
 
 ## Glossaire
 

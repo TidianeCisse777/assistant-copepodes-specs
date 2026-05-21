@@ -410,15 +410,42 @@ ecopart.compare_with_amundsen_ctd
 
 ## 7. Prochaine etape technique
 
-Refactoriser les scripts actuels en un package Python local :
+Refactoriser les scripts actuels en un package Python local.
+
+Structure cible (voir IMPLEMENTATION_ORDER.md pour l'ordre et les phases) :
 
 ```text
 polar_data_tools/
-  amundsen.py
-  ecotaxa.py
-  ecopart.py
-  joins.py
-  schemas.py
+  session.py        # set_mode, get_mode, build_summary, export
+  context.py        # get_required_fields, validate_species
+  data.py           # inspect, validate, profile_missing
+  columns.py        # describe, check_for_calculation
+  sources.py        # list_available, describe, query_ecotaxa,
+                    # query_amundsen_ctd, query_obis
+  joins.py          # plan, execute
+  calc.py           # get_method, execute
+  analysis.py       # explore
+  plot.py           # plan, generate
+  completeness.py   # evaluate, compare_obis
+  domain.py         # answer
+  deliverable.py    # build
+  schemas.py        # types partagés : DataFrame, ValidationReport, etc.
+
+tests/
+  fixtures/         # TSV samples depuis examples_tsv/
+  test_session.py
+  test_context.py
+  test_data.py
+  test_columns.py
+  test_sources.py
+  test_joins.py
+  test_calc.py
+  test_analysis.py
+  test_completeness.py
+  test_domain.py
+  test_deliverable.py
 ```
 
-Puis exposer ces fonctions a l'agent.
+Signatures complètes de chaque tool dans TOOLS_SPEC.js.
+Scénarios de test comportementaux dans TEST_SCENARIOS.md.
+Puis exposer ces fonctions a l'agent via MCP quand les signatures sont stables.

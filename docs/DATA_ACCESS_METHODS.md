@@ -452,24 +452,11 @@ examples_tsv/uvp_amundsen_105_ecopart_vs_amundsen_ctd_compare.tsv
 La prochaine etape technique est de sortir la logique des scripts vers un package :
 
 ```text
-polar_data_tools/
-  amundsen.py
-  ecotaxa.py
-  ecopart.py
-  joins.py
-  dictionaries.py
+polar_data_tools/  ← voir IMPLEMENTATION_ORDER.md pour la structure complète
 ```
 
-Puis exposer les fonctions comme tools :
-
-```text
-search_amundsen_catalog
-query_amundsen_ctd
-inspect_ecotaxa_export
-export_ecotaxa_project
-inspect_ecopart_link
-enrich_by_nearest_depth
-compare_ecopart_amundsen
-```
+Signatures complètes des tools : TOOLS_SPEC.js.
+Scénarios de test comportementaux : TEST_SCENARIOS.md.
+Ordre d'implémentation en 8 phases : IMPLEMENTATION_ORDER.md.
 
 Le MCP viendra ensuite si les signatures sont stables.
