@@ -140,6 +140,7 @@
     <p>Chaque chemin représente une chaîne complète d'exécution : de l'action utilisateur jusqu'au document RAG que l'agent lit pour y répondre.</p>
     <div class="levels">
       <div class="level"><div class="level-dot" style="background:#7dd3fc"></div><div class="level-label">Utilisateur</div><div class="level-text">Acteur déclenchant l'interaction</div></div>
+      <div class="level"><div class="level-dot" style="background:#c4b5fd"></div><div class="level-label">Objectif Métier</div><div class="level-text">Finalité visée par l'utilisateur</div></div>
       <div class="level"><div class="level-dot" style="background:#f97316"></div><div class="level-label">Use Case</div><div class="level-text">Action ou besoin identifié (18 cas)</div></div>
       <div class="level"><div class="level-dot" style="background:#34d399"></div><div class="level-label">Capacité Agent</div><div class="level-text">Comportement de l'agent mobilisé (14 capacités)</div></div>
       <div class="level"><div class="level-dot" style="background:#fbbf24"></div><div class="level-label">Document RAG</div><div class="level-text">Corpus de connaissance consulté (5 documents)</div></div>
@@ -167,6 +168,8 @@
     <h1>Assistant Copépodes — Vue Fonctionnelle V1</h1>
     <div class="breadcrumb">
       <span class="crumb" style="background:#0c4a6e;color:#7dd3fc">Utilisateur</span>
+      <span class="arrow">→</span>
+      <span class="crumb" style="background:#3b1f6e;color:#c4b5fd">Objectif Métier</span>
       <span class="arrow">→</span>
       <span class="crumb" style="background:#431407;color:#f97316">Use Case</span>
       <span class="arrow">→</span>
@@ -525,7 +528,7 @@ function showDetail(raw) {
       ${uc.preconditions ? `<h3>Préconditions</h3><p>${uc.preconditions}</p>` : ""}
       ${uc.flow ? `<h3>Flux principal</h3><p style="white-space:pre-line">${uc.flow}</p>` : ""}
       ${uc.postconditions ? `<h3>Postconditions</h3><p>${uc.postconditions}</p>` : ""}
-      ${uc.scope ? `<h3>Périmètre & règles</h3><p>${uc.scope}</p>` : ""}
+      ${uc.scope ? `<h3>Périmètre & règles</h3><p style="white-space:pre-line">${uc.scope}</p>` : ""}
       ${noteEditor(getUcId(raw))}`;
 
   } else if (raw.type === "capability") {
@@ -573,8 +576,20 @@ function handleNoteEditorClick(e) {
   const btn = e.target.closest(".status-btn");
   if (btn) {
     const editor = btn.closest(".note-editor");
+    const key    = editor.dataset.noteKey;
+    const status = btn.dataset.status;
     editor.querySelectorAll(".status-btn").forEach(b => b.className = "status-btn");
-    btn.classList.add(`active-${btn.dataset.status}`);
+    btn.classList.add(`active-${status}`);
+    // Mettre à jour NOTES en mémoire et rafraîchir le dot D3
+    if (!NOTES[key]) NOTES[key] = { status, note: "" };
+    else NOTES[key].status = status;
+    d3.selectAll(".node").each(function(d) {
+      if (getNoteKey(d.data) === key) {
+        d3.select(this).select("circle.status-dot")
+          .attr("fill", STATUS_COLOR[status])
+          .attr("opacity", 1);
+      }
+    });
   }
   const copyBtn = e.target.closest(".copy-btn");
   if (copyBtn) {

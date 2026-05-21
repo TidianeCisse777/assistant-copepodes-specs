@@ -92,19 +92,19 @@ const USE_CASES = {
   "UC-SL-02": {
     title: "Sélectionner le mode de travail",
     category: "data",
-    objectives: ["SLA"],
+    objectives: ["SLA", "SLB"],
     description: "L'utilisateur choisit entre Mode Contexte (discussion guidée, aucune exécution) et Mode Analyse (formulaire structuré, exécution validée avant lancement).",
     actors: ACTORS.tous,
     preconditions: "Session ouverte.",
     flow: "1. L'utilisateur sélectionne le mode via l'interface.\n2. L'agent adapte son comportement (vocabulaire, interactions, formulaires).",
     postconditions: "Mode actif, comportement de l'agent ajusté.",
-    scope: "Mode Contexte : questions guidées, reformulation, pas de code. Mode Analyse : formulaire → validation → rapport statique."
+    scope: "Mode Contexte : questions guidées, reformulation, pas de code.\nMode Analyse : formulaire → validation → rapport statique."
   },
   "UC-SL-03": {
     title: "Charger des données",
     category: "data",
-    objectives: ["SLA"],
-    description: "L'utilisateur charge un ou plusieurs fichiers de données locaux (CSV, Excel, JSON, exports R/Python) dans la session de travail.",
+    objectives: ["SLA", "SLB"],
+    description: "L'utilisateur charge un ou plusieurs fichiers de données locaux (CSV,TSV, Excel, JSON, exports R/Python) dans la session de travail.",
     actors: ACTORS.tous,
     preconditions: "Session ouverte, fichiers disponibles localement.",
     flow: "1. L'utilisateur sélectionne les fichiers.\n2. L'agent inspecte les colonnes, types, unités, valeurs manquantes.\n3. Un rapport de validation est retourné.",
@@ -136,7 +136,7 @@ const USE_CASES = {
   "UC-SL-06": {
     title: "Nettoyer les données",
     category: "data",
-    objectives: ["SLA"],
+    objectives: ["SLA", "SLB"],
     description: "L'agent applique des transformations de nettoyage validées par l'utilisateur (filtrage, renommage, conversion d'unités) sur une copie des données.",
     actors: ACTORS.chercheur,
     preconditions: "Données validées, méthode de nettoyage soumise et approuvée.",
@@ -147,7 +147,7 @@ const USE_CASES = {
   "UC-SL-07": {
     title: "Décrire le contexte scientifique",
     category: "science",
-    objectives: ["SLA"],
+    objectives: ["SLA", "SLB"],
     description: "En Mode Contexte, l'agent guide l'utilisateur par des questions structurées pour formuler sa question scientifique, ses hypothèses et le périmètre des données à mobiliser.",
     actors: ACTORS.tous,
     preconditions: "Mode Contexte actif.",
@@ -158,7 +158,7 @@ const USE_CASES = {
   "UC-SL-08": {
     title: "Valider la reformulation du contexte",
     category: "science",
-    objectives: ["SLA"],
+    objectives: ["SLA", "SLB"],
     description: "L'agent présente une reformulation structurée du contexte scientifique. L'utilisateur valide ou corrige avant de passer à l'analyse.",
     actors: ACTORS.chercheur,
     preconditions: "Contexte décrit (UC-SL-07 complété).",
@@ -169,7 +169,7 @@ const USE_CASES = {
   "UC-SL-09": {
     title: "Générer un graphique",
     category: "science",
-    objectives: ["SLA"],
+    objectives: ["SLA", "SLB"],
     description: "L'agent génère une visualisation scientifique à partir des données chargées, avec titre, axes, unités, source, filtres et limites explicites.",
     actors: ACTORS.tous,
     preconditions: "Données chargées, contexte validé, paramètres de graphique définis.",
@@ -183,8 +183,8 @@ const USE_CASES = {
     objectives: ["SLA"],
     description: "L'agent analyse la distribution en profondeur des copépodes à partir des données EcoTaxa/EcoPart, avec jointure validée et concentration calculée.",
     actors: ACTORS.chercheur,
-    preconditions: "EcoTaxa 1165 + EcoPart 105 chargés, jointure profile_id validée.",
-    flow: "1. L'agent effectue la jointure EcoTaxa ↔ EcoPart par profile_id et profondeur (±5m).\n2. Il calcule la concentration (ind/m³) et la biovolume.\n3. Il génère les profils verticaux par taxon/stade.\n4. Rapport statique avec sources, méthodes, limites.",
+    preconditions: "EcoTaxa  + EcoPart  chargés, jointure profile_id validée.",
+    flow: "1. L'agent effectue la jointure si nécéssaire. Il calcule la concentration (ind/m³) et la biovolume.\n3. Il génère les profils verticaux par taxon/stade.\n4. Rapport statique avec sources, méthodes, limites.",
     postconditions: "Profils de distribution verticale disponibles, méthode documentée.",
     scope: "Jointure EcoTaxa ↔ EcoPart validée sur données test. LOKI (2331) sans morphométrie individuelle."
   },
