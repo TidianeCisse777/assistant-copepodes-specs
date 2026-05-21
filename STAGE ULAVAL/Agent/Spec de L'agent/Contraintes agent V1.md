@@ -498,3 +498,25 @@ Limite : profondeur manquante pour 12 objets.
 **Option UX à valider :** bloquer techniquement le copier-coller direct peut réduire la paresse intellectuelle, mais doit être évalué avec les contraintes d'accessibilité, d'ergonomie et de contexte institutionnel.
 
 **Critère :** le livrable doit soutenir la rédaction humaine, pas la remplacer intégralement.
+
+---
+
+## CT-AG-29 — Contextualiser les absences lors des comparaisons de couverture
+
+**Règle :** lorsque l'agent compare la couverture locale à une source externe (OBIS, corpus RAG) pour identifier des absences taxonomiques ou spatiales, il doit distinguer explicitement trois types d'absence.
+
+**Trois types d'absence à distinguer :**
+
+- absence confirmée : l'espèce ou la zone n'est documentée dans aucune source de référence pour le périmètre défini ;
+- absence probable par biais d'échantillonnage : l'espèce ou la zone est documentée dans les sources de référence mais absente des données locales — possiblement due à la saison, la profondeur, l'instrument ou la campagne ;
+- absence incertaine : l'identification morphologique est insuffisante pour conclure (ex. _C. glacialis_ vs _C. finmarchicus_ dans les zones de chevauchement géographique).
+
+**Biais systématiques à signaler pour les données arctiques :**
+
+- sous-représentation des données hivernales dans OBIS ;
+- couverture géographique plus dense à l'ouest de l'Arctique atlantique ;
+- incertitude d'identification historique entre espèces morphologiquement proches dans les données OBIS antérieures aux méthodes moléculaires.
+
+**Use cases concernés :** UC-SL-12 (ext. 3b), UC-SL-14, AG-V1-10, AG-V1-11.
+
+**Critère :** l'agent ne doit jamais présenter une absence dans les données locales comme une absence biologique confirmée sans mentionner les biais possibles. Le type d'absence doit toujours être explicité dans le rapport produit.

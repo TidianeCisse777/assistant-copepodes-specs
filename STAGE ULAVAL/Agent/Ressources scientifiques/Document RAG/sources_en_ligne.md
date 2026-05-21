@@ -11,12 +11,15 @@
 | "Je veux la CTD officielle du navire Amundsen" | Amundsen ERDDAP |
 | "Je veux mes données de comptage filet ou lipides" | Données labo (fichier local) |
 | "Est-ce que cette espèce a été observée dans cette zone par d'autres groupes ?" | OBIS |
+| "Quelles espèces sont attendues dans cette zone mais absentes de mes données ?" | OBIS |
+| "Qu'est-ce que mes données ne couvrent pas par rapport à ce qui existe mondialement ?" | OBIS |
 | "Je veux la température / glace de mer / salinité pour contextualiser" | CMEMS |
 
 **Règle générale :**
 
 - Données du labo → EcoTaxa, EcoPart, Amundsen, fichiers locaux
 - Contexte mondial pour analyse de lacunes → OBIS
+- Comparaison taxonomique (espèces attendues vs observées) → OBIS + corpus RAG copépodes
 - Contexte environnemental → CMEMS
 
 ---
@@ -83,9 +86,18 @@
 
 **Package R :** `robis`
 
-**Quand l'utiliser :** pour l'analyse de lacunes — comparer la couverture du labo avec ce qui existe mondialement. Argument pour demandes de financement.
+**Quand l'utiliser :**
 
-**Limite :** biais spatial (peu de données hivernales arctiques) ; identification incertaine _C. glacialis_ vs _C. finmarchicus_ dans les données historiques.
+- Analyse de lacunes (UC-SL-14, AG-V1-10) : comparer la couverture locale avec ce qui existe mondialement pour une zone et une période données. Argument pour demandes de financement.
+- Absences taxonomiques (UC-SL-12 ext. 3b, AG-V1-11) : récupérer la liste des espèces documentées dans OBIS pour la zone géographique du contexte, puis comparer avec les taxons observés dans les données locales pour identifier les absences.
+
+**Procédure comparaison taxonomique (UC-SL-12 ext. 3b) :**
+1. Extraire les taxons observés dans les données locales (colonne taxon, statut validé).
+2. Interroger OBIS pour la même zone et période : `GET /v3/occurrence?geometry=<WKT>&startdate=<>`.
+3. Lister les espèces présentes dans OBIS mais absentes des données locales.
+4. Signaler explicitement les espèces pour lesquelles l'absence peut être un biais d'observation (ex : stades hivernaux, profondeurs non échantillonnées).
+
+**Limite :** biais spatial (peu de données hivernales arctiques) ; identification incertaine _C. glacialis_ vs _C. finmarchicus_ dans les données historiques OBIS — toujours signaler ce biais lors d'une comparaison taxonomique.
 
 ---
 

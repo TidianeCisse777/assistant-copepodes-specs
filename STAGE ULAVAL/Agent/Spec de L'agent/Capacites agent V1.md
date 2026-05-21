@@ -267,38 +267,51 @@ Format : Use cases opérationnels
 
 ---
 
-## AG-V1-10 — Analyser couverture et lacunes
+## AG-V1-10 — Évaluer la complétude et synthétiser les lacunes
 
-**Use cases liés :** UC-SL-04, UC-SL-11, UC-SL-14
+**Use cases liés :** UC-SL-11 (ext. 4a), UC-SL-12 (ext. 3b), UC-SL-14
 
-**Précondition :** contexte validé, données ou sources activées
+**Précondition :** contexte validé, données chargées, mode Analyse actif
 
 **Main success scenario :**
-1. L'utilisateur définit espèces, zone, période et variables.
-2. L'agent identifie les sources couvrant ce périmètre.
-3. L'agent produit une synthèse de couverture.
-4. L'agent distingue les zones couvertes et les lacunes.
-5. L'utilisateur exporte ou affine le périmètre.
+1. L'utilisateur demande une évaluation de la complétude ou une synthèse des lacunes pour son périmètre.
+2. L'agent évalue le taux de remplissage des colonnes clés : disponible, partielle ou absente.
+3. L'agent identifie les variables critiques inutilisables et explique quelle analyse devient impossible pour chacune.
+4. Si OBIS est activé et la zone géographique définie, l'agent compare la couverture locale aux données de référence disponibles dans OBIS pour le périmètre.
+5. L'agent produit un rapport de lacunes structuré distinguant ce qui est disponible, manquant et inutilisable.
+6. L'utilisateur exporte le rapport ou affine le périmètre.
 
 **Extensions :**
 
-2a. Source non activée : l'agent signale que la couverture est partielle.
+2a. Aucune colonne clé identifiable : l'agent demande à l'utilisateur de préciser les variables d'intérêt.
 
-3a. Données absentes : l'agent marque explicitement la lacune.
+3a. Variable critique absente partout : l'agent la marque comme bloquante, indique l'alternative disponible si elle existe.
+
+4a. OBIS non activé : l'agent produit la synthèse sans comparaison externe et le signale explicitement.
+
+4b. Zone ou période non définies : l'agent ne peut pas comparer avec OBIS et demande de préciser le périmètre.
+
+5a. Lacunes spatio-temporelles ou absences taxonomiques déjà produites (UC-SL-11 ext. 4a, UC-SL-12 ext. 3b) : l'agent les intègre dans la synthèse globale si disponibles.
 
 **Critères d'acceptation :**
 
-**Étant donné** un périmètre défini
-**Alors** l'agent produit au minimum une vue par station, période ou source
+**Étant donné** données chargées **Quand** l'évaluation de complétude est demandée
+**Alors** l'agent produit un tableau de remplissage par colonne clé avec statut disponible / partielle / absente
 
-**Étant donné** une lacune
-**Alors** elle est distinguée d'une zone non interrogée
+**Étant donné** une variable critique absente
+**Alors** l'agent l'identifie comme bloquante et explique quelle analyse est impossible
+
+**Étant donné** OBIS activé et zone définie **Quand** la comparaison externe est demandée
+**Alors** l'agent produit une synthèse de ce que OBIS couvre que les données locales ne couvrent pas, avec sources citées
+
+**Étant donné** rapport de lacunes produit
+**Alors** il distingue explicitement disponible, manquant et inutilisable, et est exportable comme support de demande de subvention
 
 ---
 
 ## AG-V1-11 — Répondre sur le domaine copépodes
 
-**Use cases liés :** UC-SL-07, UC-SL-10, UC-SL-11, UC-SL-12, UC-SL-13, UC-SL-14
+**Use cases liés :** UC-SL-07, UC-SL-10, UC-SL-11, UC-SL-12 (ext. 3b), UC-SL-13
 
 **Précondition :** corpus scientifique disponible
 

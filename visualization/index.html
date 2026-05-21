@@ -162,7 +162,7 @@
   <button class="btn" id="btn-expand-all">Tout déplier</button>
   <button class="btn" id="btn-collapse-all">Tout replier</button>
   <button class="btn" id="btn-ragdocs">Docs RAG (5)</button>
-  <button class="btn" id="btn-constraints">Contraintes (28)</button>
+  <button class="btn" id="btn-constraints">Contraintes (29)</button>
 </header>
 
 <div id="filter-bar">
@@ -338,7 +338,7 @@ const USE_CASES = {
     scope: "Jointure EcoTaxa ↔ EcoPart validée sur données test. LOKI (2331) sans morphométrie individuelle."
   },
   "UC-SL-11": {
-    title: "Analyser la distribution spatio-temporelle",
+    title: "Analyser la distribution et les lacunes spatio-temporelles",
     category: "science",
     description: "L'agent analyse la répartition spatiale et temporelle des copépodes entre stations et campagnes.",
     actors: ["Chercheur"],
@@ -348,7 +348,7 @@ const USE_CASES = {
     scope: "OBIS pour contexte géographique global. Linkage CTD ↔ EcoTaxa par proximité (pas de clé directe)."
   },
   "UC-SL-12": {
-    title: "Analyser la taxonomie et les stades de vie",
+    title: "Analyser la taxonomie, les stades et les absences",
     category: "science",
     description: "L'agent analyse la composition taxonomique et la répartition par stades de développement des copépodes.",
     actors: ["Chercheur", "Étudiant gradué"],
@@ -368,7 +368,7 @@ const USE_CASES = {
     scope: "Jointure EcoPart ↔ Amundsen validée sur ips_007. Tolérance : temps <5min, position <0.001°, profondeur <0.5m."
   },
   "UC-SL-14": {
-    title: "Analyser la couverture et les lacunes",
+    title: "Évaluer la complétude des données et synthétiser les lacunes",
     category: "science",
     description: "L'agent mesure ce que les données disponibles couvrent versus ce qui est absent, et documente les lacunes de manière structurée.",
     actors: ["Chercheur"],
@@ -465,7 +465,7 @@ const CAPABILITIES = {
     ragDocs: ["colonnes_sources", "methodes_calcul"]
   },
   "AG-V1-10": {
-    title: "Analyser la couverture et les lacunes",
+    title: "Évaluer la complétude et synthétiser les lacunes",
     description: "L'agent mesure ce que les données couvrent (taxonomique, temporel, géographique) et documente structurellement ce qui est absent ou non mesurable.",
     constraints: ["CT-AG-01", "CT-AG-03", "CT-AG-08"],
     ragDocs: ["sources_en_ligne", "copepodes_domaine"]
@@ -567,7 +567,8 @@ const CONSTRAINTS = [
   { id: "CT-AG-25", title: "Imposer un ticket d'entrée cognitif", description: "Avant toute analyse, l'agent exige un minimum de contexte (espèce, zone, variable, période). Bloque si contexte insuffisant." },
   { id: "CT-AG-26", title: "Vocabulaire clinique, non anthropomorphique", description: "Pas de « je », pas d'expressions de chaleur ou d'enthousiasme. Vocabulaire technique, neutre, clinique." },
   { id: "CT-AG-27", title: "Rendre l'incertitude visible", description: "Les niveaux de confiance sont affichés explicitement (fiable / exploratoire / impossible). Code couleur si applicable." },
-  { id: "CT-AG-28", title: "Encadrer la réutilisation des livrables", description: "Les livrables incluent sources, méthodes et limites. L'utilisateur est informé des conditions de réutilisation des résultats." }
+  { id: "CT-AG-28", title: "Encadrer la réutilisation des livrables", description: "Les livrables incluent sources, méthodes et limites. L'utilisateur est informé des conditions de réutilisation des résultats." },
+  { id: "CT-AG-29", title: "Contextualiser les absences lors des comparaisons de couverture", description: "Lors d'une comparaison locale vs OBIS ou corpus RAG, distinguer explicitement : absence confirmée, absence par biais d'échantillonnage, et absence incertaine. Signaler les biais systématiques arctiques (données hivernales, C. glacialis vs C. finmarchicus). Concerne UC-SL-12 ext. 3b, UC-SL-14, AG-V1-10, AG-V1-11." }
 ];
 
 // ================================================================

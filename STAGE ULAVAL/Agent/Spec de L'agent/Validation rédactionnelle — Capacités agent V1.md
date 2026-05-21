@@ -32,7 +32,7 @@ Une capacité agent V1 est considérée prête si :
 
 ## Résultat global
 
-Statut global : prêt à figer côté rédaction.
+Statut global : prêt à figer côté rédaction — **V1.1 (révision axe lacunes)**.
 
 Points vérifiés :
 
@@ -44,9 +44,14 @@ Points vérifiés :
 - La séparation Mode Contexte / Mode Analyse est explicitement couverte par `AG-V1-14`.
 - Le livrable scientifique est couvert par `AG-V1-13`.
 
-Correction appliquée pendant la validation :
+Correction appliquée pendant la validation initiale :
 
 - `AG-V1-08` ne dit plus qu'aucun graphique partiel ne peut être généré. La formulation est alignée avec les use cases et contraintes : un graphique exploratoire est possible si ses limites sont explicites ; aucun visuel trompeur ou non sourcé ne doit être produit.
+
+Révision V1.1 — axe couverture et lacunes :
+
+- `AG-V1-10` réécrit : ancienne version trop générique (couverture par source/zone/période seulement). Nouveau périmètre aligné sur UC-SL-14 V1.1 : évaluation du taux de remplissage des colonnes, identification des variables critiques inutilisables, comparaison avec OBIS si activé, production d'un rapport de lacunes structuré exportable. Le titre devient "Évaluer la complétude et synthétiser les lacunes". Les liens use cases reflètent aussi les extensions enrichies de UC-SL-11 (ext. 4a) et UC-SL-12 (ext. 3b).
+- `AG-V1-11` mis à jour : UC-SL-14 retiré des use cases liés (le nouveau UC-SL-14 ne mobilise pas le corpus domaine copépodes). UC-SL-12 (ext. 3b) maintenu car l'identification des absences taxonomiques s'appuie sur le corpus scientifique.
 
 ---
 
@@ -63,8 +68,8 @@ Correction appliquée pendant la validation :
 | AG-V1-07 — Calculer une variable dérivée | OK | Couvre formule, colonnes, unités, validation avant calcul. |
 | AG-V1-08 — Générer un graphique scientifique | OK | Couvre axes, unités, sources et limites. Pas de visuel trompeur. |
 | AG-V1-09 — Produire une analyse exploratoire | OK | Couvre méthode validée, résultats, limites et hypothèses. |
-| AG-V1-10 — Analyser couverture et lacunes | OK | Couvre synthèse de couverture et distinction lacune / zone non interrogée. |
-| AG-V1-11 — Répondre sur le domaine copépodes | OK | Couvre corpus scientifique, ambiguïté taxonomique et absence de preuve. |
+| AG-V1-10 — Évaluer la complétude et synthétiser les lacunes | OK (V1.1) | Réécrit. Couvre taux de remplissage par colonne, variables critiques inutilisables, comparaison OBIS si activé, rapport de lacunes structuré exportable. Liens use cases mis à jour : UC-SL-11 ext. 4a, UC-SL-12 ext. 3b, UC-SL-14. |
+| AG-V1-11 — Répondre sur le domaine copépodes | OK (V1.1) | Couvre corpus scientifique, ambiguïté taxonomique et absence de preuve. UC-SL-14 retiré des liens (nouveau scope ne mobilise pas le corpus domaine). UC-SL-12 ext. 3b maintenu. |
 | AG-V1-12 — Exporter une synthèse de session | OK | Couvre export technique et session vide. |
 | AG-V1-13 — Préparer un livrable scientifique | OK | Couvre dossier/synthèse, titres, légendes, citations et limites. |
 | AG-V1-14 — Appliquer l'interface adaptée au mode de travail | OK | Couvre discussion guidée en Contexte et requête structurée en Analyse. |
@@ -106,7 +111,9 @@ Ces points ne bloquent pas la rédaction, mais devront être testés lors de l'i
 
 ## Décision de figer
 
-Les capacités agent V1 peuvent être figées côté rédaction.
+Les capacités agent V1.1 peuvent être figées côté rédaction.
 
-La prochaine étape de validation sera la **vérification système**, après prototypage ou implémentation.
+La révision V1.1 est circonscrite à `AG-V1-10` (réécrit) et `AG-V1-11` (liens use cases ajustés). Les 12 autres capacités restent inchangées.
+
+La prochaine étape de validation sera la **vérification système**, après prototypage ou implémentation. `AG-V1-10` sera à tester en priorité : il mobilise OBIS pour la comparaison externe, ce qui implique une source activée et une zone géographique définie dans le contexte.
 
