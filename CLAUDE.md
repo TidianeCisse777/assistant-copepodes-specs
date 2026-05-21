@@ -1,78 +1,177 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Projet
 
-## Project context
+Assistant scientifique LLM+RAG+Tools pour l'exploration de données de copépodes marins.
+NeoLab, Université Laval. Développeur : Flinguee75.
 
-Research data exploration repository for the NeoLab copepod assistant project (Université Laval). The goal is to understand, export, and join data from EcoTaxa, EcoPart, and Amundsen Science (CTD), as a foundation for an AI/RAG agent that answers scientific questions about zooplankton.
+L'agent répond à des questions scientifiques sur des données EcoTaxa/EcoPart/Amundsen CTD
+sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 
-Key domain concepts are defined in `docs/CONTEXT.md`. The data dictionary is in `docs/DATA_DICTIONARY.md`.
+---
 
-Agent implementation files (read before implementing anything):
-- `TOOLS_AGENT_PLAN.md` — architecture and rationale for the Python tool package
-- `TOOLS_SPEC.js` — 22 tool signatures (input/output/constraints/tests), grouped by capability
-- `TEST_SCENARIOS.md` — 17 behavioral test scenarios (edge cases first), with traceability UC → capability → constraint
-- `IMPLEMENTATION_ORDER.md` — 8 phases, each unlocking the next; Sprint 1 = Phase 0–3 (data management + mode/context)
+## État d'avancement (mai 2026)
 
-## Running scripts
+- Specs V1.1 complètes et figées : 18 UC, 14 capacités, 29 contraintes, 5 docs RAG
+- Visualisation D3.js interactive opérationnelle (`visualization/`)
+- 22 tools spécifiés avec signatures, contraintes, tests A+B (`TOOLS_SPEC.js`)
+- 17 scénarios de test comportementaux documentés (`TEST_SCENARIOS.md`)
+- Ordre d'implémentation en 8 phases défini (`IMPLEMENTATION_ORDER.md`)
+- **Aucune implémentation Python commencée** — Sprint 1 = Phase 0 → 0.5 → 1 → 2 → 3
 
-Each probe is a self-contained subdirectory with its own `requirements.txt`. Scripts require a `.env` file (see `.env.example` in `data_exploration/ecotaxa_loki_probe/`) with EcoTaxa credentials.
+---
+
+## Lire avant d'implémenter quoi que ce soit
+
+| Fichier | Contenu |
+|---|---|
+| `TOOLS_SPEC.js` | 22 tools : signatures input/output, contraintes, tests A+B |
+| `TEST_SCENARIOS.md` | 17 scénarios comportementaux (cas limites d'abord) |
+| `IMPLEMENTATION_ORDER.md` | 8 phases ordonnées, Sprint 1 = Phase 0–3 |
+| `TOOLS_AGENT_PLAN.md` | Architecture du package Python, rationale |
+| `STAGE ULAVAL/USE CASE/Use Cases — Assistant scientifique copépodes V1.md` | 18 UC complets |
+| `STAGE ULAVAL/Agent/Spec de L'agent/Capacites agent V1.md` | 14 capacités agent |
+| `STAGE ULAVAL/Agent/Spec de L'agent/Contraintes agent V1.md` | 29 contraintes |
+
+---
+
+## Sprint 1 — ce qui est à implémenter maintenant
+
+**Phase 0 — Session et mode**
+- `session.set_mode`, `session.get_mode`, `context.get_required_fields`
+- Valide : SC-10
+
+**Phase 0.5 — Index RAG**
+- Chunking des 5 docs `STAGE ULAVAL/Agent/Ressources scientifiques/Document RAG/*.md`
+- Stack : ChromaDB + sentence-transformers/all-MiniLM-L6-v2
+- Scripts : `polar_data_tools/rag/chunk_docs.py` → `build_index.py` → `query.py`
+- Valide : `rag.query("acq_pixel")` → bon chunk dans le top-3
+
+**Phase 1 — Chargement et validation des données**
+- `data.inspect`, `data.validate`, `data.profile_missing`
+- Fixture : `data_exploration/examples_tsv/ecotaxa_1165_sample.tsv`
+- Valide : SC-07, SC-13
+
+**Phase 2 — Colonnes et sources**
+- `columns.describe`, `columns.check_for_calculation`, `sources.list_available`, `sources.describe`
+- Valide : SC-01, SC-14, SC-15
+
+**Phase 3 — Contexte scientifique**
+- `context.validate_species`
+- Valide : SC-02, SC-03
+
+---
+
+## TDD — règle absolue
+
+Pour chaque tool : écrire le test pytest **avant** l'implémentation.
+Les tests s'appuient sur les fixtures TSV de `data_exploration/examples_tsv/`.
+Les scénarios dans `TEST_SCENARIOS.md` définissent le comportement attendu.
+Chaque "Signe d'échec" = assertion Python concrète.
+
+---
+
+## Structure cible du package Python
+
+```
+polar_data_tools/
+  rag/             # chunk_docs.py, build_index.py, query.py, chunks.json
+  session.py       # set_mode, get_mode, build_summary, export
+  context.py       # get_required_fields, validate_species
+  data.py          # inspect, validate, profile_missing
+  columns.py       # describe, check_for_calculation
+  sources.py       # list_available, describe, query_ecotaxa,
+                   # query_amundsen_ctd, query_obis
+  joins.py         # plan, execute
+  calc.py          # get_method, execute
+  analysis.py      # explore
+  plot.py          # plan, generate
+  completeness.py  # evaluate, compare_obis
+  domain.py        # answer
+  deliverable.py   # build
+  schemas.py       # types partagés
+
+tests/
+  fixtures/        # symlinks ou copies depuis data_exploration/examples_tsv/
+  test_session.py
+  test_context.py
+  test_data.py
+  test_columns.py
+  test_sources.py
+  test_joins.py
+  test_calc.py
+  test_analysis.py
+  test_completeness.py
+  test_domain.py
+  test_deliverable.py
+```
+
+---
+
+## Sources de données
+
+| Source | ID | Contenu |
+|---|---|---|
+| EcoTaxa LOKI | `2331` | Copépodes lipides, taxonomie annotée |
+| EcoTaxa UVP5 | `1165` | UVP5 Amundsen 2018, objets individuels + morphométrie |
+| EcoPart | `105` | UVP5 Amundsen 2018, profils CTD + particules agrégées |
+| Amundsen CTD | `ca-cioos_ccin-12713` | CTD-Rosette officielle via ERDDAP |
+
+**Clé de jointure :** `obj_orig_id` (ex. `ips_007_899`) → `profile_id` (`ips_007`) → EcoPart
+
+---
+
+## Visualisation
 
 ```bash
-# LOKI EcoTaxa project 2331
-cd data_exploration/ecotaxa_loki_probe
-pip install -r requirements.txt
-python src/export_loki_authenticated.py
-python src/inspect_loki_export.py
-
-# EcoPart 105 ↔ EcoTaxa 1165 join
-cd data_exploration/ecopart_1165_link_probe
-python src/probe_ecopart_1165_link.py
-python src/test_minimal_join.py
-python src/build_depth_enriched_table.py
-python src/export_ecopart_105_authenticated.py
-
-# Amundsen Science CTD data
-cd data_exploration/amundsen_data_probe
-python src/search_catalog.py
-python src/inspect_resources.py
-python src/compare_ecopart_amundsen_ctd.py
+cd visualization && python3 -m http.server 8080
+# → http://localhost:8080
 ```
 
-Tests are defined in `TEST_SCENARIOS.md`. The target test structure is `polar_data_tools/tests/` (see `IMPLEMENTATION_ORDER.md`). No tests are implemented yet — Sprint 1 starts from Phase 0.
+- `data.js` — seul fichier à modifier (USE_CASES, CAPABILITIES, CONSTRAINTS, RAG_DOCS)
+- `../TOOLS_SPEC.js` — chargé par index.html, affiche les tools dans le panneau capacité
+- `notes.js` — brief de révision sparse (`ok` / `review` / `draft`)
+- `visualization/README.md` — doc complète : modifier un UC, cascade d'impact, système de notes
 
-## Architecture
+---
 
-### Data sources and their IDs
+## Données sensibles
 
-| Source | ID | Content |
-|---|---|---|
-| EcoTaxa project LOKI | `2331` | Copepod lipids, annotated taxonomy, TSV export |
-| EcoTaxa project UVP | `1165` | UVP5 Amundsen 2018, individual objects + morphometry |
-| EcoPart dataset | `105` | UVP5 Amundsen 2018, CTD profiles + aggregated particles |
-| Amundsen CTD | `ca-cioos_ccin-12713` | Full CTD-Rosette via ERDDAP |
+`.env` contient les credentials EcoTaxa/EcoPart — jamais commité.
+Scripts de régénération : `data_exploration/*/src/`.
+Seuls les TSV de `data_exploration/examples_tsv/` sont commités.
 
-### Join key
+---
 
-EcoTaxa objects join to EcoPart profiles via:
+## Structure du repo
+
 ```
-obj_orig_id (e.g. ips_007_899) → profile_id (ips_007) → EcoPart profile_id
+CLAUDE.md                    ← ce fichier
+README.md
+TOOLS_SPEC.js                ← 22 tools spécifiés
+TEST_SCENARIOS.md            ← 17 scénarios comportementaux
+IMPLEMENTATION_ORDER.md      ← 8 phases
+TOOLS_AGENT_PLAN.md          ← architecture Python
+
+docs/
+  CONTEXT.md                 ← glossaire métier
+  DATA_ACCESS_METHODS.md     ← comment les données ont été obtenues
+
+data_exploration/
+  examples_tsv/              ← fixtures TSV (safe to commit)
+  ecotaxa_loki_probe/src/    ← scripts accès EcoTaxa 2331
+  ecopart_1165_link_probe/src/ ← scripts jointure EcoPart 105 ↔ EcoTaxa 1165
+  amundsen_data_probe/src/   ← scripts CTD Amundsen ERDDAP
+
+visualization/
+  index.html
+  data.js
+  notes.js
+  README.md
+
+STAGE ULAVAL/
+  USE CASE/Use Cases — Assistant scientifique copépodes V1.md
+  Agent/Spec de L'agent/Capacites agent V1.md
+  Agent/Spec de L'agent/Contraintes agent V1.md
+  Agent/Ressources scientifiques/Document RAG/*.md  ← 5 docs RAG sources
 ```
-The next join level adds `profile_id + depth` to attach CTD/particle data per object.
-
-### Directory layout
-
-- `data_exploration/ecotaxa_loki_probe/` — LOKI export scripts and report
-- `data_exploration/ecopart_1165_link_probe/` — EcoPart/EcoTaxa join scripts and reports
-- `data_exploration/amundsen_data_probe/` — Amundsen Science CKAN/ERDDAP exploration
-- `data_exploration/examples_tsv/` — Lightweight TSV samples covering each data source (safe to commit)
-- `visualization/` — Interactive D3.js tree: User → Objective → UC → Capability → RAG doc. Run with `python3 -m http.server 8080` in `visualization/`. Data in `data.js`, tools in `../TOOLS_SPEC.js`.
-- `STAGE ULAVAL/` — Stage documents and elicitation analysis (French): 18 UCs, 14 capabilities, 29 constraints, 5 RAG docs.
-
-### Probe pattern
-
-Each probe follows the same pattern: `src/` scripts write results to `outputs/report*.md`. Scripts are standalone (no shared library yet); the plan is to stabilize them into reusable Python tools before any MCP server.
-
-### Sensitive data
-
-`.env` files hold EcoTaxa/EcoPart credentials and are never committed. Full exports are regenerated locally from scripts. Only TSV samples in `data_exploration/examples_tsv/` are committed.
