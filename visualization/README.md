@@ -188,9 +188,11 @@ Ex. un UC mobilisait `colonnes_sources.md`, maintenant il mobilise aussi `source
 ```js
 "UC-SL-XX": {
   title: "Titre court",
-  category: "science",          // "platform" | "data" | "science" | "output"
+  category: "science",              // "platform" | "data" | "science" | "output"
+  objectives: ["SLA"],              // ["SLA"] | ["SLB"] | ["SLA","SLB"] | []
   description: "Description affichée dans le panneau de détail.",
-  actors: ["Chercheur", "Étudiant gradué"],
+  actors: ACTORS.chercheur,         // ACTORS.chercheur | .chercheur_etudiant |
+                                    // .chercheur_technicien | .tous
   preconditions: "Ce qui doit être vrai avant.",
   flow: "Étapes du scénario principal.",
   postconditions: "Ce qui est vrai après.",
@@ -198,51 +200,54 @@ Ex. un UC mobilisait `colonnes_sources.md`, maintenant il mobilise aussi `source
 }
 ```
 
-### 2. `TREE_DATA` dans `data.js` (section tout en bas)
+Le champ `objectives` détermine dans quel(s) objectif(s) (SLA / SLB) le UC apparaît dans l'arbre. `TREE_DATA` est dérivé automatiquement — pas besoin de le toucher.
 
-Ajouter le nœud dans le bon objectif (`SLA` ou `SLB`) :
+### 2. `CAPABILITIES` dans `data.js` — ajouter le UC dans `usecases`
+
+Si une capacité existante sert ce UC, ajouter `"UC-SL-XX"` dans son champ `usecases` :
 
 ```js
-{
-  id: "UC-SL-XX",
-  type: "usecase",
-  children: [
-    {
-      id: "AG-V1-YY",          // capacité déclenchée
-      type: "capability",
-      children: [
-        { id: "nom_doc", type: "ragdoc" }   // doc RAG consulté
-      ]
-    }
-  ]
+"AG-V1-YY": {
+  ...
+  usecases: ["UC-SL-AA", "UC-SL-XX"],  // ← ajouter ici
+  ragDocs: ["nom_doc"]
 }
 ```
 
-Si le même UC apparaît dans SLA **et** SLB, dupliquer le nœud avec un `id` suffixé `_slb` et ajouter `ucId: "UC-SL-XX"` :
-
-```js
-{ id: "UC-SL-XX_slb", ucId: "UC-SL-XX", type: "usecase", children: [...] }
-```
-
-### 3. `CAPABILITIES` dans `data.js` (si nouvelle capacité)
+Si une **nouvelle capacité** est nécessaire :
 
 ```js
 "AG-V1-XX": {
   title: "Titre de la capacité",
   description: "Ce que l'agent fait concrètement.",
   usecases: ["UC-SL-XX"],
-  ragdocs: ["nom_doc"]
+  constraints: ["CT-AG-01"],
+  ragDocs: ["nom_doc"]
 }
 ```
 
-### 4. `RAG_DOCS` dans `data.js` (si nouveau document RAG)
+### 3. `RAG_DOCS` dans `data.js` (si nouveau document RAG)
 
 ```js
 "nom_doc": {
   title: "Titre du document",
+  shortTitle: "Titre court",
   description: "Ce que le document contient.",
-  path: "STAGE ULAVAL/Agent/Ressources scientifiques/Document RAG/fichier.md"
+  chunks: 5,
+  usage: "Quand utiliser ce doc.",
+  keyContent: "Contenu clé."
 }
+```
+
+### 4. Modifier un acteur partout
+
+Ouvrir `ACTORS` en haut de `data.js` et changer la valeur une seule fois :
+
+```js
+const ACTORS = {
+  chercheur: ["Professeur"],   // ← changer ici = effet sur tous les UCs qui l'utilisent
+  ...
+};
 ```
 
 ### 5. Fichiers specs à synchroniser manuellement

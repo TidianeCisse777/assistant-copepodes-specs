@@ -10,25 +10,21 @@
 // ----------------------------------------------------------------
 //
 //  1. USE_CASES (ce fichier)
-//     → Ajouter une entrée "UC-SL-XX": { title, category, description,
+//     → Ajouter une entrée "UC-SL-XX": { title, category, objectives,
 //       actors, preconditions, flow, postconditions, scope }
-//     → category : "platform" | "data" | "science" | "output"
+//     → category  : "platform" | "data" | "science" | "output"
+//     → objectives: ["SLA"] | ["SLB"] | ["SLA","SLB"] | []  (plateforme)
+//     → actors    : ACTORS.chercheur | ACTORS.etudiant | ACTORS.tous
 //
-//  2. TREE_DATA (ce fichier, section tout en bas)
-//     → Ajouter un nœud dans le bon objectif (SLA ou SLB) :
-//       { id: "UC-SL-XX", type: "usecase", children: [ ... ] }
-//     → Les enfants sont les capacités (AG-V1-XX), elles-mêmes
-//       parentes des docs RAG.
-//     → Si un UC est partagé entre SLA et SLB : dupliquer le nœud
-//       avec un id suffixé "_slb" et un champ ucId: "UC-SL-XX".
+//  2. CAPABILITIES (ce fichier)
+//     → Ajouter "AG-V1-XX": { title, description, usecases, constraints, ragDocs }
+//     → usecases : liste des UC-SL-XX que cette capacité sert
+//     → TREE_DATA sera dérivé automatiquement depuis ces champs
 //
-//  3. CAPABILITIES (ce fichier, si nouvelle capacité nécessaire)
-//     → Ajouter "AG-V1-XX": { title, description, usecases, ragdocs }
+//  3. Documents RAG (ce fichier, si nouveau doc nécessaire)
+//     → Ajouter dans RAG_DOCS : { title, shortTitle, description, ... }
 //
-//  4. Documents RAG (ce fichier, si nouveau doc nécessaire)
-//     → Ajouter dans RAG_DOCS : { title, description, path }
-//
-//  5. Fichiers specs (hors visualisation — sync manuelle)
+//  4. Fichiers specs (hors visualisation — sync manuelle)
 //     → Use Cases — Assistant scientifique copépodes V1.md
 //     → Validation rédactionnelle — Use Cases V1.md
 //     → Capacites agent V1.md (si nouvelle capacité)
@@ -37,27 +33,46 @@
 //     → sources_en_ligne.md (si nouvelle source activée)
 //
 // ----------------------------------------------------------------
+//  MODIFIER UN ACTEUR PARTOUT
+// ----------------------------------------------------------------
+//     → Éditer ACTORS ci-dessous — un seul endroit, effet global.
+//
+// ----------------------------------------------------------------
 //  MODIFIER UN TITRE OU UNE DESCRIPTION
 // ----------------------------------------------------------------
 //     → Éditer USE_CASES, CAPABILITIES, RAG_DOCS, CONSTRAINTS ou
 //       BUSINESS_OBJECTIVES selon le cas.
-//     → Si le titre d'un UC change : mettre à jour aussi TREE_DATA
-//       (le nœud n'a pas de titre propre — il hérite de USE_CASES
-//       via l'identifiant id / ucId).
+//     → TREE_DATA est généré automatiquement — ne pas l'éditer.
 //
-//  Version : V1.1 (mai 2026)
+//  Version : V1.2 (mai 2026)
 // ================================================================
+
+
+// ================================================================
+//  ACTEURS  — source unique, référencée dans USE_CASES
+// ================================================================
+
+const ACTORS = {
+  tous:      ["Professeur", "Étudiant"],
+  etudiant:  ["Étudiant"],
+  chercheur: ["Professeur"]
+};
+
 
 // ================================================================
 //  USE CASES  (UC-SL-00 à UC-SL-17)
+//
+//  objectives : dans quel(s) objectif(s) métier ce UC apparaît.
+//               [] = plateforme (hors objectifs)
 // ================================================================
 
 const USE_CASES = {
   "UC-SL-00": {
     title: "Inscription",
     category: "platform",
+    objectives: [],
     description: "Création d'un compte utilisateur sur la plateforme.",
-    actors: ["Chercheur", "Étudiant gradué", "Technicien"],
+    actors: ACTORS.tous,
     preconditions: "Aucune.",
     flow: "L'utilisateur accède à la page d'inscription, renseigne ses informations et crée son compte.",
     postconditions: "Compte créé, accès à la connexion disponible.",
@@ -66,8 +81,9 @@ const USE_CASES = {
   "UC-SL-01": {
     title: "Connexion",
     category: "platform",
+    objectives: [],
     description: "Authentification d'un utilisateur existant sur la plateforme.",
-    actors: ["Chercheur", "Étudiant gradué", "Technicien"],
+    actors: ACTORS.tous,
     preconditions: "Compte existant.",
     flow: "L'utilisateur saisit ses identifiants et accède à son espace de travail.",
     postconditions: "Session ouverte, accès à l'agent disponible.",
@@ -76,8 +92,9 @@ const USE_CASES = {
   "UC-SL-02": {
     title: "Sélectionner le mode de travail",
     category: "data",
+    objectives: ["SLA"],
     description: "L'utilisateur choisit entre Mode Contexte (discussion guidée, aucune exécution) et Mode Analyse (formulaire structuré, exécution validée avant lancement).",
-    actors: ["Chercheur", "Étudiant gradué"],
+    actors: ACTORS.tous,
     preconditions: "Session ouverte.",
     flow: "1. L'utilisateur sélectionne le mode via l'interface.\n2. L'agent adapte son comportement (vocabulaire, interactions, formulaires).",
     postconditions: "Mode actif, comportement de l'agent ajusté.",
@@ -86,8 +103,9 @@ const USE_CASES = {
   "UC-SL-03": {
     title: "Charger des données",
     category: "data",
+    objectives: ["SLA"],
     description: "L'utilisateur charge un ou plusieurs fichiers de données locaux (CSV, Excel, JSON, exports R/Python) dans la session de travail.",
-    actors: ["Chercheur", "Technicien"],
+    actors: ACTORS.tous,
     preconditions: "Session ouverte, fichiers disponibles localement.",
     flow: "1. L'utilisateur sélectionne les fichiers.\n2. L'agent inspecte les colonnes, types, unités, valeurs manquantes.\n3. Un rapport de validation est retourné.",
     postconditions: "Données chargées, profil de données disponible pour l'analyse.",
@@ -96,8 +114,9 @@ const USE_CASES = {
   "UC-SL-04": {
     title: "Interroger des sources en ligne",
     category: "data",
+    objectives: ["SLA", "SLB"],
     description: "L'utilisateur active une source en ligne (EcoTaxa, EcoPart, OBIS, CMEMS, Amundsen CTD via ERDDAP) et lance une requête paramétrée.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "Source identifiée, paramètres de requête définis, credentials disponibles si requis.",
     flow: "1. L'utilisateur sélectionne la source et les paramètres.\n2. L'agent valide les paramètres contre les contraintes de la source.\n3. Les données sont récupérées et chargées dans la session.",
     postconditions: "Données en ligne disponibles, profil affiché.",
@@ -106,8 +125,9 @@ const USE_CASES = {
   "UC-SL-05": {
     title: "Valider les données chargées",
     category: "data",
+    objectives: ["SLA", "SLB"],
     description: "L'agent inspecte les données chargées (colonnes, types, unités, valeurs manquantes, cohérence) et retourne un rapport de validation structuré.",
-    actors: ["Chercheur", "Technicien"],
+    actors: ACTORS.tous,
     preconditions: "Données chargées dans la session.",
     flow: "1. L'agent liste les colonnes disponibles avec leur type et unité.\n2. Il identifie les valeurs manquantes, anomalies, colonnes non reconnues.\n3. Rapport structuré avec niveau de confiance par colonne.",
     postconditions: "Rapport de validation disponible, colonnes documentées.",
@@ -116,8 +136,9 @@ const USE_CASES = {
   "UC-SL-06": {
     title: "Nettoyer les données",
     category: "data",
+    objectives: ["SLA"],
     description: "L'agent applique des transformations de nettoyage validées par l'utilisateur (filtrage, renommage, conversion d'unités) sur une copie des données.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "Données validées, méthode de nettoyage soumise et approuvée.",
     flow: "1. L'agent propose une méthode de nettoyage.\n2. L'utilisateur valide ou modifie.\n3. L'agent applique sur une copie (jamais les originaux).\n4. Rapport des transformations appliquées.",
     postconditions: "Données nettoyées disponibles, transformations documentées.",
@@ -126,8 +147,9 @@ const USE_CASES = {
   "UC-SL-07": {
     title: "Décrire le contexte scientifique",
     category: "science",
+    objectives: ["SLA"],
     description: "En Mode Contexte, l'agent guide l'utilisateur par des questions structurées pour formuler sa question scientifique, ses hypothèses et le périmètre des données à mobiliser.",
-    actors: ["Chercheur", "Étudiant gradué"],
+    actors: ACTORS.tous,
     preconditions: "Mode Contexte actif.",
     flow: "1. L'agent pose des questions guidées (espèce cible, zone géographique, variable d'intérêt, période).\n2. L'utilisateur répond et reformule.\n3. L'agent synthétise le contexte et le soumet pour validation.",
     postconditions: "Contexte scientifique validé, prêt pour le passage en Mode Analyse.",
@@ -136,8 +158,9 @@ const USE_CASES = {
   "UC-SL-08": {
     title: "Valider la reformulation du contexte",
     category: "science",
+    objectives: ["SLA"],
     description: "L'agent présente une reformulation structurée du contexte scientifique. L'utilisateur valide ou corrige avant de passer à l'analyse.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "Contexte décrit (UC-SL-07 complété).",
     flow: "1. L'agent présente : question reformulée, hypothèses, données mobilisées, limites anticipées.\n2. L'utilisateur valide ou corrige.\n3. Validation → transition vers Mode Analyse.",
     postconditions: "Contexte verrouillé, Mode Analyse activable.",
@@ -146,8 +169,9 @@ const USE_CASES = {
   "UC-SL-09": {
     title: "Générer un graphique",
     category: "science",
+    objectives: ["SLA"],
     description: "L'agent génère une visualisation scientifique à partir des données chargées, avec titre, axes, unités, source, filtres et limites explicites.",
-    actors: ["Chercheur", "Étudiant gradué"],
+    actors: ACTORS.tous,
     preconditions: "Données chargées, contexte validé, paramètres de graphique définis.",
     flow: "1. L'utilisateur spécifie le type de graphique et les variables.\n2. L'agent soumet la méthode pour validation.\n3. Le graphique est généré et affiché comme rapport statique.",
     postconditions: "Graphique disponible avec métadonnées complètes.",
@@ -156,8 +180,9 @@ const USE_CASES = {
   "UC-SL-10": {
     title: "Analyser la distribution verticale",
     category: "science",
+    objectives: ["SLA"],
     description: "L'agent analyse la distribution en profondeur des copépodes à partir des données EcoTaxa/EcoPart, avec jointure validée et concentration calculée.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "EcoTaxa 1165 + EcoPart 105 chargés, jointure profile_id validée.",
     flow: "1. L'agent effectue la jointure EcoTaxa ↔ EcoPart par profile_id et profondeur (±5m).\n2. Il calcule la concentration (ind/m³) et la biovolume.\n3. Il génère les profils verticaux par taxon/stade.\n4. Rapport statique avec sources, méthodes, limites.",
     postconditions: "Profils de distribution verticale disponibles, méthode documentée.",
@@ -166,8 +191,9 @@ const USE_CASES = {
   "UC-SL-11": {
     title: "Analyser la distribution et les lacunes spatio-temporelles",
     category: "science",
+    objectives: ["SLA", "SLB"],
     description: "L'agent analyse la répartition spatiale et temporelle des copépodes entre stations et campagnes, et identifie les zones ou périodes sans données.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "Données avec coordonnées (lat/lon) et dates disponibles.",
     flow: "1. L'agent identifie les variables spatiales et temporelles disponibles.\n2. Il construit les tables de travail.\n3. Il génère les cartes, graphiques temporels et carte des lacunes si demandé.",
     postconditions: "Cartes, séries temporelles et gaps identifiés avec métadonnées.",
@@ -176,8 +202,9 @@ const USE_CASES = {
   "UC-SL-12": {
     title: "Analyser la taxonomie, les stades et les absences",
     category: "science",
+    objectives: ["SLA", "SLB"],
     description: "L'agent analyse la composition taxonomique, la répartition par stades, et identifie les espèces attendues dans la zone mais absentes des données.",
-    actors: ["Chercheur", "Étudiant gradué"],
+    actors: ACTORS.tous,
     preconditions: "Données annotées (statut V — validé) disponibles.",
     flow: "1. L'agent filtre sur object_annotation_status = V (validé uniquement).\n2. Il analyse la composition par taxon et stade.\n3. Sur demande, il compare avec les espèces attendues via OBIS et corpus RAG.\n4. Il signale les absences et les limites d'identification.",
     postconditions: "Tableaux de composition taxonomique, absences documentées avec niveau de confiance.",
@@ -186,8 +213,9 @@ const USE_CASES = {
   "UC-SL-13": {
     title: "Analyser les variables environnementales CTD",
     category: "science",
+    objectives: ["SLA"],
     description: "L'agent analyse les variables CTD (température, salinité, oxygène, fluorescence, nitrate) et les associe aux données biologiques.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "CTD Amundsen (ERDDAP) ou EcoPart disponible, jointure par proximité validée.",
     flow: "1. L'agent récupère/charge les données CTD.\n2. Il effectue la jointure par proximité (date/heure/lat/lon/profondeur).\n3. Il calcule les profils et croise avec les données biologiques.",
     postconditions: "Profils CTD disponibles, association biologie-environnement documentée.",
@@ -196,8 +224,9 @@ const USE_CASES = {
   "UC-SL-14": {
     title: "Évaluer la complétude des données et synthétiser les lacunes",
     category: "science",
+    objectives: ["SLB"],
     description: "L'agent évalue le taux de remplissage des colonnes clés, identifie les variables critiques inutilisables, compare avec OBIS si activé, et produit un rapport de lacunes exportable.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "Données chargées, contexte validé, mode Analyse actif.",
     flow: "1. L'agent évalue le taux de remplissage par colonne clé.\n2. Il identifie les variables critiques inutilisables et explique les analyses bloquées.\n3. Si OBIS activé et zone définie, il compare la couverture locale aux données de référence.\n4. Il produit un rapport distinguant disponible / manquant / inutilisable.",
     postconditions: "Rapport de lacunes structuré, exportable pour demande de subvention.",
@@ -206,8 +235,9 @@ const USE_CASES = {
   "UC-SL-15": {
     title: "Calculer une variable dérivée",
     category: "science",
+    objectives: ["SLA"],
     description: "L'agent calcule une variable dérivée (concentration, biomasse, indice de plénitude lipidique, longueur prosome) avec validation de la méthode avant exécution.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "Colonnes source disponibles, méthode de calcul identifiée.",
     flow: "1. L'utilisateur spécifie la variable à calculer.\n2. L'agent vérifie la disponibilité des colonnes requises.\n3. Il soumet la méthode pour validation.\n4. Il exécute et retourne le résultat documenté.",
     postconditions: "Variable calculée, formule et colonnes source documentées.",
@@ -216,8 +246,9 @@ const USE_CASES = {
   "UC-SL-16": {
     title: "Exporter l'analyse de session",
     category: "output",
+    objectives: ["SLB"],
     description: "L'agent compile un résumé complet de la session : contexte, sources mobilisées, méthodes appliquées, résultats, limites.",
-    actors: ["Chercheur", "Étudiant gradué"],
+    actors: ACTORS.tous,
     preconditions: "Session avec au moins une analyse complétée.",
     flow: "1. L'agent compile le résumé de session.\n2. Il structure : contexte → sources → méthodes → résultats → limites.\n3. L'utilisateur valide et exporte.",
     postconditions: "Résumé exporté, session documentée.",
@@ -226,8 +257,9 @@ const USE_CASES = {
   "UC-SL-17": {
     title: "Préparer un livrable scientifique",
     category: "output",
+    objectives: ["SLA", "SLB"],
     description: "L'agent génère un livrable structuré (contexte, résultats, figures, méthodes, citations, limites) pour révision humaine ou demande de subvention.",
-    actors: ["Chercheur"],
+    actors: ACTORS.chercheur,
     preconditions: "Analyses complétées, contexte validé.",
     flow: "1. L'agent sélectionne les analyses à inclure.\n2. Il génère : contexte, résultats par use case, figures, méthodes, citations, limites.\n3. Il signale explicitement tout résultat manquant ou non concluant.",
     postconditions: "Livrable structuré disponible pour révision humaine.",
@@ -235,96 +267,115 @@ const USE_CASES = {
   }
 };
 
+
 // ================================================================
 //  CAPACITÉS AGENT  (AG-V1-01 à AG-V1-14)
+//
+//  usecases : liste des UC-SL-XX que cette capacité sert.
+//             TREE_DATA est dérivé automatiquement depuis ce champ.
 // ================================================================
 
 const CAPABILITIES = {
   "AG-V1-01": {
     title: "Comprendre les sources disponibles",
     description: "L'agent distingue les sources activées (EcoTaxa, EcoPart, Amundsen CTD, OBIS, CMEMS, fichiers lab) et explique leurs contenus, formats, clés de jointure et limitations.",
+    usecases: ["UC-SL-04", "UC-SL-14"],
     constraints: ["CT-AG-01", "CT-AG-08"],
     ragDocs: ["colonnes_sources", "sources_en_ligne"]
   },
   "AG-V1-02": {
     title: "Aider à formuler le contexte scientifique",
     description: "En Mode Contexte, l'agent guide l'utilisateur par des questions structurées pour préciser l'espèce cible, la zone géographique, la variable d'intérêt, la période et les hypothèses.",
+    usecases: ["UC-SL-07", "UC-SL-08"],
     constraints: ["CT-AG-04", "CT-AG-25", "CT-AG-26"],
     ragDocs: ["copepodes_domaine"]
   },
   "AG-V1-03": {
     title: "Valider les données chargées",
     description: "L'agent inspecte les données : liste des colonnes, types, unités, valeurs manquantes, cohérence. Retourne un rapport structuré avec niveau de confiance par colonne.",
+    usecases: ["UC-SL-03", "UC-SL-05", "UC-SL-06"],
     constraints: ["CT-AG-03", "CT-AG-05", "CT-AG-10"],
     ragDocs: ["colonnes_sources", "colonnes_instruments"]
   },
   "AG-V1-04": {
     title: "Interroger les sources activées",
     description: "L'agent exécute des requêtes sur les sources en ligne avec les paramètres validés par l'utilisateur, en respectant les limitations (volume, credentials, scope V1).",
+    usecases: ["UC-SL-04", "UC-SL-13"],
     constraints: ["CT-AG-08", "CT-AG-11", "CT-AG-12"],
     ragDocs: ["sources_en_ligne"]
   },
   "AG-V1-05": {
     title: "Expliquer les colonnes et unités",
     description: "L'agent fournit la définition, l'unité, le niveau de confiance et les distinctions critiques de toute colonne demandée, avec citation de la source.",
+    usecases: ["UC-SL-05", "UC-SL-06", "UC-SL-12", "UC-SL-15"],
     constraints: ["CT-AG-01", "CT-AG-03", "CT-AG-27"],
     ragDocs: ["colonnes_sources", "colonnes_instruments"]
   },
   "AG-V1-06": {
     title: "Construire des tables de travail",
     description: "L'agent joint plusieurs sources en documentant les clés de jointure utilisées, les colonnes de sortie, la stratégie et les pertes de données.",
+    usecases: ["UC-SL-09", "UC-SL-10", "UC-SL-11", "UC-SL-13"],
     constraints: ["CT-AG-05", "CT-AG-07", "CT-AG-10"],
     ragDocs: ["colonnes_sources"]
   },
   "AG-V1-07": {
     title: "Calculer des variables dérivées",
     description: "L'agent calcule des métriques dérivées (concentration ind/m³, biomasse mg C/m², indice lipidique, longueur prosome) avec validation de la méthode avant exécution et traçabilité complète.",
+    usecases: ["UC-SL-10", "UC-SL-15"],
     constraints: ["CT-AG-05", "CT-AG-06", "CT-AG-20"],
     ragDocs: ["methodes_calcul"]
   },
   "AG-V1-08": {
     title: "Générer des graphiques scientifiques",
     description: "L'agent produit des graphiques avec titre, axes titrés, unités, source de données, filtres appliqués et limites explicites. Résultat affiché comme rapport statique.",
+    usecases: ["UC-SL-09"],
     constraints: ["CT-AG-14", "CT-AG-13", "CT-AG-01"],
     ragDocs: ["methodes_calcul", "colonnes_sources"]
   },
   "AG-V1-09": {
     title: "Produire une analyse exploratoire",
     description: "L'agent exécute des analyses (distribution, composition, corrélation) en distinguant explicitement observation, interprétation et hypothèse dans le rapport.",
+    usecases: ["UC-SL-10", "UC-SL-11", "UC-SL-12", "UC-SL-13"],
     constraints: ["CT-AG-13", "CT-AG-19", "CT-AG-24"],
     ragDocs: ["colonnes_sources", "methodes_calcul"]
   },
   "AG-V1-10": {
     title: "Évaluer la complétude et synthétiser les lacunes",
     description: "L'agent évalue le taux de remplissage des colonnes clés, identifie les variables critiques inutilisables, compare avec OBIS si activé, et produit un rapport de lacunes structuré exportable.",
+    usecases: ["UC-SL-14"],
     constraints: ["CT-AG-01", "CT-AG-03", "CT-AG-29"],
     ragDocs: ["sources_en_ligne", "copepodes_domaine"]
   },
   "AG-V1-11": {
     title: "Répondre aux questions de domaine copépodes",
     description: "L'agent répond aux questions biologiques (espèces, stades, lipides, diapause, rôle écologique) en s'appuyant sur le corpus RAG et en signalant l'incertitude.",
+    usecases: ["UC-SL-12"],
     constraints: ["CT-AG-19", "CT-AG-27", "CT-AG-02"],
     ragDocs: ["copepodes_domaine"]
   },
   "AG-V1-12": {
     title: "Exporter les résumés de session",
     description: "L'agent compile un résumé structuré de la session (contexte, sources, méthodes, résultats, limites) sans narration excessive.",
+    usecases: ["UC-SL-16"],
     constraints: ["CT-AG-20", "CT-AG-01", "CT-AG-18"],
     ragDocs: []
   },
   "AG-V1-13": {
     title: "Préparer les livrables scientifiques",
     description: "L'agent génère un livrable structuré (contexte, résultats, figures, méthodes, citations, limites) pour soutenir la révision humaine et les demandes de subvention.",
+    usecases: ["UC-SL-17"],
     constraints: ["CT-AG-15", "CT-AG-28", "CT-AG-01", "CT-AG-20"],
     ragDocs: ["copepodes_domaine", "methodes_calcul", "colonnes_sources"]
   },
   "AG-V1-14": {
     title: "Interface adaptée au mode de travail",
     description: "L'agent adapte son interface et son comportement selon le mode actif : discussion guidée en Mode Contexte, formulaire structuré → rapport statique en Mode Analyse.",
+    usecases: ["UC-SL-02"],
     constraints: ["CT-AG-23", "CT-AG-24", "CT-AG-26"],
     ragDocs: []
   }
 };
+
 
 // ================================================================
 //  DOCUMENTS RAG  (5 fichiers)
@@ -353,7 +404,7 @@ const RAG_DOCS = {
     description: "Connaissances biologiques : espèces (C. hyperboreus, C. glacialis, C. finmarchicus, Metridia, Oithona, Pseudocalanus, Temora, Eurytemora), stades de vie (N1-N6, C1-C5, AF/AM), diapause, métabolisme lipidique, groupes fonctionnels, rôle dans la pompe à carbone.",
     chunks: 13,
     usage: "Quand l'utilisateur demande « quel est le rôle de ce copépode ? », « que signifient les lipides ? », « comment contribuent-ils à l'export de carbone ? »",
-    keyContent: "⚠ Problème critique : C. glacialis vs C. finmarchicus morphologiquement identiques dans les zones de chevauchement — marqueurs moléculaires requis pour identification fiable."
+    keyContent: "Problème critique : C. glacialis vs C. finmarchicus morphologiquement identiques dans les zones de chevauchement — marqueurs moléculaires requis pour identification fiable."
   },
   "methodes_calcul": {
     title: "methodes_calcul.md",
@@ -372,6 +423,7 @@ const RAG_DOCS = {
     keyContent: "EcoTaxa/EcoPart : API avec token. ERDDAP Amundsen : accès public. OBIS : API publique. CMEMS : compte gratuit requis. Projets EcoTaxa : 1165 (UVP5 Amundsen), 2331 (LOKI)"
   }
 };
+
 
 // ================================================================
 //  CONTRAINTES AGENT  (CT-AG-01 à CT-AG-29)
@@ -409,6 +461,7 @@ const CONSTRAINTS = [
   { id: "CT-AG-29", title: "Contextualiser les absences lors des comparaisons de couverture", description: "Lors d'une comparaison locale vs OBIS ou corpus RAG, distinguer explicitement : absence confirmée, absence par biais d'échantillonnage, et absence incertaine. Signaler les biais systématiques arctiques (données hivernales, C. glacialis vs C. finmarchicus). Concerne UC-SL-12 ext. 3b, UC-SL-14, AG-V1-10, AG-V1-11." }
 ];
 
+
 // ================================================================
 //  OBJECTIFS MÉTIER  (Sea Level A & B)
 // ================================================================
@@ -417,18 +470,19 @@ const BUSINESS_OBJECTIVES = {
   "SLA": {
     code: "Sea Level A",
     title: "Explorer et analyser une question scientifique",
-    description: "Le chercheur ou l'étudiant veut explorer une question scientifique sur les copépodes sans être bloqué par le code, les jointures ou la manipulation des données.",
+    description: "Le professeur ou l'étudiant veut explorer une question scientifique sur les copépodes sans être bloqué par le code, les jointures ou la manipulation des données.",
     expected: "L'assistant aide à formuler le contexte, valide les données disponibles, produit des analyses standards réalistes et explique les résultats avec leurs limites.",
     success: "L'utilisateur obtient une analyse ou une visualisation exploitable, avec les sources citées et les limites scientifiques explicites."
   },
   "SLB": {
     code: "Sea Level B",
     title: "Évaluer la couverture et les lacunes des données",
-    description: "Le chercheur veut comprendre ce que les données couvrent réellement et où se trouvent les manques.",
+    description: "Le professeur veut comprendre ce que les données couvrent réellement et où se trouvent les manques.",
     expected: "L'assistant distingue les zones, périodes, espèces, stades, campagnes ou variables bien représentées de celles qui sont absentes ou insuffisamment couvertes.",
     success: "L'utilisateur obtient une synthèse claire de la couverture et des lacunes, utilisable pour orienter une exploration scientifique ou soutenir une demande de subvention."
   }
 };
+
 
 // ================================================================
 //  GROUPES CATÉGORIES
@@ -441,233 +495,131 @@ const CATEGORY_GROUPS = {
   "output":   { title: "Production de livrables", description: "Export et formalisation des résultats de session." }
 };
 
+
 // ================================================================
-//  STRUCTURE DE L'ARBRE
-//  User → Objectif métier (SLA / SLB / Plateforme)
-//       → Groupe catégorie (Données / Analyse / Livrable)
-//       → Use Case → Capacité Agent → Document RAG
+//  CONSTRUCTION DE L'ARBRE  (dérivé automatiquement)
 //
-//  Les UC partagés entre SLA et SLB ont un suffixe _slb dans leur
-//  id de nœud et un champ ucId qui pointe vers USE_CASES.
+//  Ne pas modifier cette fonction. Pour changer la structure :
+//  → Modifier objectives dans USE_CASES
+//  → Modifier usecases dans CAPABILITIES
 // ================================================================
 
-const TREE_DATA = {
-  id: "user", name: "Utilisateur", type: "user",
-  children: [
-    // ── Plateforme (hors objectifs sea level) ──
-    {
-      id: "grp-platform", type: "catgroup", category: "platform",
-      children: [
-        { id: "UC-SL-00", type: "usecase", category: "platform", children: [] },
-        { id: "UC-SL-01", type: "usecase", category: "platform", children: [] }
-      ]
-    },
+function buildTree() {
+  const CAT_ORDER = ["data", "science", "output"];
 
-    // ── Sea Level A ──
-    {
-      id: "SLA", type: "objective", objId: "SLA",
-      children: [
-        {
-          id: "SLA-data", type: "catgroup", category: "data",
-          children: [
-            { id: "UC-SL-02", type: "usecase", category: "data", children: [
-              { id: "cap14_uc02", type: "capability", capId: "AG-V1-14", children: [] }
-            ]},
-            { id: "UC-SL-03", type: "usecase", category: "data", children: [
-              { id: "cap03_uc03", type: "capability", capId: "AG-V1-03", children: [
-                { id: "r_csrc_uc03", type: "ragdoc", ragId: "colonnes_sources",     children: [] },
-                { id: "r_cins_uc03", type: "ragdoc", ragId: "colonnes_instruments", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-04", type: "usecase", category: "data", children: [
-              { id: "cap01_uc04", type: "capability", capId: "AG-V1-01", children: [
-                { id: "r_src_uc04a", type: "ragdoc", ragId: "sources_en_ligne", children: [] }
-              ]},
-              { id: "cap04_uc04", type: "capability", capId: "AG-V1-04", children: [
-                { id: "r_src_uc04b", type: "ragdoc", ragId: "sources_en_ligne", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-05", type: "usecase", category: "data", children: [
-              { id: "cap03_uc05", type: "capability", capId: "AG-V1-03", children: [
-                { id: "r_csrc_uc05a", type: "ragdoc", ragId: "colonnes_sources",     children: [] },
-                { id: "r_cins_uc05",  type: "ragdoc", ragId: "colonnes_instruments", children: [] }
-              ]},
-              { id: "cap05_uc05", type: "capability", capId: "AG-V1-05", children: [
-                { id: "r_csrc_uc05b", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-06", type: "usecase", category: "data", children: [
-              { id: "cap03_uc06", type: "capability", capId: "AG-V1-03", children: [
-                { id: "r_csrc_uc06", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]},
-              { id: "cap05_uc06", type: "capability", capId: "AG-V1-05", children: [
-                { id: "r_cins_uc06", type: "ragdoc", ragId: "colonnes_instruments", children: [] }
-              ]}
-            ]}
-          ]
-        },
-        {
-          id: "SLA-science", type: "catgroup", category: "science",
-          children: [
-            { id: "UC-SL-07", type: "usecase", category: "science", children: [
-              { id: "cap02_uc07", type: "capability", capId: "AG-V1-02", children: [
-                { id: "r_cop_uc07", type: "ragdoc", ragId: "copepodes_domaine", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-08", type: "usecase", category: "science", children: [
-              { id: "cap02_uc08", type: "capability", capId: "AG-V1-02", children: [
-                { id: "r_cop_uc08", type: "ragdoc", ragId: "copepodes_domaine", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-09", type: "usecase", category: "science", children: [
-              { id: "cap08_uc09", type: "capability", capId: "AG-V1-08", children: [
-                { id: "r_meth_uc09", type: "ragdoc", ragId: "methodes_calcul",  children: [] }
-              ]},
-              { id: "cap06_uc09", type: "capability", capId: "AG-V1-06", children: [
-                { id: "r_csrc_uc09", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-10", type: "usecase", category: "science", children: [
-              { id: "cap09_uc10", type: "capability", capId: "AG-V1-09", children: [
-                { id: "r_csrc_uc10a", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]},
-              { id: "cap06_uc10", type: "capability", capId: "AG-V1-06", children: [
-                { id: "r_csrc_uc10b", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]},
-              { id: "cap07_uc10", type: "capability", capId: "AG-V1-07", children: [
-                { id: "r_meth_uc10",  type: "ragdoc", ragId: "methodes_calcul",  children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-11", type: "usecase", category: "science", children: [
-              { id: "cap09_uc11", type: "capability", capId: "AG-V1-09", children: [
-                { id: "r_csrc_uc11", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]},
-              { id: "cap06_uc11", type: "capability", capId: "AG-V1-06", children: [
-                { id: "r_src_uc11",  type: "ragdoc", ragId: "sources_en_ligne", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-12", type: "usecase", category: "science", children: [
-              { id: "cap09_uc12", type: "capability", capId: "AG-V1-09", children: [
-                { id: "r_csrc_uc12", type: "ragdoc", ragId: "colonnes_sources",  children: [] }
-              ]},
-              { id: "cap11_uc12", type: "capability", capId: "AG-V1-11", children: [
-                { id: "r_cop_uc12",  type: "ragdoc", ragId: "copepodes_domaine", children: [] }
-              ]},
-              { id: "cap05_uc12", type: "capability", capId: "AG-V1-05", children: [
-                { id: "r_cins_uc12", type: "ragdoc", ragId: "colonnes_instruments", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-13", type: "usecase", category: "science", children: [
-              { id: "cap09_uc13", type: "capability", capId: "AG-V1-09", children: [
-                { id: "r_meth_uc13", type: "ragdoc", ragId: "methodes_calcul",  children: [] }
-              ]},
-              { id: "cap06_uc13", type: "capability", capId: "AG-V1-06", children: [
-                { id: "r_csrc_uc13", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]},
-              { id: "cap04_uc13", type: "capability", capId: "AG-V1-04", children: [
-                { id: "r_src_uc13",  type: "ragdoc", ragId: "sources_en_ligne", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-15", type: "usecase", category: "science", children: [
-              { id: "cap07_uc15", type: "capability", capId: "AG-V1-07", children: [
-                { id: "r_meth_uc15",  type: "ragdoc", ragId: "methodes_calcul",      children: [] }
-              ]},
-              { id: "cap05_uc15", type: "capability", capId: "AG-V1-05", children: [
-                { id: "r_csrc_uc15",  type: "ragdoc", ragId: "colonnes_sources",     children: [] },
-                { id: "r_cins_uc15",  type: "ragdoc", ragId: "colonnes_instruments", children: [] }
-              ]}
-            ]}
-          ]
-        },
-        {
-          id: "SLA-output", type: "catgroup", category: "output",
-          children: [
-            { id: "UC-SL-17", type: "usecase", category: "output", children: [
-              { id: "cap13_uc17", type: "capability", capId: "AG-V1-13", children: [
-                { id: "r_cop_uc17",  type: "ragdoc", ragId: "copepodes_domaine", children: [] },
-                { id: "r_meth_uc17", type: "ragdoc", ragId: "methodes_calcul",   children: [] },
-                { id: "r_csrc_uc17", type: "ragdoc", ragId: "colonnes_sources",  children: [] }
-              ]}
-            ]}
-          ]
-        }
-      ]
-    },
+  // Index inverse : ucId → [capId, ...]  (dans l'ordre de déclaration de CAPABILITIES)
+  const ucToCaps = {};
+  Object.entries(CAPABILITIES).forEach(([capId, cap]) => {
+    (cap.usecases || []).forEach(ucId => {
+      if (!ucToCaps[ucId]) ucToCaps[ucId] = [];
+      ucToCaps[ucId].push(capId);
+    });
+  });
 
-    // ── Sea Level B ──
-    {
-      id: "SLB", type: "objective", objId: "SLB",
-      children: [
-        {
-          id: "SLB-data", type: "catgroup", category: "data",
-          children: [
-            { id: "UC-SL-04_slb", ucId: "UC-SL-04", type: "usecase", category: "data", children: [
-              { id: "cap01_uc04b", type: "capability", capId: "AG-V1-01", children: [
-                { id: "r_src_uc04c", type: "ragdoc", ragId: "sources_en_ligne", children: [] }
-              ]},
-              { id: "cap04_uc04b", type: "capability", capId: "AG-V1-04", children: [
-                { id: "r_src_uc04d", type: "ragdoc", ragId: "sources_en_ligne", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-05_slb", ucId: "UC-SL-05", type: "usecase", category: "data", children: [
-              { id: "cap03_uc05b", type: "capability", capId: "AG-V1-03", children: [
-                { id: "r_csrc_uc05c", type: "ragdoc", ragId: "colonnes_sources",     children: [] },
-                { id: "r_cins_uc05b", type: "ragdoc", ragId: "colonnes_instruments", children: [] }
-              ]},
-              { id: "cap05_uc05b", type: "capability", capId: "AG-V1-05", children: [
-                { id: "r_csrc_uc05d", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]}
-            ]}
-          ]
-        },
-        {
-          id: "SLB-science", type: "catgroup", category: "science",
-          children: [
-            { id: "UC-SL-11_slb", ucId: "UC-SL-11", type: "usecase", category: "science", children: [
-              { id: "cap09_uc11b", type: "capability", capId: "AG-V1-09", children: [
-                { id: "r_csrc_uc11b", type: "ragdoc", ragId: "colonnes_sources", children: [] }
-              ]},
-              { id: "cap06_uc11b", type: "capability", capId: "AG-V1-06", children: [
-                { id: "r_src_uc11b",  type: "ragdoc", ragId: "sources_en_ligne", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-12_slb", ucId: "UC-SL-12", type: "usecase", category: "science", children: [
-              { id: "cap09_uc12b", type: "capability", capId: "AG-V1-09", children: [
-                { id: "r_csrc_uc12b", type: "ragdoc", ragId: "colonnes_sources",  children: [] }
-              ]},
-              { id: "cap11_uc12b", type: "capability", capId: "AG-V1-11", children: [
-                { id: "r_cop_uc12b",  type: "ragdoc", ragId: "copepodes_domaine", children: [] }
-              ]},
-              { id: "cap05_uc12b", type: "capability", capId: "AG-V1-05", children: [
-                { id: "r_cins_uc12b", type: "ragdoc", ragId: "colonnes_instruments", children: [] }
-              ]}
-            ]},
-            { id: "UC-SL-14", type: "usecase", category: "science", children: [
-              { id: "cap10_uc14", type: "capability", capId: "AG-V1-10", children: [
-                { id: "r_src_uc14",  type: "ragdoc", ragId: "sources_en_ligne",  children: [] }
-              ]},
-              { id: "cap01_uc14", type: "capability", capId: "AG-V1-01", children: [
-                { id: "r_cop_uc14",  type: "ragdoc", ragId: "copepodes_domaine", children: [] }
-              ]}
-            ]}
-          ]
-        },
-        {
-          id: "SLB-output", type: "catgroup", category: "output",
-          children: [
-            { id: "UC-SL-16", type: "usecase", category: "output", children: [
-              { id: "cap12_uc16", type: "capability", capId: "AG-V1-12", children: [] }
-            ]},
-            { id: "UC-SL-17_slb", ucId: "UC-SL-17", type: "usecase", category: "output", children: [
-              { id: "cap13_uc17b", type: "capability", capId: "AG-V1-13", children: [
-                { id: "r_cop_uc17b",  type: "ragdoc", ragId: "copepodes_domaine", children: [] },
-                { id: "r_meth_uc17b", type: "ragdoc", ragId: "methodes_calcul",   children: [] },
-                { id: "r_csrc_uc17b", type: "ragdoc", ragId: "colonnes_sources",  children: [] }
-              ]}
-            ]}
-          ]
-        }
-      ]
-    }
-  ]
-};
+  function buildUcNode(ucId, prefix) {
+    const uc = USE_CASES[ucId];
+    return {
+      id: `${prefix}-${ucId}`,
+      ucId,
+      type: "usecase",
+      category: uc.category,
+      children: (ucToCaps[ucId] || []).map(capId => {
+        const cap = CAPABILITIES[capId];
+        return {
+          id: `${prefix}-${ucId}-${capId}`,
+          capId,
+          type: "capability",
+          children: (cap.ragDocs || []).map(ragId => ({
+            id: `${prefix}-${ucId}-${capId}-${ragId}`,
+            ragId,
+            type: "ragdoc",
+            children: []
+          }))
+        };
+      })
+    };
+  }
+
+  function buildObjective(objId) {
+    const groups = {};
+    Object.keys(USE_CASES).forEach(ucId => {
+      const uc = USE_CASES[ucId];
+      if (!(uc.objectives || []).includes(objId)) return;
+      if (!groups[uc.category]) groups[uc.category] = [];
+      groups[uc.category].push(ucId);
+    });
+    return {
+      id: objId, type: "objective", objId,
+      children: CAT_ORDER.filter(cat => groups[cat]).map(cat => ({
+        id: `${objId}-${cat}`, type: "catgroup", category: cat,
+        children: groups[cat].map(ucId => buildUcNode(ucId, objId))
+      }))
+    };
+  }
+
+  const platformUCs = Object.keys(USE_CASES).filter(
+    ucId => USE_CASES[ucId].category === "platform"
+  );
+
+  return {
+    id: "user", name: "Utilisateur", type: "user",
+    children: [
+      {
+        id: "grp-platform", type: "catgroup", category: "platform",
+        children: platformUCs.map(ucId => buildUcNode(ucId, "plat"))
+      },
+      buildObjective("SLA"),
+      buildObjective("SLB")
+    ]
+  };
+}
+
+
+// ================================================================
+//  VALIDATION DES RÉFÉRENCES
+//
+//  Vérifie que tous les identifiants croisés sont cohérents.
+//  Les erreurs s'affichent dans la console du navigateur.
+// ================================================================
+
+function validateRefs() {
+  const errors = [];
+  const constraintIds = new Set(CONSTRAINTS.map(c => c.id));
+  const validObjectives = new Set(["SLA", "SLB"]);
+
+  Object.entries(CAPABILITIES).forEach(([capId, cap]) => {
+    (cap.usecases || []).forEach(ucId => {
+      if (!USE_CASES[ucId])
+        errors.push(`${capId}.usecases → UC inconnu : ${ucId}`);
+    });
+    (cap.ragDocs || []).forEach(ragId => {
+      if (!RAG_DOCS[ragId])
+        errors.push(`${capId}.ragDocs → doc RAG inconnu : ${ragId}`);
+    });
+    (cap.constraints || []).forEach(ctId => {
+      if (!constraintIds.has(ctId))
+        errors.push(`${capId}.constraints → contrainte inconnue : ${ctId}`);
+    });
+  });
+
+  Object.entries(USE_CASES).forEach(([ucId, uc]) => {
+    (uc.objectives || []).forEach(obj => {
+      if (!validObjectives.has(obj))
+        errors.push(`${ucId}.objectives → objectif invalide : ${obj}`);
+    });
+  });
+
+  if (errors.length > 0) {
+    console.error("[data.js] Références invalides :", errors);
+  }
+  return errors;
+}
+
+
+// ================================================================
+//  TREE_DATA — généré depuis USE_CASES et CAPABILITIES
+//  (lecture seule — ne pas modifier manuellement)
+// ================================================================
+
+const TREE_DATA = buildTree();
+validateRefs();
