@@ -389,6 +389,13 @@ function update(source) {
 
 update(root);
 
+// Centre la vue sur le nœud racine au chargement
+setTimeout(() => {
+  const container = document.getElementById("tree-container");
+  const h = container.clientHeight;
+  svg.call(zoom.transform, d3.zoomIdentity.translate(80, h / 2 - root.x));
+}, 60);
+
 // ——— Detail Panel ———
 function showDetail(raw) {
   const panel = document.getElementById("detail-panel");

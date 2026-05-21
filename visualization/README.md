@@ -66,6 +66,121 @@ Sauvegarder et recharger le navigateur.
 
 ---
 
+## Modifier un use case existant — checklist d'impact
+
+### Principe de cascade
+
+Un UC n'existe pas seul. Il est lié à des **capacités agent**, qui sont elles-mêmes liées à des **documents RAG** et à des **contraintes**. Modifier un UC peut donc déclencher une cascade sur plusieurs niveaux :
+
+```
+UC change
+  → les capacités liées changent-elles de périmètre ?
+      → les docs RAG consultés changent-ils ?
+      → une nouvelle contrainte est-elle nécessaire ?
+          → les fichiers de validation sont-ils à jour ?
+```
+
+Exemple réel : UC-SL-14 a été réécrit → AG-V1-10 a été réécrit → CT-AG-29 a été créée → sources_en_ligne.md a été enrichi → 7 fichiers touchés au total.
+
+**Règle : toujours commencer par les specs `.md`, finir par `data.js`.**  
+Si tu fais l'inverse (data.js en premier), la visualisation est à jour mais les specs de référence ne le sont pas — incohérence silencieuse.
+
+### Ordre recommandé — étape par étape
+
+**Étape 1 — Spec Use Case**
+Fichier : `Use Cases — Assistant scientifique copépodes V1.md`
+- Modifier le titre, le scénario, les extensions ou les critères d'acceptation du UC
+- Vérifier que chaque extension a au moins un critère d'acceptation
+
+**Étape 2 — Validation Use Case**
+Fichier : `Validation rédactionnelle — Use Cases V1.md`
+- Mettre à jour la ligne du UC dans le tableau de statut (statut → "OK (V1.x)")
+- Ajouter une note dans la section "Révision" si le changement est substantiel
+
+**Étape 3 — Spec Capacités agent** *(si le UC touche une capacité)*
+Fichier : `Capacites agent V1.md`
+- Vérifier la section "Use cases liés" de chaque capacité impactée
+- Si une capacité change de périmètre : réécrire son scénario principal
+- Si une nouvelle capacité est nécessaire : l'ajouter (AG-V1-XX)
+
+**Étape 4 — Validation Capacités agent** *(si étape 3 faite)*
+Fichier : `Validation rédactionnelle — Capacités agent V1.md`
+- Mettre à jour la ligne de chaque capacité modifiée dans le tableau
+- Ajouter une note dans la section "Révision" si la capacité a été réécrite
+
+**Étape 5 — Contraintes** *(si le changement impose une nouvelle règle de comportement)*
+Fichier : `Contraintes agent V1.md`
+- Ajouter CT-AG-XX à la suite des contraintes existantes
+- Préciser : identifiant, titre, description, use cases concernés
+
+**Étape 6 — Sources en ligne** *(si une nouvelle source de données est mobilisée)*
+Fichier : `sources_en_ligne.md`
+- Ajouter la ligne dans le tableau "Quelle source pour quelle question"
+- Ajouter la section détaillée de la source (accès, paramètres, limites)
+
+**Étape 7 — Visualisation** *(toujours en dernier)*
+Fichier : `data.js`
+- Mettre à jour `USE_CASES`, `CAPABILITIES`, `CONSTRAINTS`, `TREE_DATA` selon les changements
+- La visualisation reflète les specs — jamais l'inverse
+
+---
+
+### Par type de modification — ce qui est impacté :
+
+### Titre du UC
+
+- `USE_CASES["UC-SL-XX"].title` dans `data.js`
+- `Use Cases — Assistant scientifique copépodes V1.md` (titre dans l'entête du UC)
+- `Validation rédactionnelle — Use Cases V1.md` (ligne dans le tableau de statut)
+
+### Description / scénario principal / postconditions
+
+- `USE_CASES["UC-SL-XX"].description` et `.flow` dans `data.js`
+- `Use Cases — Assistant scientifique copépodes V1.md` (corps du UC)
+- Aucun autre fichier impacté si les capacités liées ne changent pas.
+
+### Ajout ou suppression d'une extension au UC
+
+Une extension = nouvelle branche de scénario (ex. ext. 4a, ext. 3b).
+
+- `Use Cases — Assistant scientifique copépodes V1.md` (section Extensions)
+- `Validation rédactionnelle — Use Cases V1.md` (vérifier que les critères d'acceptation couvrent l'extension)
+- Si l'extension mobilise une capacité agent : vérifier `Capacites agent V1.md` (section Use cases liés de la capacité concernée)
+- Si l'extension mobilise une nouvelle source : `sources_en_ligne.md`
+- Si l'extension impose une nouvelle règle de comportement : `Contraintes agent V1.md` + `CONSTRAINTS` dans `data.js`
+
+### Changement de capacité(s) liée(s) au UC
+
+Ex. on retire AG-V1-10 et on ajoute AG-V1-07 pour un UC.
+
+- `TREE_DATA` dans `data.js` : modifier les nœuds enfants du UC concerné
+- `CAPABILITIES["AG-V1-XX"].usecases` dans `data.js` pour chaque capacité touchée
+- `Capacites agent V1.md` (section Use cases liés de chaque capacité touchée)
+- `Validation rédactionnelle — Capacités agent V1.md` (tableau de statut)
+
+### Changement de catégorie du UC (platform / data / science / output)
+
+- `USE_CASES["UC-SL-XX"].category` dans `data.js` (change la couleur du nœud)
+- Vérifier que le UC est bien rattaché au bon objectif (SLA / SLB) dans `TREE_DATA`
+
+### Changement de document RAG consulté
+
+Ex. un UC mobilisait `colonnes_sources.md`, maintenant il mobilise aussi `sources_en_ligne.md`.
+
+- `TREE_DATA` dans `data.js` : modifier les nœuds RAG enfants de la capacité concernée
+- `CAPABILITIES["AG-V1-XX"].ragdocs` dans `data.js`
+- `Capacites agent V1.md` (section Documents RAG de la capacité)
+
+### Suppression d'un UC
+
+- Retirer l'entrée de `USE_CASES` dans `data.js`
+- Retirer le nœud de `TREE_DATA` dans `data.js`
+- Vérifier dans `CAPABILITIES` que aucune capacité ne référence encore ce UC
+- Mettre à jour les 2 fichiers de validation (Use Cases + Capacités)
+- Mettre à jour `Contraintes agent V1.md` si des contraintes référençaient ce UC
+
+---
+
 ## Ajouter un use case — checklist complète
 
 ### 1. `USE_CASES` dans `data.js`
