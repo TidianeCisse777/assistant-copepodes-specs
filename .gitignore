@@ -7,3 +7,17 @@ __pycache__/
 outputs/raw/
 **/outputs/raw/
 ecotaxa_loki_probe/.env
+
+# Python package
+.venv/
+*.egg-info/
+dist/
+__pycache__/
+
+# RAG index (rebuilt locally)
+polar_data_tools/rag/chroma_db/
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
