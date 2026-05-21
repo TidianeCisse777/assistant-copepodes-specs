@@ -96,6 +96,18 @@
     .note-block.review { border-color: #f97316; background: #431407; color: #fdba74; }
     .note-block.draft  { border-color: #64748b; background: #1e293b; color: #94a3b8; }
     .note-status { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
+    .note-editor { margin-top: 14px; padding: 12px; background: #0f1923; border: 1px solid #1e293b; border-radius: 6px; }
+    .note-editor h3 { font-size: 10px; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin: 0 0 8px; font-weight: 700; }
+    .note-editor .status-btns { display: flex; gap: 6px; margin-bottom: 8px; }
+    .note-editor .status-btn { flex: 1; padding: 4px 0; border: 1px solid #1e293b; border-radius: 4px; background: #1e293b; color: #475569; font-size: 10px; font-weight: 700; text-transform: uppercase; cursor: pointer; letter-spacing: 0.4px; }
+    .note-editor .status-btn.active-ok     { border-color: #22c55e; color: #22c55e; background: #052e16; }
+    .note-editor .status-btn.active-review { border-color: #f97316; color: #f97316; background: #431407; }
+    .note-editor .status-btn.active-draft  { border-color: #64748b; color: #94a3b8; background: #1e293b; }
+    .note-editor textarea { width: 100%; background: #111827; border: 1px solid #1e293b; border-radius: 4px; color: #94a3b8; font-size: 11px; padding: 6px 8px; resize: vertical; min-height: 56px; font-family: inherit; line-height: 1.5; box-sizing: border-box; }
+    .note-editor textarea:focus { outline: none; border-color: #2a3f5f; }
+    .note-editor .copy-btn { margin-top: 8px; width: 100%; padding: 6px; background: #1e3a5f; border: none; border-radius: 4px; color: #7dd3fc; font-size: 11px; cursor: pointer; font-weight: 600; }
+    .note-editor .copy-btn:hover { background: #1e4a7f; }
+    .note-editor .copy-btn.copied { background: #052e16; color: #22c55e; }
 
     /* Intro modal */
     #intro-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
@@ -237,6 +249,22 @@
 function getCapId(raw) { return raw.capId || raw.id; }
 function getUcId(raw)  { return raw.ucId  || raw.id; }
 function trunc(s, n)   { return s && s.length > n ? s.slice(0, n) + '…' : (s || ""); }
+
+function noteEditor(key) {
+  const entry = (typeof NOTES !== "undefined") && NOTES[key];
+  const currentStatus = entry ? entry.status : "draft";
+  const currentNote   = entry ? (entry.note || "") : "";
+  return `<div class="note-editor" data-note-key="${key}">
+    <h3>Note de révision</h3>
+    <div class="status-btns">
+      <button class="status-btn ${currentStatus==="ok"?"active-ok":""}"     data-status="ok">Validé</button>
+      <button class="status-btn ${currentStatus==="review"?"active-review":""}" data-status="review">À réviser</button>
+      <button class="status-btn ${currentStatus==="draft"?"active-draft":""}"  data-status="draft">Ébauche</button>
+    </div>
+    <textarea placeholder="Note optionnelle…">${currentNote}</textarea>
+    <button class="copy-btn">Copier pour notes.js</button>
+  </div>`;
+}
 
 function noteBlock(key) {
   if (typeof NOTES === "undefined") return "";
@@ -474,7 +502,8 @@ function showDetail(raw) {
     body.innerHTML = `
       <h3>Intention utilisateur</h3><p>${obj.description || ""}</p>
       <h3>Résultat attendu</h3><p>${obj.expected || ""}</p>
-      <h3>Critère de succès</h3><p>${obj.success || ""}</p>`;
+      <h3>Critère de succès</h3><p>${obj.success || ""}</p>
+      ${noteEditor(raw.objId)}`;
 
   } else if (raw.type === "catgroup") {
     const grp = CATEGORY_GROUPS[raw.category] || {};
@@ -497,7 +526,7 @@ function showDetail(raw) {
       ${uc.flow ? `<h3>Flux principal</h3><p style="white-space:pre-line">${uc.flow}</p>` : ""}
       ${uc.postconditions ? `<h3>Postconditions</h3><p>${uc.postconditions}</p>` : ""}
       ${uc.scope ? `<h3>Périmètre & règles</h3><p>${uc.scope}</p>` : ""}
-      ${noteBlock(getUcId(raw))}`;
+      ${noteEditor(getUcId(raw))}`;
 
   } else if (raw.type === "capability") {
     const capId = getCapId(raw);
@@ -518,7 +547,7 @@ function showDetail(raw) {
       ${cap.description ? `<h3>Description</h3><p>${cap.description}</p>` : ""}
       ${ragHtml}
       ${ctHtml}
-      ${noteBlock(capId)}`;
+      ${noteEditor(capId)}`;
 
   } else if (raw.type === "ragdoc") {
     const doc = RAG_DOCS[raw.ragId] || {};
@@ -531,7 +560,7 @@ function showDetail(raw) {
       ${doc.chunks ? `<h3>Nombre de chunks</h3><p>${doc.chunks} chunks autonomes</p>` : ""}
       ${doc.usage ? `<h3>Quand consulté</h3><p>${doc.usage}</p>` : ""}
       ${doc.keyContent ? `<h3>Contenu clé</h3><p>${doc.keyContent}</p>` : ""}
-      ${noteBlock(raw.ragId)}`;
+      ${noteEditor(raw.ragId)}`;
   }
 }
 
@@ -539,12 +568,37 @@ document.getElementById("close-detail").addEventListener("click", () => {
   document.getElementById("detail-panel").classList.remove("open");
 });
 
+// ——— Note editor interactions ———
+function handleNoteEditorClick(e) {
+  const btn = e.target.closest(".status-btn");
+  if (btn) {
+    const editor = btn.closest(".note-editor");
+    editor.querySelectorAll(".status-btn").forEach(b => b.className = "status-btn");
+    btn.classList.add(`active-${btn.dataset.status}`);
+  }
+  const copyBtn = e.target.closest(".copy-btn");
+  if (copyBtn) {
+    const editor = copyBtn.closest(".note-editor");
+    const key    = editor.dataset.noteKey;
+    const status = editor.querySelector(".status-btn[class*='active-']")?.dataset.status || "draft";
+    const note   = editor.querySelector("textarea").value.trim();
+    const snippet = `  "${key}": {\n    status: "${status}",\n    note: "${note.replace(/"/g, '\\"')}"\n  },`;
+    navigator.clipboard.writeText(snippet).then(() => {
+      copyBtn.textContent = "Copié !";
+      copyBtn.classList.add("copied");
+      setTimeout(() => { copyBtn.textContent = "Copier pour notes.js"; copyBtn.classList.remove("copied"); }, 2000);
+    });
+  }
+}
+document.getElementById("detail-panel").addEventListener("click", handleNoteEditorClick);
+document.getElementById("constraints-panel").addEventListener("click", handleNoteEditorClick);
+
 // ——— Constraints Panel ———
 const cList = document.getElementById("constraints-list");
 CONSTRAINTS.forEach(c => {
   const div = document.createElement("div");
   div.className = "constraint-item";
-  div.innerHTML = `<div class="cid">${c.id}</div><div class="ctitle">${c.title}</div><div class="cdesc">${c.description}</div>`;
+  div.innerHTML = `<div class="cid">${c.id}</div><div class="ctitle">${c.title}</div><div class="cdesc">${c.description}</div>${noteEditor(c.id)}`;
   cList.appendChild(div);
 });
 
