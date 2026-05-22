@@ -130,6 +130,7 @@ tests/
 | EcoTaxa UVP5 | `1165` | UVP5 Amundsen 2018, objets individuels + morphométrie |
 | EcoPart | `105` | UVP5 Amundsen 2018, profils CTD + particules agrégées |
 | Amundsen CTD | `ca-cioos_ccin-12713` | CTD-Rosette officielle via ERDDAP |
+| Données labo | *(upload utilisateur)* | Analyses lipidiques, biomasse carbone (g CO2/m³) — structure découverte à la volée via `data.inspect` |
 
 **Clé de jointure :** `obj_orig_id` (ex. `ips_007_899`) → `profile_id` (`ips_007`) → EcoPart
 
