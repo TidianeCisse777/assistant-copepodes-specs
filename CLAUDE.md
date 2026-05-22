@@ -16,7 +16,7 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 - Visualisation D3.js interactive opérationnelle (`visualization/`)
 - 22 tools spécifiés avec signatures, contraintes, tests A+B (`TOOLS_SPEC.js`)
 - 17 scénarios de test comportementaux documentés (`TEST_SCENARIOS.md`)
-- Ordre d'implémentation en phases défini (`IMPLEMENTATION_ORDER.md`)
+- Plan d'implémentation consolidé : `docs/PLAN.md`
 - **Phase 0 (Langfuse) ✅ terminée** — Sprint actif = Phase A → B → C → 1 → 2 → 3
 
 ### Repo IDEA (runtime FastAPI — séparé)
@@ -25,8 +25,7 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 - Stack complet opérationnel : FastAPI + pgvector + Redis + Nginx + Frontend + Langfuse
 - Langfuse self-hosted sur `http://localhost:3001` (Apple Silicon : `platform: linux/amd64`)
 - LiteLLM callback Langfuse **à câbler en Phase A**
-- Revue archi : 9 candidats de refactor identifiés, en attente après Sprint 1
-- **CopepodProfile dans IDEA = étape ultérieure**, après que `polar_data_tools` soit stable
+- **Architecture : fork IDEA** — CopepodProfile + tools copépodes dans IDEA, pas un package séparé
 
 ---
 
@@ -34,10 +33,10 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 
 | Fichier | Contenu |
 |---|---|
+| `PLAN.md` | **Référence unique** : architecture, phases, critères de test |
 | `TOOLS_SPEC.js` | 22 tools : signatures input/output, contraintes, tests A+B |
 | `TEST_SCENARIOS.md` | 17 scénarios comportementaux (cas limites d'abord) |
-| `IMPLEMENTATION_ORDER.md` | 8 phases ordonnées, Sprint 1 = Phase 0–3 |
-| `TOOLS_AGENT_PLAN.md` | Architecture du package Python, rationale |
+| `docs/CONTEXT.md` | Glossaire métier, contraintes, décisions de design |
 | `STAGE ULAVAL/USE CASE/Use Cases — Assistant scientifique copépodes V1.md` | 18 UC complets |
 | `STAGE ULAVAL/Agent/Spec de L'agent/Capacites agent V1.md` | 14 capacités agent |
 | `STAGE ULAVAL/Agent/Spec de L'agent/Contraintes agent V1.md` | 29 contraintes |
@@ -46,28 +45,28 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 
 ## Sprint actif — ce qui est à implémenter maintenant
 
-**Phase A — System prompt** ← NEXT
-- `polar_data_tools/system_prompt.py` : `COPEPOD_SYSTEM_PROMPT` (< 500 tokens)
+**Phase A — CopepodProfile + system prompt** ← NEXT
+- `IDEA/agents/copepod_profile.py` + `IDEA/utils/copepod_system_prompt.py`
 - Câbler le callback LiteLLM → Langfuse dans IDEA
-- Valide : tests structurels + première trace visible dans Langfuse
+- Valide : 6 tests structurels verts + 4 conversations manuelles + trace Langfuse
 
-**Phase B — Index RAG**
-- Chunking des 5 docs `STAGE ULAVAL/Agent/Ressources scientifiques/Document RAG/*.md`
-- Stack : ChromaDB + sentence-transformers/all-MiniLM-L6-v2
-- Scripts : `polar_data_tools/rag/chunk_docs.py` → `build_index.py` → `query.py`
-- Valide : `rag.query("acq_pixel")` → bon chunk dans le top-3, chunk visible Langfuse
+**Phase B — RAG copépodes**
+- ChromaDB sur les 5 docs `STAGE ULAVAL/Agent/Ressources scientifiques/Document RAG/*.md`
+- `IDEA/core/copepod_rag/` : chunk_docs.py → build_index.py → query.py
+- Valide : 3 requêtes de test passent, chunks visibles dans Langfuse
 
 **Phase C — Red-teaming (validation manuelle)**
-- 5 conversations de test dans IDEA (SC-03, SC-06, SC-15 partiel)
+- 5 conversations dans IDEA avec agent_type=copepod (SC-03, SC-06, SC-15 partiel)
 - Zéro hallucination, sources RAG citées, traces Langfuse cohérentes
 
-**Phase 1 — Chargement et validation des données**
-- `data.inspect`, `data.validate`, `data.profile_missing`
+**Phase 1 — Données locales**
+- `IDEA/core/tool_registry/tools/copepod_data.py` : inspect, validate, profile_missing
 - Fixture : `data_exploration/examples_tsv/ecotaxa_1165_sample.tsv`
 - Valide : SC-07, SC-13
 
 **Phase 2 — Colonnes et sources**
-- `columns.describe`, `columns.check_for_calculation`, `sources.list_available`, `sources.describe`
+- `copepod_columns.py` + `copepod_sources_meta.py` dans tool registry
+- `list_available_sources(auth_token)` → API dynamique, jamais hardcodé
 - Valide : SC-01, SC-14, SC-15
 
 **Phase 3 — Contexte scientifique + session**
@@ -78,46 +77,34 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 
 ## TDD — règle absolue
 
-Pour chaque tool : écrire le test pytest **avant** l'implémentation.
-Les tests s'appuient sur les fixtures TSV de `data_exploration/examples_tsv/`.
+Pour chaque tool : écrire le test **avant** l'implémentation.
+Les fixtures TSV de `data_exploration/examples_tsv/` sont la référence.
 Les scénarios dans `TEST_SCENARIOS.md` définissent le comportement attendu.
-Chaque "Signe d'échec" = assertion Python concrète.
+Critères de passage détaillés dans `docs/PLAN.md`.
 
 ---
 
-## Structure cible du package Python
+## Structure cible dans IDEA
 
 ```
-polar_data_tools/
-  rag/             # chunk_docs.py, build_index.py, query.py, chunks.json
-  session.py       # set_mode, get_mode, build_summary, export
-  context.py       # get_required_fields, validate_species
-  data.py          # inspect, validate, profile_missing
-  columns.py       # describe, check_for_calculation
-  sources.py       # list_available, describe, query_ecotaxa,
-                   # query_amundsen_ctd, query_obis
-  joins.py         # plan, execute
-  calc.py          # get_method, execute
-  analysis.py      # explore
-  plot.py          # plan, generate
-  completeness.py  # evaluate, compare_obis
-  domain.py        # answer
-  deliverable.py   # build
-  schemas.py       # types partagés
-
-tests/
-  fixtures/        # symlinks ou copies depuis data_exploration/examples_tsv/
-  test_session.py
-  test_context.py
-  test_data.py
-  test_columns.py
-  test_sources.py
-  test_joins.py
-  test_calc.py
-  test_analysis.py
-  test_completeness.py
-  test_domain.py
-  test_deliverable.py
+IDEA/
+  agents/
+    copepod_profile.py        ← CopepodProfile (Phase A)
+  utils/
+    copepod_system_prompt.py  ← system prompt copépodes (Phase A)
+  core/
+    copepod_rag/              ← chunk_docs.py, build_index.py, query.py (Phase B)
+    tool_registry/tools/
+      copepod_data.py         ← inspect, validate, profile_missing (Phase 1)
+      copepod_columns.py      ← describe, check_for_calculation (Phase 2)
+      copepod_sources_meta.py ← list_available, describe (Phase 2)
+      copepod_sources.py      ← query_ecotaxa, query_ecopart, query_amundsen_ctd, query_obis (Phase 4)
+      copepod_joins.py        ← join_ecotaxa_ecopart, compare_ctd_profiles (Phase 5)
+  tests/
+    test_copepod_profile.py   ← Phase A
+    test_copepod_rag.py       ← Phase B
+    test_copepod_data.py      ← Phase 1
+    test_copepod_sources.py   ← Phase 4
 ```
 
 ---
@@ -165,12 +152,11 @@ CLAUDE.md                    ← ce fichier
 README.md
 TOOLS_SPEC.js                ← 22 tools spécifiés
 TEST_SCENARIOS.md            ← 17 scénarios comportementaux
-IMPLEMENTATION_ORDER.md      ← 8 phases
-TOOLS_AGENT_PLAN.md          ← architecture Python
 
 docs/
-  CONTEXT.md                 ← glossaire métier
+  CONTEXT.md                 ← glossaire métier, contraintes, décisions de design
   DATA_ACCESS_METHODS.md     ← comment les données ont été obtenues
+  adr/                       ← décisions architecturales
 
 data_exploration/
   examples_tsv/              ← fixtures TSV (safe to commit)
