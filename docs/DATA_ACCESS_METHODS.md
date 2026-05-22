@@ -429,7 +429,7 @@ amundsen_data_probe/outputs/report_ecopart_amundsen_compare.md
 TSV exemples :
 
 ```text
-examples_tsv/loki_2331_ecotaxa_export_sample_50.tsv
+examples_tsv/ecotaxa_sample_50.tsv
 examples_tsv/uvp_amundsen_1165_ecotaxa_object_sample.tsv
 examples_tsv/uvp_amundsen_105_ecopart_particles_reduced.tsv
 examples_tsv/uvp_amundsen_1165_105_join_preview.tsv

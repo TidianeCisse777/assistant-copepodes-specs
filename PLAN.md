@@ -150,6 +150,155 @@ OpenInterpreter
   └── deliverable.build
 ```
 
+### Tools minimaux obligatoires — compréhension des données
+
+Le premier noyau de tools ne doit pas supposer un format EcoTaxa, EcoPart ou labo. Il sert uniquement à comprendre les fichiers chargés par l'utilisateur en Mode Plan.
+
+#### `data.inspect_file(file_path, sample_rows=20)`
+
+**But :** lire un fichier utilisateur sans le modifier et produire un rapport technique structuré.
+
+**Ne fait pas :**
+- nettoyage ;
+- interprétation scientifique ;
+- génération de graphique ;
+- validation stricte d'un schéma source ;
+- modification du fichier brut.
+
+**Input :**
+
+```python
+{
+  "file_path": "string",
+  "sample_rows": 20
+}
+```
+
+**Output attendu :**
+
+```python
+{
+  "file_path": "string",
+  "format": "csv|tsv|xlsx|netcdf|json|unknown",
+  "n_rows": "int|unknown",
+  "n_columns": "int|unknown",
+  "columns": [
+    {
+      "name": "string",
+      "dtype": "string",
+      "missing_count": "int|unknown",
+      "missing_rate": "float|unknown",
+      "sample_values": ["any"],
+      "semantic_guess": "string|null",
+      "unit_guess": "string|null",
+      "confidence": "low|medium|high"
+    }
+  ],
+  "metadata": {
+    "encoding": "string|null",
+    "delimiter": "string|null",
+    "sheet_names": ["string"],
+    "netcdf_dimensions": "object",
+    "netcdf_variables": ["string"],
+    "source_metadata": "object"
+  },
+  "source_type_guess": {
+    "value": "likely_ecotaxa|likely_ecopart|likely_amundsen_ctd|likely_lab_data|unknown",
+    "confidence": "low|medium|high",
+    "evidence": ["string"]
+  },
+  "warnings": ["string"],
+  "raw_file_modified": false
+}
+```
+
+**Règles :**
+- Toujours retourner `raw_file_modified=false`.
+- Ne jamais déclarer une source comme certaine ; utiliser `likely_*` avec preuves.
+- Lire un échantillon si le fichier est lourd.
+- Pour les fichiers texte, détecter séparateur et encodage.
+- Pour Excel, lister les feuilles.
+- Pour NetCDF, lister dimensions et variables.
+- Pour fichiers inconnus, retourner un blocage structuré plutôt que lever une erreur opaque.
+
+#### `columns.infer_roles(columns, metadata=None)`
+
+**But :** proposer des rôles sémantiques candidats à partir des noms de colonnes et métadonnées, sans imposer de schéma.
+
+**Rôles candidats :**
+- taxon ;
+- taxonomic_validation_status ;
+- depth ;
+- time ;
+- latitude ;
+- longitude ;
+- station ;
+- profile_id ;
+- sample_volume ;
+- image_id ;
+- size_or_morphometry ;
+- environmental_variable ;
+- lab_measurement.
+
+**Output attendu :**
+
+```python
+{
+  "roles": [
+    {
+      "role": "depth",
+      "column": "object_depth_min",
+      "confidence": "medium",
+      "evidence": ["column name contains depth"]
+    }
+  ],
+  "unmatched_columns": ["string"],
+  "warnings": ["string"]
+}
+```
+
+**Règles :**
+- Retourner des candidats, pas des vérités.
+- Ne pas renommer les colonnes.
+- Ne pas supprimer les colonnes non reconnues.
+- Si ambigu, retourner plusieurs candidats avec confiance faible ou moyenne.
+
+#### `data.summarize_understanding(inspect_report, role_report)`
+
+**But :** produire la synthèse structurée de Phase 1 du Mode Plan.
+
+**Output attendu :**
+
+```python
+{
+  "file_or_source": "string",
+  "probable_source_type": "string",
+  "useful_columns": ["string"],
+  "metadata_detected": "object",
+  "quality_limits": ["string"],
+  "taxonomic_validation_status": "available|missing|unknown|not_applicable",
+  "possible_joins_or_couplings": ["string"],
+  "missing_or_ambiguous_data": ["string"]
+}
+```
+
+**Règles :**
+- Résumer techniquement les données.
+- Ne pas décider du graphique final.
+- Ne pas interpréter biologiquement.
+- Signaler clairement les colonnes ou métadonnées ambiguës.
+
+#### Pourquoi seulement ces trois tools au départ
+
+Ces tools rendent le Mode Plan testable sans présupposer un format de données. Les validateurs spécialisés viendront ensuite :
+
+- `ecotaxa.validate_schema`;
+- `ecopart.validate_schema`;
+- `amundsen.validate_schema`;
+- `lab.describe_schema`.
+
+Ils ne doivent être appelés qu'après inspection générique et validation du type probable de source.
+
 ### Skills / workflows candidats
 
 | Workflow | Rôle | Type |

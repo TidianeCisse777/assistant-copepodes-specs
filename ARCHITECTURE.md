@@ -5,7 +5,7 @@
 ## Vue d'ensemble
 
 ```mermaid
-graph TB
+graph TD
     subgraph SPECS
         SP[copepod_system_prompt.py]
         TR[Tool Registry copepod]
