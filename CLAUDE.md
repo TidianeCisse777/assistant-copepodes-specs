@@ -16,8 +16,17 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 - Visualisation D3.js interactive opérationnelle (`visualization/`)
 - 22 tools spécifiés avec signatures, contraintes, tests A+B (`TOOLS_SPEC.js`)
 - 17 scénarios de test comportementaux documentés (`TEST_SCENARIOS.md`)
-- Ordre d'implémentation en 8 phases défini (`IMPLEMENTATION_ORDER.md`)
-- **Aucune implémentation Python commencée** — Sprint 1 = Phase 0 → 0.5 → 1 → 2 → 3
+- Ordre d'implémentation en phases défini (`IMPLEMENTATION_ORDER.md`)
+- **Phase 0 (Langfuse) ✅ terminée** — Sprint actif = Phase A → B → C → 1 → 2 → 3
+
+### Repo IDEA (runtime FastAPI — séparé)
+
+- Refactor multi-agent terminé et mergé sur `main` (42 tests verts)
+- Stack complet opérationnel : FastAPI + pgvector + Redis + Nginx + Frontend + Langfuse
+- Langfuse self-hosted sur `http://localhost:3001` (Apple Silicon : `platform: linux/amd64`)
+- LiteLLM callback Langfuse **à câbler en Phase A**
+- Revue archi : 9 candidats de refactor identifiés, en attente après Sprint 1
+- **CopepodProfile dans IDEA = étape ultérieure**, après que `polar_data_tools` soit stable
 
 ---
 
@@ -35,17 +44,22 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 
 ---
 
-## Sprint 1 — ce qui est à implémenter maintenant
+## Sprint actif — ce qui est à implémenter maintenant
 
-**Phase 0 — Session et mode**
-- `session.set_mode`, `session.get_mode`, `context.get_required_fields`
-- Valide : SC-10
+**Phase A — System prompt** ← NEXT
+- `polar_data_tools/system_prompt.py` : `COPEPOD_SYSTEM_PROMPT` (< 500 tokens)
+- Câbler le callback LiteLLM → Langfuse dans IDEA
+- Valide : tests structurels + première trace visible dans Langfuse
 
-**Phase 0.5 — Index RAG**
+**Phase B — Index RAG**
 - Chunking des 5 docs `STAGE ULAVAL/Agent/Ressources scientifiques/Document RAG/*.md`
 - Stack : ChromaDB + sentence-transformers/all-MiniLM-L6-v2
 - Scripts : `polar_data_tools/rag/chunk_docs.py` → `build_index.py` → `query.py`
-- Valide : `rag.query("acq_pixel")` → bon chunk dans le top-3
+- Valide : `rag.query("acq_pixel")` → bon chunk dans le top-3, chunk visible Langfuse
+
+**Phase C — Red-teaming (validation manuelle)**
+- 5 conversations de test dans IDEA (SC-03, SC-06, SC-15 partiel)
+- Zéro hallucination, sources RAG citées, traces Langfuse cohérentes
 
 **Phase 1 — Chargement et validation des données**
 - `data.inspect`, `data.validate`, `data.profile_missing`
@@ -56,9 +70,9 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 - `columns.describe`, `columns.check_for_calculation`, `sources.list_available`, `sources.describe`
 - Valide : SC-01, SC-14, SC-15
 
-**Phase 3 — Contexte scientifique**
-- `context.validate_species`
-- Valide : SC-02, SC-03
+**Phase 3 — Contexte scientifique + session**
+- `session.set_mode`, `session.get_mode`, `context.get_required_fields`, `context.validate_species`
+- Valide : SC-02, SC-03, SC-10
 
 ---
 

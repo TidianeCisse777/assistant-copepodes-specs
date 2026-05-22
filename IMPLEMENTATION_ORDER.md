@@ -7,22 +7,27 @@
 
 ---
 
-## PHASE 0 — Observabilité (Langfuse)
+## PHASE 0 — Observabilité (Langfuse) ✅ TERMINÉ (2026-05-22)
 
 > Prérequis technique. Sans traces, débugger le RAG et les tools est aveugle.
 > À faire dans IDEA avant de toucher assistant-copepodes-specs.
 
-### Ce qu'on installe
+### Ce qui a été fait
 
-- **Langfuse self-hosted** dans `docker-compose.yml` (service + base Postgres dédiée)
+- **Langfuse self-hosted** dans `docker-compose.yml` — service + base Postgres dédiée ✅
+- **Variables `.env`** : `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_HOST` ✅
+- **Compte admin + projet NeoLab/assistant-copepodes** créés dans l'UI ✅
+- Fix Apple Silicon : `platform: linux/amd64` pour éviter le segfault arm64 ✅
+- Port : `http://localhost:3001`
+
+### Reste à faire (à câbler en Phase A)
+
 - **LiteLLM callback** dans IDEA :
 
 ```python
 # app.py ou core/config.py
 litellm.success_callback = ["langfuse"]
 ```
-
-- Variables `.env` : `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_HOST`
 
 ### Ce qu'on verra dans l'interface Langfuse
 
@@ -33,12 +38,7 @@ litellm.success_callback = ["langfuse"]
 | Tools appelés + arguments + résultat | Log structuré dans chaque tool |
 | Latence par étape | Spans Langfuse |
 
-### Validation
-
-Interface Langfuse accessible sur `http://localhost:3000`.
-Une conversation de test dans IDEA apparaît dans les traces.
-
-**Livrable :** toute l'observabilité est active avant d'écrire la première ligne de code copépodes.
+**Livrable :** ✅ Langfuse accessible sur `http://localhost:3001`. Callback LiteLLM à câbler en Phase A.
 
 ---
 
