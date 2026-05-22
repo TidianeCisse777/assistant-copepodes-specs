@@ -20,7 +20,7 @@ Ce qui ne change pas dans IDEA :
 Ce qu'on ajoute ou modifie :
 - `agents/copepod_profile.py` — nouveau profil `agent_type="copepod"`
 - `utils/copepod_system_prompt.py` — system prompt copépodes (remplace les références sea-level/UHSLC)
-- `core/tool_registry/tools/copepod_sources.py` — fonctions injectées EcoTaxa/EcoPart/Amundsen/OBIS
+- `core/tool_registry/tools/copepod_sources.py` — fonctions injectées EcoTaxa/EcoPart/Amundsen CTD/OGSL/Bio-ORACLE
 - `core/tool_registry/tools/copepod_data.py` — fonctions injectées data.inspect, data.validate
 - RAG copépodes sur les 5 docs `STAGE ULAVAL/Agent/Ressources scientifiques/Document RAG/`
 
@@ -528,7 +528,7 @@ Phase 0 — Langfuse ✅
                     └── Phase 1 — data.inspect / validate
                           └── Phase 2 — columns.describe + sources.list_available
                                 └── Phase 3 — context + session
-                                      └── Phase 4 — sources en ligne (EcoTaxa/EcoPart/Amundsen/OBIS)
+                                      └── Phase 4 — sources en ligne (EcoTaxa/EcoPart/Amundsen CTD/OGSL/Bio-ORACLE)
                                             ├── Phase 5 — jointures
                                             │     └── Phase 6 — calculs + graphiques
                                             └── Phase 7 — complétude ←── Phase B
