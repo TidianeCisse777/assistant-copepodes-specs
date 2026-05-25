@@ -16,7 +16,7 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 - Visualisation D3.js interactive opérationnelle (`visualization/`)
 - 22 tools spécifiés avec signatures, contraintes, tests A+B (`TOOLS_SPEC.js`)
 - 17 scénarios de test comportementaux documentés (`TEST_SCENARIOS.md`)
-- Plan d'implémentation consolidé : `docs/PLAN.md`
+- Plan d'implémentation consolidé : `PLAN.md`
 - **Phase 0 (Langfuse) ✅ terminée** — Sprint actif = Phase A → B → C → 1 → 2 → 3
 
 ### Repo IDEA (runtime FastAPI — séparé)
@@ -61,7 +61,7 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 
 **Phase 1 — Données locales**
 - `IDEA/core/tool_registry/tools/copepod_data.py` : inspect, validate, profile_missing
-- Fixture : `data_exploration/examples_tsv/ecotaxa_1165_sample.tsv`
+- Fixture : `data_exploration/examples_tsv/uvp_amundsen_1165_ecotaxa_object_sample.tsv`
 - Valide : SC-07, SC-13
 
 **Phase 2 — Colonnes et sources**
@@ -80,7 +80,7 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 Pour chaque tool : écrire le test **avant** l'implémentation.
 Les fixtures TSV de `data_exploration/examples_tsv/` sont la référence.
 Les scénarios dans `TEST_SCENARIOS.md` définissent le comportement attendu.
-Critères de passage détaillés dans `docs/PLAN.md`.
+Critères de passage détaillés dans `PLAN.md`.
 
 ---
 
@@ -98,7 +98,7 @@ IDEA/
       copepod_data.py         ← inspect, validate, profile_missing (Phase 1)
       copepod_columns.py      ← describe, check_for_calculation (Phase 2)
       copepod_sources_meta.py ← list_available, describe (Phase 2)
-      copepod_sources.py      ← query_ecotaxa, query_ecopart, query_amundsen_ctd, query_obis (Phase 4)
+      copepod_sources.py      ← query_ecotaxa, query_ecopart, query_amundsen_ctd, query_ogsl, query_bio_oracle (Phase 4)
       copepod_joins.py        ← join_ecotaxa_ecopart, compare_ctd_profiles (Phase 5)
   tests/
     test_copepod_profile.py   ← Phase A

@@ -43,8 +43,8 @@ const TOOLS_SPEC = {
       "Aucune source activée → activated=false pour toutes les entrées, pas d'erreur."
     ],
     testB: [
-      "Prompt: 'quelles sources sont disponibles ?' → réponse liste au moins ecotaxa, ecopart, amundsen, obis.",
-      "Prompt: 'ai-je besoin d'un compte pour OBIS ?' → réponse cite requires_credentials=false pour obis."
+      "Prompt: 'quelles sources sont disponibles ?' → réponse liste au moins ecotaxa, ecopart, amundsen_ctd, ogsl, bio_oracle.",
+      "Prompt: 'ai-je besoin d'un compte pour EcoTaxa ?' → réponse cite requires_credentials=true pour ecotaxa."
     ]
   },
 
@@ -307,11 +307,12 @@ const TOOLS_SPEC = {
     ]
   },
 
-  "sources.query_obis": {
+  "sources.query_reference_coverage": {
     capability: "AG-V1-04",
     usecases: ["UC-SL-04", "UC-SL-12", "UC-SL-14"],
-    description: "Interroge l'API OBIS pour une espèce et une zone géographique.",
+    description: "Interroge une source de référence autorisée ou le RAG pour contextualiser une couverture locale sans conclure à une absence biologique.",
     input: {
+      source_id: "string",    // "ogsl" | "bio_oracle" | "rag_only" selon le besoin
       species: "string",      // nom scientifique canonique
       lat_min: "float",
       lat_max: "float",
@@ -333,11 +334,11 @@ const TOOLS_SPEC = {
     testA: [
       "species='Calanus hyperboreus', zone arctique → n_records > 0.",
       "species inexistant → n_records=0, pas d'erreur fatale.",
-      "Zone sans données OBIS → n_records=0, sampling_bias_flags non vide (biais arctique)."
+      "Zone sans données de référence → n_records=0, sampling_bias_flags non vide."
     ],
     testB: [
-      "Prompt: 'compare mes données à OBIS pour C. hyperboreus' → réponse distingue absence confirmée vs biais d'échantillonnage (CT-AG-29).",
-      "Prompt: 'OBIS a-t-il des données hivernales arctiques ?' → agent cite les biais connus."
+      "Prompt: 'compare mes données avec une source de référence pour C. hyperboreus' → réponse distingue absence confirmée vs biais d'échantillonnage (CT-AG-29).",
+      "Prompt: 'la source de référence couvre-t-elle l'hiver arctique ?' → agent cite les limites connues."
     ]
   },
 
@@ -707,22 +708,23 @@ const TOOLS_SPEC = {
     ]
   },
 
-  "completeness.compare_obis": {
+  "coverage.compare_reference_source": {
     capability: "AG-V1-10",
     usecases: ["UC-SL-14"],
-    description: "Compare la couverture locale (espèces/zones/périodes) avec les données OBIS de référence.",
+    description: "Compare la couverture locale (espèces/zones/périodes) avec une source de référence autorisée ou le RAG.",
     input: {
       local_species: ["string"],
       local_zone: { lat_min: "float", lat_max: "float", lon_min: "float", lon_max: "float" },
-      local_period: { year_start: "int", year_end: "int" }
+      local_period: { year_start: "int", year_end: "int" },
+      reference_source_id: "string"  // "ogsl" | "bio_oracle" | "rag_only"
     },
     output: {
       species_coverage: [
         {
           species: "string",
           in_local: "boolean",
-          in_obis: "boolean",
-          obis_n_records: "int",
+          in_reference: "boolean",
+          reference_n_records: "int",
           absence_type: "confirmed | sampling_bias | uncertain"  // CT-AG-29
         }
       ],
@@ -731,13 +733,13 @@ const TOOLS_SPEC = {
     },
     constraints: ["CT-AG-29", "CT-AG-03"],
     testA: [
-      "Espèce absente localement mais présente dans OBIS → absence_type déterminé selon biais connus.",
+      "Espèce absente localement mais présente dans la source de référence → absence_type déterminé selon biais connus.",
       "Zone arctique → sampling_bias_warnings contient avertissement données hivernales.",
       "C. glacialis dans zone de chevauchement → sampling_bias_warnings cite ambiguïté avec C. finmarchicus."
     ],
     testB: [
-      "Prompt: 'compare ma couverture à OBIS' → rapport distingue absence confirmée / biais / incertaine (CT-AG-29).",
-      "Prompt: 'pourquoi OBIS n'a pas de données hivernales arctiques ?' → agent explique le biais, pas d'invention."
+      "Prompt: 'compare ma couverture à une source de référence' → rapport distingue absence confirmée / biais / incertaine (CT-AG-29).",
+      "Prompt: 'pourquoi la source de référence n'a pas de données hivernales arctiques ?' → agent explique le biais, pas d'invention."
     ]
   },
 

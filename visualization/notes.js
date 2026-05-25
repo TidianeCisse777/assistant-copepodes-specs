@@ -49,7 +49,7 @@ const NOTES = {
   },
   "UC-SL-12": {
     status: "ok",
-    note: "Enrichi V1.1 — extension 3b ajoutée (absences taxonomiques via OBIS + corpus RAG). CT-AG-29 associée."
+    note: "Enrichi V1.1 — extension 3b ajoutée (absences taxonomiques via source de référence autorisée + corpus RAG). CT-AG-29 associée."
   },
   "UC-SL-14": {
     status: "ok",

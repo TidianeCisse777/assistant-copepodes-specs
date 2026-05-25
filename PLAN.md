@@ -2,7 +2,7 @@
 # Assistant graphique copépodes · NeoLab · Université Laval
 #
 # Ce fichier est la référence unique : architecture, phases, critères de test.
-# Sources : IMPLEMENTATION_ORDER.md · docs/architecture/copepod-agent-architecture.md · docs/CONTEXT.md
+# Sources : docs/CONTEXT.md · ARCHITECTURE.md · TEST_SCENARIOS.md · TOOLS_SPEC.js
 # Mis à jour au fil des phases.
 
 ---
@@ -131,7 +131,7 @@ sequenceDiagram
 | `colonnes_instruments.md` | définitions colonnes EcoTaxa/EcoPart/Amundsen |
 | `copepodes_domaine.md` | taxons, périmètre, avertissements d'identification |
 | `methodes_calcul.md` | formules, variables dérivées, unités, limites |
-| `sources_en_ligne.md` | accès APIs — à réviser : retirer OBIS, intégrer OGSL/Bio-ORACLE |
+| `sources_en_ligne.md` | accès APIs autorisées : EcoTaxa, EcoPart, CTD externe, OGSL, Bio-ORACLE |
 
 RAG cité uniquement quand il justifie une définition, une méthode, une limite technique ou une référence. Pas de citation décorative.
 
@@ -496,7 +496,7 @@ Docs sources dans `assistant-copepodes-specs/STAGE ULAVAL/Agent/Ressources scien
 - `colonnes_instruments.md` — définitions colonnes EcoTaxa/EcoPart/Amundsen
 - `copepodes_domaine.md` — taxons, périmètre, avertissements
 - `methodes_calcul.md` — formules, variables dérivées, unités
-- `sources_en_ligne.md` — accès APIs (à réviser : retirer OBIS, ajouter OGSL/Bio-ORACLE)
+- `sources_en_ligne.md` — accès APIs autorisées et limites d'usage
 
 Injecter `query_copepod_knowledge_base(query, session_id)` dans le tool registry avec tag `{"copepod_rag"}`.
 
@@ -562,17 +562,17 @@ Fichier : `IDEA/core/tool_registry/tools/copepod_data.py`, tag `{"copepod_data"}
 | `data.validate` | `validate_data(file_path)` | SC-07 |
 | `data.profile_missing` | `profile_missing(file_path)` | SC-16 partiel |
 
-Fixture : `data_exploration/examples_tsv/ecotaxa_1165_sample.tsv`
+Fixture : `data_exploration/examples_tsv/uvp_amundsen_1165_ecotaxa_object_sample.tsv`
 
 Tests :
 ```python
 def test_inspect_retourne_colonnes():
-    result = inspect_data("ecotaxa_1165_sample.tsv")
+    result = inspect_data("uvp_amundsen_1165_ecotaxa_object_sample.tsv")
     assert "columns" in result
     assert len(result["columns"]) > 0
 
 def test_validate_detecte_manquants():
-    result = validate_data("ecotaxa_1165_sample.tsv")
+    result = validate_data("uvp_amundsen_1165_ecotaxa_object_sample.tsv")
     assert "missing" in result
 
 def test_données_brutes_non_modifiées():
@@ -624,7 +624,8 @@ Basé sur les scripts existants dans `assistant-copepodes-specs/data_exploration
 | `sources.query_ecotaxa` | `query_ecotaxa(project_id, auth_token)` | `export_loki_authenticated.py` | SC-05 |
 | `sources.query_ecopart` | `query_ecopart(project_id, auth_token)` | `export_ecopart_105_authenticated.py` | — |
 | `sources.query_amundsen_ctd` | `query_amundsen_ctd(date_start, date_end, lat_min, lat_max, lon_min, lon_max, variables)` | `search_catalog.py` + `inspect_resources.py` | — |
-| `sources.query_obis` | `query_obis(species, bbox, year_start, year_end)` | à écrire (OBIS REST API) | SC-04 |
+| `sources.query_ogsl` | `query_ogsl(dataset, bbox, date_start, date_end, variables)` | à écrire | SC-04 révisé |
+| `sources.query_bio_oracle` | `query_bio_oracle(variables, bbox, period, scenario=None)` | à écrire | SC-04 révisé |
 
 Règles :
 - Credentials jamais loggués ni retournés dans la réponse

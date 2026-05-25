@@ -279,7 +279,7 @@ const NOTES = {
   },
   "AG-V1-10": {
     status: "review",
-    note: "Tester la comparaison OBIS en priorité."
+    note: "Tester la comparaison à une source de référence autorisée en priorité."
   }
 };
 ```

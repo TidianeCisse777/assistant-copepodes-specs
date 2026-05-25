@@ -2,7 +2,7 @@
 #
 # Ce fichier définit les termes métier du domaine.
 # Pour les specs complètes : STAGE ULAVAL/
-# Pour les tools et l'implémentation : TOOLS_SPEC.js, IMPLEMENTATION_ORDER.md
+# Pour les tools et l'implémentation : TOOLS_SPEC.js, PLAN.md
 
 ## Problème
 
@@ -94,7 +94,7 @@ Les documents RAG copépodes ont des rôles distincts :
 - `colonnes_instruments.md` : définitions de colonnes EcoTaxa, EcoPart et Amundsen.
 - `copepodes_domaine.md` : périmètre taxonomique et avertissements d'identification.
 - `methodes_calcul.md` : formules, variables dérivées, unités et limites de calcul.
-- `sources_en_ligne.md` : accès et limites des sources en ligne, à réviser pour supprimer OBIS et intégrer OGSL/Bio-ORACLE.
+- `sources_en_ligne.md` : accès et limites des sources en ligne autorisées.
 
 L'agent cite les documents RAG lorsqu'ils justifient une définition de colonne, une méthode de calcul, une limite technique ou une référence bibliographique. Il ne cite pas le RAG de façon décorative.
 

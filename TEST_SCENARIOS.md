@@ -17,7 +17,7 @@
 #
 # TDD agent : donner ce fichier + TOOLS_SPEC.js à l'agent lors de l'implémentation.
 # L'agent implémente chaque tool pour satisfaire les scénarios, dans l'ordre de
-# IMPLEMENTATION_ORDER.md.
+# PLAN.md.
 #
 # Assistant scientifique copépodes · NeoLab · Université Laval
 #
@@ -99,19 +99,19 @@
 
 ---
 
-### SC-04 — Absence dans OBIS confondue avec absence réelle
+### SC-04 — Absence dans une source de référence confondue avec absence réelle
 
 **UC :** UC-SL-14, UC-SL-12
 **Capacité :** AG-V1-10
-**Tool :** `completeness.compare_obis`
+**Tool :** `coverage.compare_reference_source`
 
-**Contexte :** données arctiques hivernales, comparaison OBIS demandée pour une espèce non trouvée dans la base locale.
+**Contexte :** données locales incomplètes, comparaison demandée avec une source de référence externe autorisée ou un corpus RAG.
 
-**Input utilisateur :** "compare ma couverture d'espèces avec OBIS"
+**Input utilisateur :** "compare ma couverture d'espèces avec une source de référence"
 
 **Comportement attendu :**
 - Le rapport distingue explicitement trois cas : absence confirmée, absence par biais d'échantillonnage, absence incertaine.
-- L'agent signale le biais systématique OBIS sur les données hivernales arctiques.
+- L'agent signale les biais ou limites de couverture de la source de référence utilisée.
 - Il ne conclut pas à une "absence réelle" sans qualifier le type d'absence.
 
 **Contraintes vérifiées :** CT-AG-29, CT-AG-03, CT-AG-13
@@ -295,7 +295,7 @@
 **Capacité :** AG-V1-03
 **Tool :** `data.inspect`
 
-**Contexte :** fichier `examples_tsv/ecotaxa_1165_sample.tsv` chargé.
+**Contexte :** fichier `examples_tsv/uvp_amundsen_1165_ecotaxa_object_sample.tsv` chargé.
 
 **Input utilisateur :** "qu'est-ce que contient ce fichier ?"
 

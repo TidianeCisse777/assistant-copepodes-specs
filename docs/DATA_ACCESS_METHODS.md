@@ -430,9 +430,12 @@ time/lat/lon/depth deltas
 Rapports :
 
 ```text
-cartographie_donnée.md
-DATA_DICTIONARY.md
-TOOLS_AGENT_PLAN.md
+docs/REPO_GUIDE.md
+docs/FOLDER_MAP.md
+docs/CONTEXT.md
+docs/DATA_ACCESS_METHODS.md
+TOOLS_SPEC.js
+TEST_SCENARIOS.md
 ecopart_1165_link_probe/outputs/report_depth_enriched_table.md
 amundsen_data_probe/outputs/report_ecopart_amundsen_compare.md
 ```
@@ -463,11 +466,11 @@ examples_tsv/uvp_amundsen_105_ecopart_vs_amundsen_ctd_compare.tsv
 La prochaine etape technique est de sortir la logique des scripts vers un package :
 
 ```text
-polar_data_tools/  ← voir IMPLEMENTATION_ORDER.md pour la structure complète
+IDEA/core/tool_registry/tools/  ← cible d'implémentation des tools
 ```
 
 Signatures complètes des tools : TOOLS_SPEC.js.
 Scénarios de test comportementaux : TEST_SCENARIOS.md.
-Ordre d'implémentation en 8 phases : IMPLEMENTATION_ORDER.md.
+Plan d'implémentation consolidé : PLAN.md.
 
 Le MCP viendra ensuite si les signatures sont stables.
