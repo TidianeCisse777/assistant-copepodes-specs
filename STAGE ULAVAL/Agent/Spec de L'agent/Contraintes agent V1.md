@@ -53,8 +53,8 @@ Pour la traçabilité complète, voir `docs/architecture/constraint-traceability
 - EcoTaxa ;
 - EcoPart ;
 - Amundsen ;
-- OBIS ;
-- CMEMS ;
+- OGSL ;
+- Bio-ORACLE ;
 - document RAG ;
 - méthode ou script généré.
 
@@ -540,7 +540,7 @@ Limite : profondeur manquante pour 12 objets.
 
 ## CT-AG-29 — Contextualiser les absences lors des comparaisons de couverture
 
-**Règle :** lorsque l'agent compare la couverture locale à une source externe (OBIS, corpus RAG) pour identifier des absences taxonomiques ou spatiales, il doit distinguer explicitement trois types d'absence.
+**Règle :** lorsque l'agent compare la couverture locale au corpus RAG pour identifier des absences taxonomiques ou spatiales, il doit distinguer explicitement trois types d'absence.
 
 **Trois types d'absence à distinguer :**
 
@@ -550,9 +550,9 @@ Limite : profondeur manquante pour 12 objets.
 
 **Biais systématiques à signaler pour les données arctiques :**
 
-- sous-représentation des données hivernales dans OBIS ;
+- sous-représentation des données hivernales dans les sources de référence ;
 - couverture géographique plus dense à l'ouest de l'Arctique atlantique ;
-- incertitude d'identification historique entre espèces morphologiquement proches dans les données OBIS antérieures aux méthodes moléculaires.
+- incertitude d'identification historique entre espèces morphologiquement proches antérieures aux méthodes moléculaires.
 
 **Use cases concernés :** UC-SL-12 (ext. 3b), UC-SL-14, AG-V1-10, AG-V1-11.
 

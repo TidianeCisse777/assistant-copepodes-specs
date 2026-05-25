@@ -11,7 +11,7 @@ Format : Use cases opérationnels
 
 **Main success scenario :**
 1. L'utilisateur demande quelles données sont disponibles.
-2. L'agent distingue EcoTaxa, EcoPart, Amundsen, OBIS, CMEMS et fichiers labo.
+2. L'agent distingue EcoTaxa, EcoPart, Amundsen, OGSL, Bio-ORACLE et fichiers labo.
 3. L'agent indique ce que chaque source contient.
 4. L'agent signale les limites connues et les sources non activées.
 
@@ -277,9 +277,8 @@ Format : Use cases opérationnels
 1. L'utilisateur demande une évaluation de la complétude ou une synthèse des lacunes pour son périmètre.
 2. L'agent évalue le taux de remplissage des colonnes clés : disponible, partielle ou absente.
 3. L'agent identifie les variables critiques inutilisables et explique quelle analyse devient impossible pour chacune.
-4. Si OBIS est activé et la zone géographique définie, l'agent compare la couverture locale aux données de référence disponibles dans OBIS pour le périmètre.
-5. L'agent produit un rapport de lacunes structuré distinguant ce qui est disponible, manquant et inutilisable.
-6. L'utilisateur exporte le rapport ou affine le périmètre.
+4. L'agent produit un rapport de lacunes structuré distinguant ce qui est disponible, manquant et inutilisable.
+5. L'utilisateur exporte le rapport ou affine le périmètre.
 
 **Extensions :**
 
@@ -287,11 +286,7 @@ Format : Use cases opérationnels
 
 3a. Variable critique absente partout : l'agent la marque comme bloquante, indique l'alternative disponible si elle existe.
 
-4a. OBIS non activé : l'agent produit la synthèse sans comparaison externe et le signale explicitement.
-
-4b. Zone ou période non définies : l'agent ne peut pas comparer avec OBIS et demande de préciser le périmètre.
-
-5a. Lacunes spatio-temporelles ou absences taxonomiques déjà produites (UC-SL-11 ext. 4a, UC-SL-12 ext. 3b) : l'agent les intègre dans la synthèse globale si disponibles.
+4a. Lacunes spatio-temporelles ou absences taxonomiques déjà produites (UC-SL-11 ext. 4a, UC-SL-12 ext. 3b) : l'agent les intègre dans la synthèse globale si disponibles.
 
 **Critères d'acceptation :**
 
@@ -300,9 +295,6 @@ Format : Use cases opérationnels
 
 **Étant donné** une variable critique absente
 **Alors** l'agent l'identifie comme bloquante et explique quelle analyse est impossible
-
-**Étant donné** OBIS activé et zone définie **Quand** la comparaison externe est demandée
-**Alors** l'agent produit une synthèse de ce que OBIS couvre que les données locales ne couvrent pas, avec sources citées
 
 **Étant donné** rapport de lacunes produit
 **Alors** il distingue explicitement disponible, manquant et inutilisable, et est exportable comme support de demande de subvention
