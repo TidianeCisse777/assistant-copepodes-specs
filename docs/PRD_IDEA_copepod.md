@@ -88,7 +88,7 @@ Aucune fonctionnalité n'est réservée à l'un ou l'autre même s'ils auraient 
 stateDiagram-v2
     [*] --> MC
 
-    state "Mode Contexte\ndiscussion guidée — aucune exécution" as MC {
+    state "Mode Contexte" as MC {
         [*] --> Chargement
         Chargement --> Inspection : données chargées
         Inspection --> Questions : données comprises
@@ -97,7 +97,7 @@ stateDiagram-v2
         Reformulation --> [*] : contexte validé
     }
 
-    state "Mode Analyse\ncode exécuté — rapport statique" as MA {
+    state "Mode Analyse" as MA {
         [*] --> Planification
         Planification --> Bloque : colonne manquante
         Bloque --> Planification : utilisateur complète
