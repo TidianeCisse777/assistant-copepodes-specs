@@ -98,10 +98,10 @@ stateDiagram-v2
     }
 
     state "Mode Analyse" as MA {
-        [*] --> Planification
-        Planification --> Bloque : colonne manquante
-        Bloque --> Planification : utilisateur complète
-        Planification --> Generation : paramètres validés
+        [*] --> Demande
+        Demande --> Bloque : colonne manquante
+        Bloque --> Demande : utilisateur complète
+        Demande --> Generation : paramètres validés
         Generation --> Graphique : succès
         Graphique --> [*]
     }
