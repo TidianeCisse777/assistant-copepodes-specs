@@ -113,10 +113,12 @@ stateDiagram-v2
 
 ```mermaid
 flowchart LR
-    A[Charger\nles données] --> B[Décrire le\ncontexte scientifique]
-    B --> C[Valider\nle contexte]
-    C --> D[Demander\nles graphiques]
-    D --> E[Exporter\nou livrable]
+    A[Charger\nles données] --> B[Agent inspecte\nles données]
+    B --> C[Décrire le\ncontexte scientifique]
+    C --> D[Valider\nle contexte]
+    D --> E[Demander\nles graphiques]
+    E --> F[Générer\nl'artefact]
+    F --> G[Exporter\nou livrable]
 ```
 
 ### 4.3 Use Cases
@@ -256,7 +258,6 @@ flowchart TD
 | **CTD** | Conductivity-Temperature-Depth. Instrument de mesure des propriétés physiques de l'eau. |
 | **obj_orig_id** | Identifiant d'objet EcoTaxa. Clé de jointure vers le profil EcoPart (`ips_007_899` → `ips_007`). |
 | **Statut V** | Annotation validée par un humain dans EcoTaxa. Seul statut utilisé pour les graphiques taxonomiques par défaut. |
-| **ind/m³** | Individus par mètre cube — unité de concentration standard pour le zooplancton. |
 | **Corpus RAG** | 5 documents de référence : colonnes_sources, colonnes_instruments, copepodes_domaine, methodes_calcul, sources_en_ligne. |
-| **Mode En Ligne** | État de session dans lequel une source externe est activée. Activé source par source. |
+| **Mode En Ligne** | État de session dans lequel une source externe est activée.  |
 | **Artefact** | Fichier produit et sauvegardé par l'assistant (graphique PNG/SVG, table de travail, résumé). |
