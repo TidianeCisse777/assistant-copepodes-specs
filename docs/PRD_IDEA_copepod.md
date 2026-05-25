@@ -89,7 +89,9 @@ stateDiagram-v2
     [*] --> MC
 
     state "Mode Contexte\ndiscussion guidée — aucune exécution" as MC {
-        [*] --> Questions
+        [*] --> Chargement
+        Chargement --> Inspection : données chargées
+        Inspection --> Questions : données comprises
         Questions --> Reformulation : contexte décrit
         Reformulation --> Questions : utilisateur corrige
         Reformulation --> [*] : contexte validé
