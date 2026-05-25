@@ -4,6 +4,18 @@
 # Pour les specs complètes : STAGE ULAVAL/
 # Pour les tools et l'implémentation : TOOLS_SPEC.js, IMPLEMENTATION_ORDER.md
 
+## Problème
+
+Générer un graphique depuis les données copépodes NeoLab prend trop de temps : écrire le code de visualisation et manipuler les données (colonnes, jointures, nettoyage) sont les deux frictions principales. Ce n'est pas une question de compétence — les chercheurs savent coder — c'est une question d'efficacité.
+
+## Solution
+
+Adapter la plateforme IDEA (Université d'Hawaii) aux données NeoLab. Trois choses changent : le system prompt (domaine copépodes, règles, sources), les outils (manipulation des données et génération de graphiques pour les sources NeoLab), et la documentation (corpus RAG copépodes). Le runtime IDEA est conservé tel quel.
+
+## Acteur
+
+**Chercheur NeoLab** — professeur ou étudiant de NeoLab (Université Laval) qui travaille avec des données de copépodes marins. Aucune fonctionnalité n'est réservée à l'un ou l'autre : même besoin, même outil.
+
 ## Glossaire
 
 ### Use case d'analyse standardisé
