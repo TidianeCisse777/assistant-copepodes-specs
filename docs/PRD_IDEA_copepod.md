@@ -1,7 +1,7 @@
 ---
 title: "Assistant graphique copépodes — Document des exigences produit"
 subtitle: "Intégration dans la plateforme IDEA · NeoLab · Université Laval"
-author: "Flinguee75"
+author: "Tidiane Cissé"
 date: "2026-05-25"
 lang: fr
 ---
@@ -14,7 +14,7 @@ lang: fr
 | **Projet** | Assistant graphique copépodes — NeoLab, Université Laval |
 | **Version** | 1.0 |
 | **Date** | 2026-05-25 |
-| **Auteur** | Flinguee75 |
+| **Auteur** | Tidiane Cissé |
 | **Statut** | Approuvé — prêt pour implémentation |
 | **Plateforme cible** | IDEA (fork FastAPI multi-agent) |
 
@@ -24,10 +24,10 @@ lang: fr
 
 | Version | Date | Auteur | Description |
 |---|---|---|---|
-| 0.1 | 2026-03 | Flinguee75 | Use cases V1 initiaux (18 UC) |
-| 0.2 | 2026-04 | Flinguee75 | Capacités agent V1 (14 capacités, 29 contraintes) |
-| 0.3 | 2026-05 | Flinguee75 | Addendum V2 : identité graphique, suppression OBIS/CMEMS, ajout OGSL/Bio-ORACLE |
-| 1.0 | 2026-05-25 | Flinguee75 | PRD consolidé — arbitrages CONTEXT.md vs data.js résolus |
+| 0.1 | 2026-03 | Tidiane Cissé | Use cases V1 initiaux (18 UC) |
+| 0.2 | 2026-04 | Tidiane Cissé | Capacités agent V1 (14 capacités, 29 contraintes) |
+| 0.3 | 2026-05 | Tidiane Cissé | Addendum V2 : identité graphique, suppression OBIS/CMEMS, ajout OGSL/Bio-ORACLE |
+| 1.0 | 2026-05-25 | Tidiane Cissé | PRD consolidé — arbitrages CONTEXT.md vs data.js résolus |
 
 ---
 
