@@ -13,8 +13,34 @@ lang: fr
 |---|---|
 | **Auteur** | Tidiane Cissé |
 | **Version** | 1.1 — 2026-05-25 |
-| **Statut** | Approuvé — prêt pour implémentation |
+| **Statut** |Partiellement Approuvé |
 | **Projet** | NeoLab, Université Laval |
+
+---
+
+## À propos de ce document
+
+Ce document décrit les exigences produit de l'assistant graphique copépodes — un profil de la plateforme IDEA (Université d'Hawaii) adapté aux données marines de NeoLab (Université Laval).
+
+Il s'adresse aux chercheurs NeoLab qui utiliseront l'outil, aux développeurs qui l'implémentent, et à toute personne qui veut comprendre ce que l'assistant fait, pour qui, et selon quelles règles.
+
+Il ne décrit pas comment le système est construit techniquement — pour ça, voir `ARCHITECTURE.md` et `docs/adr/`.
+
+---
+
+## Table des matières
+
+1. [Problème](#1-problème)
+2. [Solution](#2-solution)
+3. [Acteur](#3-acteur)
+4. [Vue d'ensemble](#4-vue-densemble)
+   - 4.1 [Modes de travail](#41-modes-de-travail)
+   - 4.2 [Cycle de vie d'une session](#42-cycle-de-vie-dune-session)
+   - 4.3 [Use Cases](#43-use-cases)
+5. [Use Cases détaillés](#5-use-cases)
+6. [Sources de données](#6-sources-de-données)
+7. [Contraintes](#7-contraintes)
+8. [Glossaire](#8-glossaire)
 
 ---
 
