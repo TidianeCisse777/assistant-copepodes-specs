@@ -115,12 +115,12 @@ const USE_CASES = {
     title: "Interroger des sources en ligne",
     category: "data",
     objectives: ["SLA", "SLB"],
-    description: "L'utilisateur active une source en ligne (EcoTaxa, EcoPart, OBIS, CMEMS, Amundsen CTD via ERDDAP) et lance une requête paramétrée.",
-    actors: ACTORS.chercheur,
+    description: "L'utilisateur active une source en ligne (EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE) et lance une requête paramétrée.",
+    actors: ACTORS.tous,
     preconditions: "Source identifiée, paramètres de requête définis, credentials disponibles si requis.",
     flow: "1. L'utilisateur sélectionne la source et les paramètres.\n2. L'agent valide les paramètres contre les contraintes de la source.\n3. Les données sont récupérées et chargées dans la session.",
     postconditions: "Données en ligne disponibles, profil affiché.",
-    scope: "Sources : EcoTaxa API, EcoPart API, ERDDAP (Amundsen CTD), OBIS API, CMEMS (compte gratuit requis)."
+    scope: "Sources : EcoTaxa API, EcoPart API, ERDDAP (Amundsen CTD), OGSL, Bio-ORACLE."
   },
   "UC-SL-05": {
     title: "Valider les données chargées",
@@ -138,7 +138,7 @@ const USE_CASES = {
     category: "data",
     objectives: ["SLA", "SLB"],
     description: "L'agent applique des transformations de nettoyage validées par l'utilisateur (filtrage, renommage, conversion d'unités) sur une copie des données.",
-    actors: ACTORS.chercheur,
+    actors: ACTORS.tous,
     preconditions: "Données validées, méthode de nettoyage soumise et approuvée.",
     flow: "1. L'agent propose une méthode de nettoyage.\n2. L'utilisateur valide ou modifie.\n3. L'agent applique sur une copie (jamais les originaux).\n4. Rapport des transformations appliquées.",
     postconditions: "Données nettoyées disponibles, transformations documentées.",
@@ -160,7 +160,7 @@ const USE_CASES = {
     category: "science",
     objectives: ["SLA", "SLB"],
     description: "L'agent présente une reformulation structurée du contexte scientifique. L'utilisateur valide ou corrige avant de passer à l'analyse.",
-    actors: ACTORS.chercheur,
+    actors: ACTORS.tous,
     preconditions: "Contexte décrit (UC-SL-07 complété).",
     flow: "1. L'agent présente : question reformulée, hypothèses, données mobilisées, limites anticipées.\n2. L'utilisateur valide ou corrige.\n3. Validation → transition vers Mode Analyse.",
     postconditions: "Contexte verrouillé, Mode Analyse activable.",
@@ -197,7 +197,7 @@ const USE_CASES = {
     preconditions: "Données avec coordonnées (lat/lon) et dates disponibles.",
     flow: "1. L'agent identifie les variables spatiales et temporelles disponibles.\n2. Il construit les tables de travail.\n3. Il génère les cartes, graphiques temporels et carte des lacunes si demandé.",
     postconditions: "Cartes, séries temporelles et gaps identifiés avec métadonnées.",
-    scope: "OBIS pour contexte géographique global. Extension : carte des zones sans données et timeline des gaps entre campagnes."
+    scope: "Extension : carte des zones sans données et timeline des gaps entre campagnes."
   },
   "UC-SL-12": {
     title: "Analyser la taxonomie, les stades et les absences",
@@ -206,7 +206,7 @@ const USE_CASES = {
     description: "L'agent analyse la composition taxonomique, la répartition par stades, et identifie les espèces attendues dans la zone mais absentes des données.",
     actors: ACTORS.tous,
     preconditions: "Données annotées (statut V — validé) disponibles.",
-    flow: "1. L'agent filtre sur object_annotation_status = V (validé uniquement).\n2. Il analyse la composition par taxon et stade.\n3. Sur demande, il compare avec les espèces attendues via OBIS et corpus RAG.\n4. Il signale les absences et les limites d'identification.",
+    flow: "1. L'agent filtre sur object_annotation_status = V (validé uniquement).\n2. Il analyse la composition par taxon et stade.\n3. Sur demande, il compare avec les espèces attendues via le corpus RAG.\n4. Il signale les absences et les limites d'identification.",
     postconditions: "Tableaux de composition taxonomique, absences documentées avec niveau de confiance.",
     scope: "C. glacialis vs C. finmarchicus : identification moléculaire requise. Absences : distinguer absence confirmée, biais d'échantillonnage, incertitude (CT-AG-29)."
   },
@@ -225,10 +225,10 @@ const USE_CASES = {
     title: "Évaluer la complétude des données et synthétiser les lacunes",
     category: "science",
     objectives: ["SLB"],
-    description: "L'agent évalue le taux de remplissage des colonnes clés, identifie les variables critiques inutilisables, compare avec OBIS si activé, et produit un rapport de lacunes exportable.",
-    actors: ACTORS.chercheur,
+    description: "L'agent évalue le taux de remplissage des colonnes clés, identifie les variables critiques inutilisables et produit un rapport de lacunes exportable.",
+    actors: ACTORS.tous,
     preconditions: "Données chargées, contexte validé, mode Analyse actif.",
-    flow: "1. L'agent évalue le taux de remplissage par colonne clé.\n2. Il identifie les variables critiques inutilisables et explique les analyses bloquées.\n3. Si OBIS activé et zone définie, il compare la couverture locale aux données de référence.\n4. Il produit un rapport distinguant disponible / manquant / inutilisable.",
+    flow: "1. L'agent évalue le taux de remplissage par colonne clé.\n2. Il identifie les variables critiques inutilisables et explique les analyses bloquées.\n3. Il produit un rapport distinguant disponible / manquant / inutilisable.",
     postconditions: "Rapport de lacunes structuré, exportable pour demande de subvention.",
     scope: "Lacunes spatio-temporelles → UC-SL-11. Absences taxonomiques → UC-SL-12. Ce UC : complétude des variables et synthèse globale."
   },
@@ -237,7 +237,7 @@ const USE_CASES = {
     category: "science",
     objectives: ["SLA"],
     description: "L'agent calcule une variable dérivée (concentration, biomasse, indice de plénitude lipidique, longueur prosome) avec validation de la méthode avant exécution.",
-    actors: ACTORS.chercheur,
+    actors: ACTORS.tous,
     preconditions: "Colonnes source disponibles, méthode de calcul identifiée.",
     flow: "1. L'utilisateur spécifie la variable à calculer.\n2. L'agent vérifie la disponibilité des colonnes requises.\n3. Il soumet la méthode pour validation.\n4. Il exécute et retourne le résultat documenté.",
     postconditions: "Variable calculée, formule et colonnes source documentées.",
@@ -259,7 +259,7 @@ const USE_CASES = {
     category: "output",
     objectives: ["SLA", "SLB"],
     description: "L'agent génère un livrable structuré (contexte, résultats, figures, méthodes, citations, limites) pour révision humaine ou demande de subvention.",
-    actors: ACTORS.chercheur,
+    actors: ACTORS.tous,
     preconditions: "Analyses complétées, contexte validé.",
     flow: "1. L'agent sélectionne les analyses à inclure.\n2. Il génère : contexte, résultats par use case, figures, méthodes, citations, limites.\n3. Il signale explicitement tout résultat manquant ou non concluant.",
     postconditions: "Livrable structuré disponible pour révision humaine.",
@@ -278,7 +278,7 @@ const USE_CASES = {
 const CAPABILITIES = {
   "AG-V1-01": {
     title: "Comprendre les sources disponibles",
-    description: "L'agent distingue les sources activées (EcoTaxa, EcoPart, Amundsen CTD, OBIS, CMEMS, fichiers lab) et explique leurs contenus, formats, clés de jointure et limitations.",
+    description: "L'agent distingue les sources activées (EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE, fichiers labo) et explique leurs contenus, formats, clés de jointure et limitations.",
     usecases: ["UC-SL-04", "UC-SL-14"],
     constraints: ["CT-AG-01", "CT-AG-08"],
     ragDocs: ["colonnes_sources", "sources_en_ligne"],
@@ -306,7 +306,7 @@ const CAPABILITIES = {
     usecases: ["UC-SL-04", "UC-SL-13"],
     constraints: ["CT-AG-08", "CT-AG-11", "CT-AG-12"],
     ragDocs: ["sources_en_ligne"],
-    tools: ["sources.query_ecotaxa", "sources.query_amundsen_ctd", "sources.query_obis"]
+    tools: ["sources.query_ecotaxa", "sources.query_amundsen_ctd", "sources.query_ogsl", "sources.query_bio_oracle"]
   },
   "AG-V1-05": {
     title: "Expliquer les colonnes et unités",
@@ -350,11 +350,11 @@ const CAPABILITIES = {
   },
   "AG-V1-10": {
     title: "Évaluer la complétude et synthétiser les lacunes",
-    description: "L'agent évalue le taux de remplissage des colonnes clés, identifie les variables critiques inutilisables, compare avec OBIS si activé, et produit un rapport de lacunes structuré exportable.",
+    description: "L'agent évalue le taux de remplissage des colonnes clés, identifie les variables critiques inutilisables et produit un rapport de lacunes structuré exportable.",
     usecases: ["UC-SL-14"],
     constraints: ["CT-AG-01", "CT-AG-03", "CT-AG-29"],
     ragDocs: ["sources_en_ligne", "copepodes_domaine"],
-    tools: ["completeness.evaluate", "completeness.compare_obis"]
+    tools: ["completeness.evaluate"]
   },
   "AG-V1-11": {
     title: "Répondre aux questions de domaine copépodes",
@@ -434,7 +434,7 @@ const RAG_DOCS = {
     description: "Où trouver chaque source, méthodes d'accès, détails API, comptes requis. Arbre de décision : quelle source pour quelle question ? Aucun credential stocké dans ce fichier.",
     chunks: 7,
     usage: "Quand l'utilisateur demande « où est-ce que je trouve X ? », « ai-je besoin d'un compte ? », « quel jeu de données utiliser ? »",
-    keyContent: "EcoTaxa/EcoPart : API avec token. ERDDAP Amundsen : accès public. OBIS : API publique. CMEMS : compte gratuit requis. Projets EcoTaxa : 1165 (UVP5 Amundsen), 2331 (LOKI)"
+    keyContent: "EcoTaxa/EcoPart : API avec token. ERDDAP Amundsen : accès public. OGSL : accès public. Bio-ORACLE : accès public. Projets EcoTaxa : 1165 (UVP5 Amundsen), 2331 (LOKI)"
   }
 };
 
@@ -472,7 +472,7 @@ const CONSTRAINTS = [
   { id: "CT-AG-26", title: "Vocabulaire clinique, non anthropomorphique", description: "Pas de « je », pas d'expressions de chaleur ou d'enthousiasme. Vocabulaire technique, neutre, clinique." },
   { id: "CT-AG-27", title: "Rendre l'incertitude visible", description: "Les niveaux de confiance sont affichés explicitement (fiable / exploratoire / impossible). Code couleur si applicable." },
   { id: "CT-AG-28", title: "Encadrer la réutilisation des livrables", description: "Les livrables incluent sources, méthodes et limites. L'utilisateur est informé des conditions de réutilisation des résultats." },
-  { id: "CT-AG-29", title: "Contextualiser les absences lors des comparaisons de couverture", description: "Lors d'une comparaison locale vs OBIS ou corpus RAG, distinguer explicitement : absence confirmée, absence par biais d'échantillonnage, et absence incertaine. Signaler les biais systématiques arctiques (données hivernales, C. glacialis vs C. finmarchicus). Concerne UC-SL-12 ext. 3b, UC-SL-14, AG-V1-10, AG-V1-11." }
+  { id: "CT-AG-29", title: "Contextualiser les absences lors des comparaisons de couverture", description: "Lors d'une comparaison locale vs corpus RAG, distinguer explicitement : absence confirmée, absence par biais d'échantillonnage, et absence incertaine. Signaler les biais systématiques arctiques (données hivernales, C. glacialis vs C. finmarchicus). Concerne UC-SL-12 ext. 3b, UC-SL-14, AG-V1-10, AG-V1-11." }
 ];
 
 

@@ -1,0 +1,179 @@
+# Profil null/constance des colonnes
+
+TSV : `ecotaxa_export__TSV_42_20260525_1341.tsv`
+Lignes : 84668
+Colonnes : 161
+
+## Colonnes toujours nulles
+
+- `object_link`
+- `complement_info`
+- `sample_dataportal_descriptor`
+- `sample_barcode`
+- `acq_exposure`
+- `classif_auto_id`
+- `classif_auto_score`
+- `classif_auto_when`
+- `object_sunpos`
+
+## Colonnes constantes ou quasi non informatives
+
+- `object_annotation_status` : 84668 non null, 0 null, valeur unique = `validated`
+- `object_xmg5` : 84668 non null, 0 null, valeur unique = `0.0`
+- `object_ymg5` : 84668 non null, 0 null, valeur unique = `0.0`
+- `object_compentropy` : 84668 non null, 0 null, valeur unique = `0.0`
+- `object_compmean` : 84668 non null, 0 null, valeur unique = `0.0`
+- `object_compslope` : 84668 non null, 0 null, valeur unique = `0.0`
+- `object_compm1` : 84668 non null, 0 null, valeur unique = `0.0`
+- `object_compm2` : 84668 non null, 0 null, valeur unique = `0.0`
+- `object_compm3` : 84668 non null, 0 null, valeur unique = `0.0`
+- `object_tag` : 84668 non null, 0 null, valeur unique = `1.0`
+- `sample_cruise` : 84668 non null, 0 null, valeur unique = `sn008_green_2015`
+- `sample_ship` : 84668 non null, 0 null, valeur unique = `ice_camp`
+- `sample_stationid` : 84668 non null, 0 null, valeur unique = `qikiqtarjuaq`
+- `sample_bottomdepth` : 84668 non null, 0 null, valeur unique = `360`
+- `sample_dn` : 84668 non null, 0 null, valeur unique = `d`
+- `sample_winddir` : 84668 non null, 0 null, valeur unique = `0`
+- `sample_seastate` : 84668 non null, 0 null, valeur unique = `0`
+- `sample_yoyo` : 84668 non null, 0 null, valeur unique = `n`
+- `acq_instrument` : 84668 non null, 0 null, valeur unique = `uvp5`
+- `acq_file_description` : 4054 non null, 80614 null, valeur unique = `mixtfd`
+- `acq_tasktype` : 80989 non null, 3679 null, valeur unique = `2.0`
+- `acq_disktype` : 80989 non null, 3679 null, valeur unique = `0.0`
+- `acq_shutterspeed` : 80989 non null, 3679 null, valeur unique = `12.0`
+- `acq_gain` : 80989 non null, 3679 null, valeur unique = `6.0`
+- `acq_threshold` : 80989 non null, 3679 null, valeur unique = `21.0`
+- `acq_smbase` : 80989 non null, 3679 null, valeur unique = `0.0`
+- `acq_smzoo` : 80989 non null, 3679 null, valeur unique = `30.0`
+- `acq_erase_border_blob` : 80989 non null, 3679 null, valeur unique = `0.0`
+- `acq_choice` : 80989 non null, 3679 null, valeur unique = `1.0`
+- `acq_ratio` : 80989 non null, 3679 null, valeur unique = `3.0`
+
+## Colonnes avec au moins 90% de valeurs nulles
+
+- `acq_file_description` : 95.2% null, 4054 non null, valeurs = `mixtfd`
+
+## Colonnes variables avec moins de 90% de nulls
+
+- `object_id` : 0.0% null, 84668 valeurs distinctes
+- `object_lat` : 0.0% null, 2 valeurs distinctes
+- `object_lon` : 0.0% null, 2 valeurs distinctes
+- `object_date` : 0.0% null, 30 valeurs distinctes
+- `object_time` : 0.0% null, 32 valeurs distinctes
+- `object_depth_min` : 0.0% null, 3575 valeurs distinctes
+- `object_depth_max` : 0.0% null, 3575 valeurs distinctes
+- `object_annotation_person_name` : 0.0% null, 15 valeurs distinctes
+- `object_annotation_person_email` : 0.0% null, 15 valeurs distinctes
+- `object_annotation_date` : 0.0% null, 40 valeurs distinctes
+- `object_annotation_time` : 0.0% null, 2086 valeurs distinctes
+- `object_annotation_category` : 0.0% null, 39 valeurs distinctes
+- `object_annotation_hierarchy` : 0.0% null, 39 valeurs distinctes
+- `object_area` : 0.0% null, 5248 valeurs distinctes
+- `object_mean` : 0.0% null, 6328 valeurs distinctes
+- `object_stddev` : 0.0% null, 25951 valeurs distinctes
+- `object_mode` : 0.0% null, 102 valeurs distinctes
+- `object_min` : 0.0% null, 234 valeurs distinctes
+- `object_max` : 0.0% null, 8 valeurs distinctes
+- `object_x` : 0.0% null, 10412 valeurs distinctes
+- `object_y` : 0.0% null, 7135 valeurs distinctes
+- `object_xm` : 0.0% null, 10367 valeurs distinctes
+- `object_ym` : 0.0% null, 7139 valeurs distinctes
+- `object_perim.` : 0.0% null, 9515 valeurs distinctes
+- `object_bx` : 0.0% null, 183 valeurs distinctes
+- `object_by` : 0.0% null, 137 valeurs distinctes
+- `object_width` : 0.0% null, 219 valeurs distinctes
+- `object_height` : 0.0% null, 185 valeurs distinctes
+- `object_major` : 0.0% null, 1410 valeurs distinctes
+- `object_minor` : 0.0% null, 1027 valeurs distinctes
+- `object_angle` : 0.0% null, 1801 valeurs distinctes
+- `object_circ.` : 0.0% null, 972 valeurs distinctes
+- `object_feret` : 0.0% null, 1425 valeurs distinctes
+- `object_intden` : 0.0% null, 47493 valeurs distinctes
+- `object_median` : 0.0% null, 91 valeurs distinctes
+- `object_skew` : 0.0% null, 5828 valeurs distinctes
+- `object_kurt` : 0.0% null, 13899 valeurs distinctes
+- `object_%area` : 0.0% null, 2796 valeurs distinctes
+- `object_xstart` : 0.0% null, 255 valeurs distinctes
+- `object_ystart` : 0.0% null, 137 valeurs distinctes
+- `object_area_exc` : 0.0% null, 866 valeurs distinctes
+- `object_fractal` : 0.0% null, 944 valeurs distinctes
+- `object_skelarea` : 0.0% null, 2127 valeurs distinctes
+- `object_slope` : 0.0% null, 2376 valeurs distinctes
+- `object_histcum1` : 0.0% null, 224 valeurs distinctes
+- `object_histcum2` : 0.0% null, 94 valeurs distinctes
+- `object_histcum3` : 0.0% null, 26 valeurs distinctes
+- `object_nb1` : 0.0% null, 47 valeurs distinctes
+- `object_nb2` : 0.0% null, 67 valeurs distinctes
+- `object_nb3` : 0.0% null, 80 valeurs distinctes
+- `object_symetrieh` : 0.0% null, 5856 valeurs distinctes
+- `object_symetriev` : 0.0% null, 5848 valeurs distinctes
+- `object_symetriehc` : 0.0% null, 35 valeurs distinctes
+- `object_symetrievc` : 0.0% null, 37 valeurs distinctes
+- `object_convperim` : 0.0% null, 554 valeurs distinctes
+- `object_convarea` : 0.0% null, 5719 valeurs distinctes
+- `object_fcons` : 0.0% null, 15094 valeurs distinctes
+- `object_thickr` : 0.0% null, 5222 valeurs distinctes
+- `object_areai` : 0.0% null, 4790 valeurs distinctes
+- `object_esd` : 0.0% null, 5536 valeurs distinctes
+- `object_elongation` : 0.0% null, 2087 valeurs distinctes
+- `object_range` : 0.0% null, 238 valeurs distinctes
+- `object_meanpos` : 0.0% null, 33901 valeurs distinctes
+- `object_centroids` : 0.0% null, 14 valeurs distinctes
+- `object_cv` : 0.0% null, 23684 valeurs distinctes
+- `object_sr` : 0.0% null, 3227 valeurs distinctes
+- `object_perimareaexc` : 53.5% null, 13114 valeurs distinctes
+- `object_feretareaexc` : 53.5% null, 8547 valeurs distinctes
+- `object_perimferet` : 0.0% null, 7797 valeurs distinctes
+- `object_perimmajor` : 0.0% null, 7869 valeurs distinctes
+- `object_circex` : 0.0% null, 13323 valeurs distinctes
+- `object_cdexc` : 53.5% null, 508 valeurs distinctes
+- `object_kurt_mean` : 4.3% null, 21144 valeurs distinctes
+- `object_skew_mean` : 4.3% null, 12761 valeurs distinctes
+- `object_convperim_perim` : 4.3% null, 10057 valeurs distinctes
+- `object_convarea_area` : 4.3% null, 22109 valeurs distinctes
+- `object_symetrieh_area` : 4.3% null, 7587 valeurs distinctes
+- `object_symetriev_area` : 4.3% null, 7566 valeurs distinctes
+- `object_nb1_area` : 4.3% null, 5670 valeurs distinctes
+- `object_nb2_area` : 4.3% null, 7590 valeurs distinctes
+- `object_nb3_area` : 4.3% null, 7992 valeurs distinctes
+- `object_nb1_range` : 4.3% null, 953 valeurs distinctes
+- `object_nb2_range` : 4.3% null, 1156 valeurs distinctes
+- `object_nb3_range` : 4.3% null, 1153 valeurs distinctes
+- `object_median_mean` : 4.3% null, 4220 valeurs distinctes
+- `object_median_mean_range` : 4.3% null, 28023 valeurs distinctes
+- `object_skeleton_area` : 4.3% null, 20440 valeurs distinctes
+- `sample_id` : 0.0% null, 32 valeurs distinctes
+- `sample_profileid` : 0.0% null, 32 valeurs distinctes
+- `sample_ctdrosettefilename` : 0.0% null, 30 valeurs distinctes
+- `sample_windspeed` : 0.0% null, 3 valeurs distinctes
+- `sample_nebuloussness` : 0.0% null, 8 valeurs distinctes
+- `sample_comment` : 0.0% null, 4 valeurs distinctes
+- `process_id` : 0.0% null, 32 valeurs distinctes
+- `process_software` : 0.0% null, 2 valeurs distinctes
+- `process_date` : 0.0% null, 27 valeurs distinctes
+- `process_time` : 0.0% null, 32 valeurs distinctes
+- `process_first_img` : 0.0% null, 32 valeurs distinctes
+- `process_last_img` : 0.0% null, 2 valeurs distinctes
+- `process_pressure_gain` : 0.0% null, 2 valeurs distinctes
+- `process_calibration` : 0.0% null, 2 valeurs distinctes
+- `process_pixel` : 0.0% null, 2 valeurs distinctes
+- `process_upper` : 0.0% null, 2 valeurs distinctes
+- `process_gamma` : 0.0% null, 2 valeurs distinctes
+- `process_esdmin` : 0.0% null, 2 valeurs distinctes
+- `process_esdmax` : 0.0% null, 2 valeurs distinctes
+- `acq_id` : 0.0% null, 32 valeurs distinctes
+- `acq_sn` : 0.0% null, 2 valeurs distinctes
+- `acq_volimage` : 0.0% null, 2 valeurs distinctes
+- `acq_aa` : 0.0% null, 2 valeurs distinctes
+- `acq_exp` : 0.0% null, 2 valeurs distinctes
+- `acq_pixel` : 0.0% null, 2 valeurs distinctes
+- `objid` : 0.0% null, 84668 valeurs distinctes
+- `processid_internal` : 0.0% null, 32 valeurs distinctes
+- `acq_id_internal` : 0.0% null, 32 valeurs distinctes
+- `sample_id_internal` : 0.0% null, 32 valeurs distinctes
+- `classif_id` : 0.0% null, 39 valeurs distinctes
+- `classif_who` : 0.0% null, 15 valeurs distinctes
+- `classif_auto_name` : 0.0% null, 26 valeurs distinctes
+- `object_random_value` : 0.0% null, 84666 valeurs distinctes
+- `sample_lat` : 0.0% null, 2 valeurs distinctes
+- `sample_long` : 0.0% null, 2 valeurs distinctes

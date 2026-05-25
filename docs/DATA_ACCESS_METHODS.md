@@ -36,6 +36,7 @@ Projets testes :
 ```text
 2331  LOKI - copepod lipids
 1165  UVP5 IPS Amundsen 2018
+42    UVP5 GREEN EDGE Ice Camp 2015
 ```
 
 ### Acces sans compte
@@ -77,12 +78,14 @@ Script source :
 
 ```text
 ecotaxa_loki_probe/src/export_loki_authenticated.py
+ecotaxa_green_edge_probe/src/export_green_edge_authenticated.py
 ```
 
 Inspection :
 
 ```text
 ecotaxa_loki_probe/src/inspect_loki_export.py
+ecotaxa_green_edge_probe/src/inspect_green_edge_export.py
 ```
 
 ### Donnees obtenues
@@ -106,6 +109,14 @@ date/time
 lat/lon
 taxon / classe objet
 morphometrie image fre_*
+```
+
+Projet UVP5 GREEN EDGE Ice Camp 2015 `42` :
+
+```text
+page projet publique confirmee
+export authentifie prepare via API EcoTaxa
+sorties isolees dans ecotaxa_green_edge_probe/outputs/
 ```
 
 ### Implication pour tools
@@ -429,7 +440,7 @@ amundsen_data_probe/outputs/report_ecopart_amundsen_compare.md
 TSV exemples :
 
 ```text
-examples_tsv/loki_2331_ecotaxa_export_sample_50.tsv
+examples_tsv/ecotaxa_sample_50.tsv
 examples_tsv/uvp_amundsen_1165_ecotaxa_object_sample.tsv
 examples_tsv/uvp_amundsen_105_ecopart_particles_reduced.tsv
 examples_tsv/uvp_amundsen_1165_105_join_preview.tsv

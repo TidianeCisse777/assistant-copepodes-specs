@@ -141,7 +141,7 @@ examples_tsv/
 Contient des extraits légers et partageables :
 
 ```text
-loki_2331_ecotaxa_export_sample_50.tsv
+ecotaxa_sample_50.tsv
 uvp_amundsen_1165_ecotaxa_object_sample.tsv
 uvp_amundsen_1165_105_join_preview.tsv
 uvp_amundsen_105_ecopart_particles_reduced.tsv

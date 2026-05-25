@@ -1,0 +1,8 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+outputs/raw/login*
+outputs/raw/*token*
+outputs/raw/
+outputs/clean/*.tsv

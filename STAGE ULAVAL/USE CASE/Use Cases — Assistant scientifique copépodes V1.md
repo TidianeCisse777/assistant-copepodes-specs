@@ -473,7 +473,7 @@
 
 3a. Annotations non validées : le système signale que l'analyse est exploratoire.
 
-3b. L'utilisateur demande les absences taxonomiques : le système compare la liste des taxons observés aux espèces documentées pour la zone géographique définie, à partir du corpus RAG copépodes et de OBIS si activé. Il liste les espèces attendues non observées dans les données, en citant la source de référence.
+3b. L'utilisateur demande les absences taxonomiques : le système compare la liste des taxons observés aux espèces documentées pour la zone géographique définie, à partir du corpus RAG copépodes. Il liste les espèces attendues non observées dans les données, en citant la source de référence.
 
 **Critères d'acceptation :**
 
@@ -539,9 +539,8 @@
 1. L'utilisateur demande une évaluation de la complétude de ses données pour son périmètre scientifique.
 2. Le système évalue le taux de remplissage de chaque colonne clé : variables présentes, partiellement remplies, ou absentes.
 3. Le système identifie les variables critiques inutilisables et en explique la conséquence pour les analyses (ex : volume échantillonné absent → calcul de concentration impossible).
-4. Le système compare la couverture locale aux données de référence disponibles dans les sources en ligne activées (OBIS pour la zone et la période définies), si applicable.
-5. Le système produit un rapport de lacunes structuré : ce qui est disponible, ce qui est manquant, ce qui est inutilisable et pourquoi.
-6. L'utilisateur peut utiliser ce rapport pour orienter les analyses, planifier des collectes ou préparer une demande de subvention.
+4. Le système produit un rapport de lacunes structuré : ce qui est disponible, ce qui est manquant, ce qui est inutilisable et pourquoi.
+5. L'utilisateur peut utiliser ce rapport pour orienter les analyses, planifier des collectes ou préparer une demande de subvention.
 
 **Extensions :**
 
@@ -549,11 +548,7 @@
 
 3a. Variable critique manquante partout : le système la signale comme bloquante et indique l'alternative disponible si elle existe.
 
-4a. OBIS non activé : le système produit le rapport sans comparaison externe et le signale explicitement.
-
-4b. Zone ou période non définies : le système ne peut pas effectuer la comparaison externe et demande de préciser le périmètre.
-
-6a. L'utilisateur veut affiner par dimension : le système peut produire un sous-rapport limité à la complétude taxonomique, spatiale, temporelle ou instrumentale.
+4a. L'utilisateur veut affiner par dimension : le système peut produire un sous-rapport limité à la complétude taxonomique, spatiale, temporelle ou instrumentale.
 
 **Critères d'acceptation :**
 
@@ -562,9 +557,6 @@
 
 **Étant donné** une variable critique absente
 **Alors** le système l'identifie comme bloquante, explique quelle analyse est impossible et indique si une alternative existe
-
-**Étant donné** OBIS activé et zone géographique définie **Quand** la comparaison externe est demandée
-**Alors** le système produit une synthèse de ce que OBIS couvre pour la zone que les données locales ne couvrent pas
 
 **Étant donné** rapport de lacunes produit
 **Alors** il distingue explicitement disponible, manquant et inutilisable, et peut être exporté comme support pour une demande de subvention

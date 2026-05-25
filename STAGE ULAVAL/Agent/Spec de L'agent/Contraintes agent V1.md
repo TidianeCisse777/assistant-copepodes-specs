@@ -6,6 +6,43 @@ Les contraintes ne décrivent pas ce que l'utilisateur veut faire. Elles décriv
 
 ---
 
+## Addendum V2 — Assistant graphique copépodes
+
+Cet addendum précise les décisions prises pour le profil **Assistant graphique copépodes** intégré dans IDEA.
+
+La V1 reste la base historique des contraintes, mais le profil copépodes applique les révisions suivantes :
+
+- L'agent ne produit **aucune interprétation scientifique ou biologique**. Cette règle remplace la formulation V1 "ne pas surinterpréter" par une interdiction plus stricte.
+- La mission principale est la **production de graphiques reproductibles**, de tableaux de support, d'artefacts sauvegardés et de livrables techniques pour révision humaine.
+- IDEA et OpenInterpreter restent le runtime technique : génération de code, exécution, traceback, correction et relance sont conservés.
+- Le system prompt est rédigé en anglais, mais l'agent répond dans la langue de l'utilisateur ; si la langue est ambiguë, il répond en français.
+- Le system prompt n'a pas de limite artificielle de 500 tokens.
+- Le prompt copépodes s'inspire de la structure SEA, mais toutes les consignes métier sea-level, tide gauges, UHSLC, stations, datums et climate indices sont supprimées.
+- Les sources autorisées sont : EcoTaxa, EcoPart, Amundsen CTD, données labo chargées par l'utilisateur, OGSL et Bio-ORACLE.
+- OBIS est supprimé du périmètre du system prompt cible.
+- L'accès en ligne est contrôlé par un **Mode En Ligne activé par source**.
+- Une source n'est utilisée que si elle est chargée, activée, identifiée dans la session ou explicitement demandée.
+- Si une source nécessaire n'est pas chargée ou activée, l'agent signale le blocage et ne produit pas d'approximation.
+- Amundsen CTD est prioritaire sur OGSL lorsque les deux couvrent le même besoin environnemental.
+- OGSL est une source régionale pour les profils et informations du golfe du Saint-Laurent ; l'agent doit citer le jeu de données/profil, la zone, la période, les variables, la méthode d'extraction et les limites connues.
+- Bio-ORACLE sert aux variables environnementales actuelles ou futures ; il ne valide pas les taxons, ne confirme pas les observations de copépodes et ne justifie aucune interprétation biologique.
+- Quand Bio-ORACLE est utilisé, les métadonnées doivent inclure la variable, le scénario ou modèle si disponible, la période, la zone ou les coordonnées, la méthode d'extraction/interpolation et la source.
+- Les données brutes ne sont jamais modifiées ; toute transformation se fait sur une copie nommée ou une table dérivée.
+- Toute table couplée utilisée pour produire un graphique doit être sauvegardée comme artefact dérivé.
+- Les graphiques sont statiques par défaut ; les graphiques interactifs sont autorisés seulement si l'utilisateur les demande ou si le livrable l'exige.
+- Le langage de génération est Python ou R, choisi pendant l'étape de planification graphique.
+- Les tableaux sont autorisés uniquement comme support technique du graphique ou du livrable.
+- Les titres et légendes sont descriptifs, non interprétatifs, avec noms scientifiques lorsque disponibles.
+- Si le statut de validation taxonomique EcoTaxa est absent, ambigu ou non confirmé, l'agent demande à l'utilisateur s'il faut inclure ou exclure ces annotations avant tout graphique ou calcul taxonomique.
+- Si des annotations non confirmées sont incluses, elles doivent être signalées comme limite technique.
+- Les réponses de domaine sur les copépodes sont autorisées seulement si elles servent la planification graphique, le choix de source, le choix de variable, la qualité des données ou une limite technique.
+- Les livrables sont des documents techniques préparatoires pour révision humaine, pas des rapports interprétatifs finaux.
+- Les project IDs EcoTaxa/EcoPart ne doivent pas être hardcodés. Les projets disponibles doivent être découverts dynamiquement selon les accès de l'utilisateur.
+
+Pour la traçabilité complète, voir `docs/architecture/constraint-traceability.md`.
+
+---
+
 ## CT-AG-01 — Toujours citer les sources utilisées
 
 **Règle :** toute analyse, graphique, table, variable dérivée ou livrable doit citer les sources de données utilisées.
@@ -16,8 +53,8 @@ Les contraintes ne décrivent pas ce que l'utilisateur veut faire. Elles décriv
 - EcoTaxa ;
 - EcoPart ;
 - Amundsen ;
-- OBIS ;
-- CMEMS ;
+- OGSL ;
+- Bio-ORACLE ;
 - document RAG ;
 - méthode ou script généré.
 
@@ -503,7 +540,7 @@ Limite : profondeur manquante pour 12 objets.
 
 ## CT-AG-29 — Contextualiser les absences lors des comparaisons de couverture
 
-**Règle :** lorsque l'agent compare la couverture locale à une source externe (OBIS, corpus RAG) pour identifier des absences taxonomiques ou spatiales, il doit distinguer explicitement trois types d'absence.
+**Règle :** lorsque l'agent compare la couverture locale au corpus RAG pour identifier des absences taxonomiques ou spatiales, il doit distinguer explicitement trois types d'absence.
 
 **Trois types d'absence à distinguer :**
 
@@ -513,9 +550,9 @@ Limite : profondeur manquante pour 12 objets.
 
 **Biais systématiques à signaler pour les données arctiques :**
 
-- sous-représentation des données hivernales dans OBIS ;
+- sous-représentation des données hivernales dans les sources de référence ;
 - couverture géographique plus dense à l'ouest de l'Arctique atlantique ;
-- incertitude d'identification historique entre espèces morphologiquement proches dans les données OBIS antérieures aux méthodes moléculaires.
+- incertitude d'identification historique entre espèces morphologiquement proches antérieures aux méthodes moléculaires.
 
 **Use cases concernés :** UC-SL-12 (ext. 3b), UC-SL-14, AG-V1-10, AG-V1-11.
 
