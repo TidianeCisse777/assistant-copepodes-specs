@@ -20,11 +20,9 @@ lang: fr
 
 ## À propos de ce document
 
-Ce document décrit les exigences produit de l'assistant graphique copépodes — un profil de la plateforme IDEA (Université d'Hawaii) adapté aux données marines de NeoLab (Université Laval).
+Ce document décrit les exigences produit de l'assistant graphique copépodes — une readaptation de la plateforme IDEA (Université d'Hawaii) adaptée aux besoins du laboratoire NeoLab (Université Laval).
 
 Il s'adresse aux chercheurs NeoLab qui utiliseront l'outil, aux développeurs qui l'implémentent, et à toute personne qui veut comprendre ce que l'assistant fait, pour qui, et selon quelles règles.
-
-Il ne décrit pas comment le système est construit techniquement — pour ça, voir `ARCHITECTURE.md` et `docs/adr/`.
 
 ---
 
@@ -49,23 +47,26 @@ Il ne décrit pas comment le système est construit techniquement — pour ça, 
 | Version | Date | Description |
 |---|---|---|
 | 1.0 | 2026-05-25 | Version initiale |
-| 1.1 | 2026-05-25 | Recentrage sur le problème réel après session grill-with-docs |
 
 ---
 
 ## 1. Problème
 
-Générer un graphique depuis les données copépodes NeoLab prend trop de temps. Les deux frictions principales sont écrire le code de visualisation et manipuler les données (comprendre les colonnes, joindre les sources, nettoyer). Ce n'est pas une question de compétence — les chercheurs savent coder — c'est une question d'efficacité.
+Générer des graphiques depuis les données copépodes NeoLab peut prendre du temps en raison des nombreuses données historiques possédées par le laboratoire.
+Le processus de création de graphiques implique plusieurs étapes, chacune pouvant être source de friction.
+
 
 ---
 
 ## 2. Solution
 
-Adapter la plateforme **IDEA** (Université d'Hawaii) aux données NeoLab. Trois choses changent :
+Adapter la plateforme **IDEA** (Université d'Hawaii) aux besoins de NeoLab. Trois choses changent :
 
 1. **Le system prompt** — domaine copépodes, règles de production graphique, sources NeoLab
-2. **Les outils** — manipulation des données et génération de graphiques pour EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE et fichiers labo
-3. **La documentation** — corpus RAG de 5 documents copépodes
+2. **Le contexte d'utilisation** — Usage dans un contexte de recherche scientifique donc plus de précision dans les réponses
+3. **Les outils** — manipulation des données et génération de graphiques pour EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE et fichiers labo
+4. **La documentation** — La documentation que l'agent va devoir utiliser
+
 
 Le runtime IDEA (exécution de code, gestion de fichiers, export d'artefacts) est conservé tel quel.
 
@@ -73,7 +74,9 @@ Le runtime IDEA (exécution de code, gestion de fichiers, export d'artefacts) es
 
 ## 3. Acteur
 
-**Chercheur NeoLab** — professeur ou étudiant de NeoLab (Université Laval) qui travaille avec des données de copépodes marins. Aucune fonctionnalité n'est réservée à l'un ou l'autre.
+**Chercheur NeoLab** — professeur ou étudiant de NeoLab (Université Laval) qui travaille avec des données de copépodes. 
+
+Aucune fonctionnalité n'est réservée à l'un ou l'autre même s'ils auraient des utilisations différentes.
 
 ---
 
@@ -83,28 +86,27 @@ Le runtime IDEA (exécution de code, gestion de fichiers, export d'artefacts) es
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Contexte : session démarrée
+    [*] --> MC
 
-    Contexte --> Analyse : contexte graphique validé
-    Analyse --> Contexte : l'utilisateur veut reformuler
+    state "Mode Contexte\ndiscussion guidée — aucune exécution" as MC {
+        [*] --> Questions
+        Questions --> Reformulation : contexte décrit
+        Reformulation --> Questions : utilisateur corrige
+        Reformulation --> [*] : contexte validé
+    }
 
-    Analyse --> Bloque : paramètre manquant ou colonne absente
-    Bloque --> Analyse : utilisateur fournit l'information
+    state "Mode Analyse\ncode exécuté — rapport statique" as MA {
+        [*] --> Planification
+        Planification --> Bloque : colonne manquante
+        Bloque --> Planification : utilisateur complète
+        Planification --> Generation : paramètres validés
+        Generation --> Graphique : succès
+        Graphique --> [*]
+    }
 
-    Analyse --> Produit : graphique généré
-    Produit --> Contexte : nouvelle demande
-    Produit --> [*] : session terminée
-
-    note right of Contexte
-        Discussion guidée.
-        Aucune analyse exécutée.
-    end note
-
-    note right of Bloque
-        L'assistant explique
-        ce qui manque et
-        ce qu'il faut faire.
-    end note
+    MC --> MA : contexte validé
+    MA --> MC : nouvelle demande
+    MA --> [*] : session terminée
 ```
 
 ### 4.2 Cycle de vie d'une session
