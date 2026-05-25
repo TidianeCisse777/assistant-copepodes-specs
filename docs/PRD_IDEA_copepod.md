@@ -113,9 +113,10 @@ stateDiagram-v2
 
 ```mermaid
 flowchart LR
-    A[Décrire\nle graphique] --> B[Valider\nle contexte]
-    B --> C[Générer\nle graphique]
-    C --> D[Exporter\nou livrable]
+    A[Charger\nles données] --> B[Décrire le\ncontexte scientifique]
+    B --> C[Valider\nle contexte]
+    C --> D[Demander\nles graphiques]
+    D --> E[Exporter\nou livrable]
 ```
 
 ### 4.3 Use Cases
