@@ -22,7 +22,7 @@ lang: fr
 
 Ce document décrit les exigences produit de l'assistant graphique copépodes — une readaptation de la plateforme IDEA (Université d'Hawaii) adaptée aux besoins du laboratoire NeoLab (Université Laval).
 
-Il s'adresse aux chercheurs NeoLab qui utiliseront l'outil, aux développeurs qui l'implémentent, et à toute personne qui veut comprendre ce que l'assistant fait, pour qui, et selon quelles règles.
+Il s'adresse à toute personne qui veut comprendre ce que l'assistant fait, pour qui, et selon quelles règles.
 
 ---
 
@@ -52,7 +52,8 @@ Il s'adresse aux chercheurs NeoLab qui utiliseront l'outil, aux développeurs qu
 
 ## 1. Problème
 
-Générer des graphiques depuis les données copépodes NeoLab peut prendre du temps en raison des nombreuses données historiques possédées par le laboratoire.
+L'analyse exploratoire faites par le laboratoire NeoLab peut prendre du temps en raison des nombreuses données historiques possédées par le laboratoire.
+
 Le processus de création de graphiques implique plusieurs étapes, chacune pouvant être source de friction.
 
 
@@ -60,15 +61,14 @@ Le processus de création de graphiques implique plusieurs étapes, chacune pouv
 
 ## 2. Solution
 
-Adapter la plateforme **IDEA** (Université d'Hawaii) aux besoins de NeoLab. Trois choses changent :
+Adapter la plateforme **IDEA** (Université d'Hawaii) aux besoins de NeoLab. Plusieurs choses changent :
 
 1. **Le system prompt** — domaine copépodes, règles de production graphique, sources NeoLab
 2. **Le contexte d'utilisation** — Usage dans un contexte de recherche scientifique donc plus de précision dans les réponses
 3. **Les outils** — manipulation des données et génération de graphiques pour EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE et fichiers labo
 4. **La documentation** — La documentation que l'agent va devoir utiliser
 
-
-Le runtime IDEA (exécution de code, gestion de fichiers, export d'artefacts) est conservé tel quel.
+5. **L'interface utilisateur** — L'interface doit être adaptée pour faciliter l'interaction avec les données et les graphiques
 
 ---
 
@@ -158,7 +158,7 @@ flowchart TD
 
 ---
 
-## 5. Use Cases
+## 5. Use Cases détaillés
 
 **UC-00 — S'inscrire** : créer un compte sur la plateforme. Hors périmètre de l'agent.
 
@@ -209,7 +209,6 @@ flowchart TD
 | **Bio-ORACLE** | Variables environnementales actuelles et futures | Public |
 | **Fichier labo** | CSV/Excel fournis par l'utilisateur | Upload direct |
 
-> Chaque source est activée explicitement. L'assistant n'utilise jamais une source non chargée ou non activée. Les project IDs EcoTaxa/EcoPart sont découverts dynamiquement — jamais codés en dur.
 
 ---
 
@@ -258,7 +257,6 @@ flowchart TD
 | **EcoTaxa** | Plateforme de classification d'images de zooplancton (UVP5, LOKI, ZooScan). |
 | **EcoPart** | Plateforme complémentaire à EcoTaxa : profils UVP, volumes échantillonnés, CTD associée. |
 | **CTD** | Conductivity-Temperature-Depth. Instrument de mesure des propriétés physiques de l'eau. |
-| **obj_orig_id** | Identifiant d'objet EcoTaxa. Clé de jointure vers le profil EcoPart (`ips_007_899` → `ips_007`). |
 | **Statut V** | Annotation validée par un humain dans EcoTaxa. Seul statut utilisé pour les graphiques taxonomiques par défaut. |
 | **Corpus RAG** | 5 documents de référence : colonnes_sources, colonnes_instruments, copepodes_domaine, methodes_calcul, sources_en_ligne. |
 | **Mode En Ligne** | État de session dans lequel une source externe est activée.  |
