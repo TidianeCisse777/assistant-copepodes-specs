@@ -1,0 +1,282 @@
+category	field	source_name	storage_slot	display_name	definition
+object	obj.orig_id	orig_id		Identifiant original de l'objet	Identifiant original de l'objet
+object	obj.latitude	latitude		Latitude de l'objet	Latitude de l'objet
+object	obj.longitude	longitude		Longitude de l'objet	Longitude de l'objet
+object	obj.objdate	objdate		Date de l'objet	Date de l'objet
+object	obj.objtime	objtime		Heure de l'objet	Heure de l'objet
+object	obj.depth_min	depth_min		Profondeur minimale	Profondeur minimale
+object	obj.depth_max	depth_max		Profondeur maximale	Profondeur maximale
+object	obj.classif_qual	classif_qual		Statut de classification	Statut de classification
+object	obj.classif_id	classif_id		Identifiant taxonomique retenu	Identifiant taxonomique retenu
+object	obj.classif_who	classif_who		Validateur ou classificateur	Validateur ou classificateur
+object	obj.classif_when	classif_when		Date de classification	Date de classification
+object	obj.classif_auto_id	classif_auto_id		Identifiant taxonomique automatique	Identifiant taxonomique automatique
+object	obj.classif_auto_score	classif_auto_score		Score de classification automatique	Score de classification automatique
+object	obj.classif_auto_when	classif_auto_when		Date de classification automatique	Date de classification automatique
+object	obj.complement_info	complement_info		Information complementaire objet	Information complementaire objet
+object	obj.object_link	object_link		Lien objet	Lien objet
+object	obj.random_value	random_value		Valeur aleatoire interne	Valeur aleatoire interne
+object	obj.sunpos	sunpos		Position solaire calculee	Position solaire calculee
+taxonomy	txo.display_name	display_name		Nom taxonomique affiche	Nom taxonomique affiche
+taxonomy	txo.name	name		Nom taxonomique brut	Nom taxonomique brut
+taxonomy	txo.id	id		Identifiant taxonomique EcoTaxa	Identifiant taxonomique EcoTaxa
+taxonomy	txo.parent_id	parent_id		Identifiant du parent taxonomique	Identifiant du parent taxonomique
+taxonomy	txo.aphia_id	aphia_id		Identifiant Aphia/WoRMS si disponible	Identifiant Aphia/WoRMS si disponible
+classification_display	fre.equivalent_diameter_area	equivalent_diameter_area		ESD	Champ libre objet affiche dans la liste de classification sous le libelle ESD.
+classification_display	fre.axis_major_length	axis_major_length		Major	Champ libre objet affiche dans la liste de classification sous le libelle Major.
+classification_display	fre.axis_minor_length	axis_minor_length		Minor	Champ libre objet affiche dans la liste de classification sous le libelle Minor.
+classification_display	fre.Depth min	Depth min		Depth	Champ libre objet affiche dans la liste de classification sous le libelle Depth.
+object_free	fre.frame_ms	frame_ms	n01	frame ms	Champ libre object_free fourni par EcoTaxa, stocke dans n01.
+object_free	fre.frame_vignette_number	frame_vignette_number	n02	frame vignette number	Champ libre object_free fourni par EcoTaxa, stocke dans n02.
+object_free	fre.vignette_x_pos	vignette_x_pos	n03	vignette x pos	Champ libre object_free fourni par EcoTaxa, stocke dans n03.
+object_free	fre.vignette_y_pos	vignette_y_pos	n04	vignette y pos	Champ libre object_free fourni par EcoTaxa, stocke dans n04.
+object_free	fre.orig_img_bmp_file_size	orig_img_bmp_file_size	n05	orig img bmp file size	Champ libre object_free fourni par EcoTaxa, stocke dans n05.
+object_free	fre.image_height	image_height	n06	image height	Champ libre object_free fourni par EcoTaxa, stocke dans n06.
+object_free	fre.image_width	image_width	n07	image width	Champ libre object_free fourni par EcoTaxa, stocke dans n07.
+object_free	fre.image_pixel_low_extrema	image_pixel_low_extrema	n08	image pixel low extrema	Champ libre object_free fourni par EcoTaxa, stocke dans n08.
+object_free	fre.image_pixel_high_extrema	image_pixel_high_extrema	n09	image pixel high extrema	Champ libre object_free fourni par EcoTaxa, stocke dans n09.
+object_free	fre.image_pixel_count	image_pixel_count	n10	image pixel count	Champ libre object_free fourni par EcoTaxa, stocke dans n10.
+object_free	fre.moments_weighted-0-1	moments_weighted-0-1	n100	moments weighted-0-1	Champ libre object_free fourni par EcoTaxa, stocke dans n100.
+object_free	fre.moments_weighted-0-2	moments_weighted-0-2	n101	moments weighted-0-2	Champ libre object_free fourni par EcoTaxa, stocke dans n101.
+object_free	fre.moments_weighted-0-3	moments_weighted-0-3	n102	moments weighted-0-3	Champ libre object_free fourni par EcoTaxa, stocke dans n102.
+object_free	fre.moments_weighted-1-0	moments_weighted-1-0	n103	moments weighted-1-0	Champ libre object_free fourni par EcoTaxa, stocke dans n103.
+object_free	fre.moments_weighted-1-1	moments_weighted-1-1	n104	moments weighted-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n104.
+object_free	fre.moments_weighted-1-2	moments_weighted-1-2	n105	moments weighted-1-2	Champ libre object_free fourni par EcoTaxa, stocke dans n105.
+object_free	fre.moments_weighted-1-3	moments_weighted-1-3	n106	moments weighted-1-3	Champ libre object_free fourni par EcoTaxa, stocke dans n106.
+object_free	fre.moments_weighted-2-0	moments_weighted-2-0	n107	moments weighted-2-0	Champ libre object_free fourni par EcoTaxa, stocke dans n107.
+object_free	fre.moments_weighted-2-1	moments_weighted-2-1	n108	moments weighted-2-1	Champ libre object_free fourni par EcoTaxa, stocke dans n108.
+object_free	fre.moments_weighted-2-2	moments_weighted-2-2	n109	moments weighted-2-2	Champ libre object_free fourni par EcoTaxa, stocke dans n109.
+object_free	fre.image_pixel_int_mean	image_pixel_int_mean	n11	image pixel int mean	Champ libre object_free fourni par EcoTaxa, stocke dans n11.
+object_free	fre.moments_weighted-2-3	moments_weighted-2-3	n110	moments weighted-2-3	Champ libre object_free fourni par EcoTaxa, stocke dans n110.
+object_free	fre.moments_weighted-3-0	moments_weighted-3-0	n111	moments weighted-3-0	Champ libre object_free fourni par EcoTaxa, stocke dans n111.
+object_free	fre.moments_weighted-3-1	moments_weighted-3-1	n112	moments weighted-3-1	Champ libre object_free fourni par EcoTaxa, stocke dans n112.
+object_free	fre.moments_weighted-3-2	moments_weighted-3-2	n113	moments weighted-3-2	Champ libre object_free fourni par EcoTaxa, stocke dans n113.
+object_free	fre.moments_weighted-3-3	moments_weighted-3-3	n114	moments weighted-3-3	Champ libre object_free fourni par EcoTaxa, stocke dans n114.
+object_free	fre.moments_weighted_central-0-0	moments_weighted_central-0-0	n115	moments weighted central-0-0	Champ libre object_free fourni par EcoTaxa, stocke dans n115.
+object_free	fre.moments_weighted_central-0-1	moments_weighted_central-0-1	n116	moments weighted central-0-1	Champ libre object_free fourni par EcoTaxa, stocke dans n116.
+object_free	fre.moments_weighted_central-0-2	moments_weighted_central-0-2	n117	moments weighted central-0-2	Champ libre object_free fourni par EcoTaxa, stocke dans n117.
+object_free	fre.moments_weighted_central-0-3	moments_weighted_central-0-3	n118	moments weighted central-0-3	Champ libre object_free fourni par EcoTaxa, stocke dans n118.
+object_free	fre.moments_weighted_central-1-0	moments_weighted_central-1-0	n119	moments weighted central-1-0	Champ libre object_free fourni par EcoTaxa, stocke dans n119.
+object_free	fre.image_pixel_int_variance	image_pixel_int_variance	n12	image pixel int variance	Champ libre object_free fourni par EcoTaxa, stocke dans n12.
+object_free	fre.moments_weighted_central-1-1	moments_weighted_central-1-1	n120	moments weighted central-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n120.
+object_free	fre.moments_weighted_central-1-2	moments_weighted_central-1-2	n121	moments weighted central-1-2	Champ libre object_free fourni par EcoTaxa, stocke dans n121.
+object_free	fre.moments_weighted_central-1-3	moments_weighted_central-1-3	n122	moments weighted central-1-3	Champ libre object_free fourni par EcoTaxa, stocke dans n122.
+object_free	fre.moments_weighted_central-2-0	moments_weighted_central-2-0	n123	moments weighted central-2-0	Champ libre object_free fourni par EcoTaxa, stocke dans n123.
+object_free	fre.moments_weighted_central-2-1	moments_weighted_central-2-1	n124	moments weighted central-2-1	Champ libre object_free fourni par EcoTaxa, stocke dans n124.
+object_free	fre.moments_weighted_central-2-2	moments_weighted_central-2-2	n125	moments weighted central-2-2	Champ libre object_free fourni par EcoTaxa, stocke dans n125.
+object_free	fre.moments_weighted_central-2-3	moments_weighted_central-2-3	n126	moments weighted central-2-3	Champ libre object_free fourni par EcoTaxa, stocke dans n126.
+object_free	fre.moments_weighted_central-3-0	moments_weighted_central-3-0	n127	moments weighted central-3-0	Champ libre object_free fourni par EcoTaxa, stocke dans n127.
+object_free	fre.moments_weighted_central-3-1	moments_weighted_central-3-1	n128	moments weighted central-3-1	Champ libre object_free fourni par EcoTaxa, stocke dans n128.
+object_free	fre.moments_weighted_central-3-2	moments_weighted_central-3-2	n129	moments weighted central-3-2	Champ libre object_free fourni par EcoTaxa, stocke dans n129.
+object_free	fre.image_pixel_int_stddev	image_pixel_int_stddev	n13	image pixel int stddev	Champ libre object_free fourni par EcoTaxa, stocke dans n13.
+object_free	fre.moments_weighted_central-3-3	moments_weighted_central-3-3	n130	moments weighted central-3-3	Champ libre object_free fourni par EcoTaxa, stocke dans n130.
+object_free	fre.moments_weighted_hu-0	moments_weighted_hu-0	n131	moments weighted hu-0	Champ libre object_free fourni par EcoTaxa, stocke dans n131.
+object_free	fre.moments_weighted_hu-1	moments_weighted_hu-1	n132	moments weighted hu-1	Champ libre object_free fourni par EcoTaxa, stocke dans n132.
+object_free	fre.moments_weighted_hu-2	moments_weighted_hu-2	n133	moments weighted hu-2	Champ libre object_free fourni par EcoTaxa, stocke dans n133.
+object_free	fre.moments_weighted_hu-3	moments_weighted_hu-3	n134	moments weighted hu-3	Champ libre object_free fourni par EcoTaxa, stocke dans n134.
+object_free	fre.moments_weighted_hu-4	moments_weighted_hu-4	n135	moments weighted hu-4	Champ libre object_free fourni par EcoTaxa, stocke dans n135.
+object_free	fre.moments_weighted_hu-5	moments_weighted_hu-5	n136	moments weighted hu-5	Champ libre object_free fourni par EcoTaxa, stocke dans n136.
+object_free	fre.moments_weighted_hu-6	moments_weighted_hu-6	n137	moments weighted hu-6	Champ libre object_free fourni par EcoTaxa, stocke dans n137.
+object_free	fre.moments_weighted_normalized-0-2	moments_weighted_normalized-0-2	n138	moments weighted normalized-0-2	Champ libre object_free fourni par EcoTaxa, stocke dans n138.
+object_free	fre.moments_weighted_normalized-0-3	moments_weighted_normalized-0-3	n139	moments weighted normalized-0-3	Champ libre object_free fourni par EcoTaxa, stocke dans n139.
+object_free	fre.area	area	n14	area	Champ libre object_free fourni par EcoTaxa, stocke dans n14.
+object_free	fre.moments_weighted_normalized-1-1	moments_weighted_normalized-1-1	n140	moments weighted normalized-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n140.
+object_free	fre.moments_weighted_normalized-1-2	moments_weighted_normalized-1-2	n141	moments weighted normalized-1-2	Champ libre object_free fourni par EcoTaxa, stocke dans n141.
+object_free	fre.moments_weighted_normalized-1-3	moments_weighted_normalized-1-3	n142	moments weighted normalized-1-3	Champ libre object_free fourni par EcoTaxa, stocke dans n142.
+object_free	fre.moments_weighted_normalized-2-0	moments_weighted_normalized-2-0	n143	moments weighted normalized-2-0	Champ libre object_free fourni par EcoTaxa, stocke dans n143.
+object_free	fre.moments_weighted_normalized-2-1	moments_weighted_normalized-2-1	n144	moments weighted normalized-2-1	Champ libre object_free fourni par EcoTaxa, stocke dans n144.
+object_free	fre.moments_weighted_normalized-2-2	moments_weighted_normalized-2-2	n145	moments weighted normalized-2-2	Champ libre object_free fourni par EcoTaxa, stocke dans n145.
+object_free	fre.moments_weighted_normalized-2-3	moments_weighted_normalized-2-3	n146	moments weighted normalized-2-3	Champ libre object_free fourni par EcoTaxa, stocke dans n146.
+object_free	fre.moments_weighted_normalized-3-0	moments_weighted_normalized-3-0	n147	moments weighted normalized-3-0	Champ libre object_free fourni par EcoTaxa, stocke dans n147.
+object_free	fre.moments_weighted_normalized-3-1	moments_weighted_normalized-3-1	n148	moments weighted normalized-3-1	Champ libre object_free fourni par EcoTaxa, stocke dans n148.
+object_free	fre.moments_weighted_normalized-3-2	moments_weighted_normalized-3-2	n149	moments weighted normalized-3-2	Champ libre object_free fourni par EcoTaxa, stocke dans n149.
+object_free	fre.area_bbox	area_bbox	n15	area bbox	Champ libre object_free fourni par EcoTaxa, stocke dans n15.
+object_free	fre.moments_weighted_normalized-3-3	moments_weighted_normalized-3-3	n150	moments weighted normalized-3-3	Champ libre object_free fourni par EcoTaxa, stocke dans n150.
+object_free	fre.orientation	orientation	n151	orientation	Champ libre object_free fourni par EcoTaxa, stocke dans n151.
+object_free	fre.perimeter	perimeter	n152	perimeter	Champ libre object_free fourni par EcoTaxa, stocke dans n152.
+object_free	fre.perimeter_crofton	perimeter_crofton	n153	perimeter crofton	Champ libre object_free fourni par EcoTaxa, stocke dans n153.
+object_free	fre.solidity	solidity	n154	solidity	Champ libre object_free fourni par EcoTaxa, stocke dans n154.
+object_free	fre.threshold	threshold	n155	threshold	Champ libre object_free fourni par EcoTaxa, stocke dans n155.
+object_free	fre.trimmed_masked_image_numb_of_regions	trimmed_masked_image_numb_of_regions	n156	trimmed masked image numb of regions	Champ libre object_free fourni par EcoTaxa, stocke dans n156.
+object_free	fre.trimmed_mask_numb_of_regions	trimmed_mask_numb_of_regions	n157	trimmed mask numb of regions	Champ libre object_free fourni par EcoTaxa, stocke dans n157.
+object_free	fre.trimmed_labeled_mask_numb_of_regions	trimmed_labeled_mask_numb_of_regions	n158	trimmed labeled mask numb of regions	Champ libre object_free fourni par EcoTaxa, stocke dans n158.
+object_free	fre.log_moments_central-0-1	log_moments_central-0-1	n159	log moments central-0-1	Champ libre object_free fourni par EcoTaxa, stocke dans n159.
+object_free	fre.area_convex	area_convex	n16	area convex	Champ libre object_free fourni par EcoTaxa, stocke dans n16.
+object_free	fre.log_moments_central-1-0	log_moments_central-1-0	n160	log moments central-1-0	Champ libre object_free fourni par EcoTaxa, stocke dans n160.
+object_free	fre.log_moments_hu-1	log_moments_hu-1	n161	log moments hu-1	Champ libre object_free fourni par EcoTaxa, stocke dans n161.
+object_free	fre.log_moments_hu-2	log_moments_hu-2	n162	log moments hu-2	Champ libre object_free fourni par EcoTaxa, stocke dans n162.
+object_free	fre.log_moments_hu-3	log_moments_hu-3	n163	log moments hu-3	Champ libre object_free fourni par EcoTaxa, stocke dans n163.
+object_free	fre.log_moments_hu-4	log_moments_hu-4	n164	log moments hu-4	Champ libre object_free fourni par EcoTaxa, stocke dans n164.
+object_free	fre.log_moments_hu-5	log_moments_hu-5	n165	log moments hu-5	Champ libre object_free fourni par EcoTaxa, stocke dans n165.
+object_free	fre.log_moments_hu-6	log_moments_hu-6	n166	log moments hu-6	Champ libre object_free fourni par EcoTaxa, stocke dans n166.
+object_free	fre.log_moments_normalized-0-3	log_moments_normalized-0-3	n167	log moments normalized-0-3	Champ libre object_free fourni par EcoTaxa, stocke dans n167.
+object_free	fre.log_moments_normalized-1-1	log_moments_normalized-1-1	n168	log moments normalized-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n168.
+object_free	fre.log_moments_normalized-1-2	log_moments_normalized-1-2	n169	log moments normalized-1-2	Champ libre object_free fourni par EcoTaxa, stocke dans n169.
+object_free	fre.area_filled	area_filled	n17	area filled	Champ libre object_free fourni par EcoTaxa, stocke dans n17.
+object_free	fre.log_moments_normalized-1-3	log_moments_normalized-1-3	n170	log moments normalized-1-3	Champ libre object_free fourni par EcoTaxa, stocke dans n170.
+object_free	fre.log_moments_normalized-2-1	log_moments_normalized-2-1	n171	log moments normalized-2-1	Champ libre object_free fourni par EcoTaxa, stocke dans n171.
+object_free	fre.log_moments_normalized-2-2	log_moments_normalized-2-2	n172	log moments normalized-2-2	Champ libre object_free fourni par EcoTaxa, stocke dans n172.
+object_free	fre.log_moments_normalized-2-3	log_moments_normalized-2-3	n173	log moments normalized-2-3	Champ libre object_free fourni par EcoTaxa, stocke dans n173.
+object_free	fre.log_moments_normalized-3-0	log_moments_normalized-3-0	n174	log moments normalized-3-0	Champ libre object_free fourni par EcoTaxa, stocke dans n174.
+object_free	fre.log_moments_normalized-3-1	log_moments_normalized-3-1	n175	log moments normalized-3-1	Champ libre object_free fourni par EcoTaxa, stocke dans n175.
+object_free	fre.log_moments_normalized-3-2	log_moments_normalized-3-2	n176	log moments normalized-3-2	Champ libre object_free fourni par EcoTaxa, stocke dans n176.
+object_free	fre.log_moments_normalized-3-3	log_moments_normalized-3-3	n177	log moments normalized-3-3	Champ libre object_free fourni par EcoTaxa, stocke dans n177.
+object_free	fre.log_moments_weighted_central-0-1	log_moments_weighted_central-0-1	n178	log moments weighted central-0-1	Champ libre object_free fourni par EcoTaxa, stocke dans n178.
+object_free	fre.log_moments_weighted_central-1-0	log_moments_weighted_central-1-0	n179	log moments weighted central-1-0	Champ libre object_free fourni par EcoTaxa, stocke dans n179.
+object_free	fre.axis_major_length	axis_major_length	n18	axis major length	Champ libre object_free fourni par EcoTaxa, stocke dans n18.
+object_free	fre.log_moments_weighted_hu-0	log_moments_weighted_hu-0	n180	log moments weighted hu-0	Champ libre object_free fourni par EcoTaxa, stocke dans n180.
+object_free	fre.log_moments_weighted_hu-1	log_moments_weighted_hu-1	n181	log moments weighted hu-1	Champ libre object_free fourni par EcoTaxa, stocke dans n181.
+object_free	fre.log_moments_weighted_hu-2	log_moments_weighted_hu-2	n182	log moments weighted hu-2	Champ libre object_free fourni par EcoTaxa, stocke dans n182.
+object_free	fre.log_moments_weighted_hu-3	log_moments_weighted_hu-3	n183	log moments weighted hu-3	Champ libre object_free fourni par EcoTaxa, stocke dans n183.
+object_free	fre.log_moments_weighted_hu-4	log_moments_weighted_hu-4	n184	log moments weighted hu-4	Champ libre object_free fourni par EcoTaxa, stocke dans n184.
+object_free	fre.log_moments_weighted_hu-5	log_moments_weighted_hu-5	n185	log moments weighted hu-5	Champ libre object_free fourni par EcoTaxa, stocke dans n185.
+object_free	fre.log_moments_weighted_hu-6	log_moments_weighted_hu-6	n186	log moments weighted hu-6	Champ libre object_free fourni par EcoTaxa, stocke dans n186.
+object_free	fre.log_moments_weighted_normalized-0-2	log_moments_weighted_normalized-0-2	n187	log moments weighted normalized-0-2	Champ libre object_free fourni par EcoTaxa, stocke dans n187.
+object_free	fre.log_moments_weighted_normalized-0-3	log_moments_weighted_normalized-0-3	n188	log moments weighted normalized-0-3	Champ libre object_free fourni par EcoTaxa, stocke dans n188.
+object_free	fre.log_moments_weighted_normalized-1-1	log_moments_weighted_normalized-1-1	n189	log moments weighted normalized-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n189.
+object_free	fre.axis_minor_length	axis_minor_length	n19	axis minor length	Champ libre object_free fourni par EcoTaxa, stocke dans n19.
+object_free	fre.log_moments_weighted_normalized-1-2	log_moments_weighted_normalized-1-2	n190	log moments weighted normalized-1-2	Champ libre object_free fourni par EcoTaxa, stocke dans n190.
+object_free	fre.log_moments_weighted_normalized-1-3	log_moments_weighted_normalized-1-3	n191	log moments weighted normalized-1-3	Champ libre object_free fourni par EcoTaxa, stocke dans n191.
+object_free	fre.log_moments_weighted_normalized-2-0	log_moments_weighted_normalized-2-0	n192	log moments weighted normalized-2-0	Champ libre object_free fourni par EcoTaxa, stocke dans n192.
+object_free	fre.log_moments_weighted_normalized-2-1	log_moments_weighted_normalized-2-1	n193	log moments weighted normalized-2-1	Champ libre object_free fourni par EcoTaxa, stocke dans n193.
+object_free	fre.log_moments_weighted_normalized-2-2	log_moments_weighted_normalized-2-2	n194	log moments weighted normalized-2-2	Champ libre object_free fourni par EcoTaxa, stocke dans n194.
+object_free	fre.log_moments_weighted_normalized-2-3	log_moments_weighted_normalized-2-3	n195	log moments weighted normalized-2-3	Champ libre object_free fourni par EcoTaxa, stocke dans n195.
+object_free	fre.log_moments_weighted_normalized-3-0	log_moments_weighted_normalized-3-0	n196	log moments weighted normalized-3-0	Champ libre object_free fourni par EcoTaxa, stocke dans n196.
+object_free	fre.log_moments_weighted_normalized-3-1	log_moments_weighted_normalized-3-1	n197	log moments weighted normalized-3-1	Champ libre object_free fourni par EcoTaxa, stocke dans n197.
+object_free	fre.log_moments_weighted_normalized-3-2	log_moments_weighted_normalized-3-2	n198	log moments weighted normalized-3-2	Champ libre object_free fourni par EcoTaxa, stocke dans n198.
+object_free	fre.log_moments_weighted_normalized-3-3	log_moments_weighted_normalized-3-3	n199	log moments weighted normalized-3-3	Champ libre object_free fourni par EcoTaxa, stocke dans n199.
+object_free	fre.bbox-0	bbox-0	n20	bbox-0	Champ libre object_free fourni par EcoTaxa, stocke dans n20.
+object_free	fre.double_position	double_position	n200	double position	Champ libre object_free fourni par EcoTaxa, stocke dans n200.
+object_free	fre.total_doubles	total_doubles	n201	total doubles	Champ libre object_free fourni par EcoTaxa, stocke dans n201.
+object_free	fre.bbox-1	bbox-1	n21	bbox-1	Champ libre object_free fourni par EcoTaxa, stocke dans n21.
+object_free	fre.bbox-2	bbox-2	n22	bbox-2	Champ libre object_free fourni par EcoTaxa, stocke dans n22.
+object_free	fre.bbox-3	bbox-3	n23	bbox-3	Champ libre object_free fourni par EcoTaxa, stocke dans n23.
+object_free	fre.centroid-0	centroid-0	n24	centroid-0	Champ libre object_free fourni par EcoTaxa, stocke dans n24.
+object_free	fre.centroid-1	centroid-1	n25	centroid-1	Champ libre object_free fourni par EcoTaxa, stocke dans n25.
+object_free	fre.centroid_local-0	centroid_local-0	n26	centroid local-0	Champ libre object_free fourni par EcoTaxa, stocke dans n26.
+object_free	fre.centroid_local-1	centroid_local-1	n27	centroid local-1	Champ libre object_free fourni par EcoTaxa, stocke dans n27.
+object_free	fre.centroid_weighted-0	centroid_weighted-0	n28	centroid weighted-0	Champ libre object_free fourni par EcoTaxa, stocke dans n28.
+object_free	fre.centroid_weighted-1	centroid_weighted-1	n29	centroid weighted-1	Champ libre object_free fourni par EcoTaxa, stocke dans n29.
+object_free	fre.centroid_weighted_local-0	centroid_weighted_local-0	n30	centroid weighted local-0	Champ libre object_free fourni par EcoTaxa, stocke dans n30.
+object_free	fre.centroid_weighted_local-1	centroid_weighted_local-1	n31	centroid weighted local-1	Champ libre object_free fourni par EcoTaxa, stocke dans n31.
+object_free	fre.eccentricity	eccentricity	n32	eccentricity	Champ libre object_free fourni par EcoTaxa, stocke dans n32.
+object_free	fre.equivalent_diameter_area	equivalent_diameter_area	n33	equivalent diameter area	Champ libre object_free fourni par EcoTaxa, stocke dans n33.
+object_free	fre.euler_number	euler_number	n34	euler number	Champ libre object_free fourni par EcoTaxa, stocke dans n34.
+object_free	fre.extent	extent	n35	extent	Champ libre object_free fourni par EcoTaxa, stocke dans n35.
+object_free	fre.feret_diameter_max	feret_diameter_max	n36	feret diameter max	Champ libre object_free fourni par EcoTaxa, stocke dans n36.
+object_free	fre.inertia_tensor-0-0	inertia_tensor-0-0	n37	inertia tensor-0-0	Champ libre object_free fourni par EcoTaxa, stocke dans n37.
+object_free	fre.inertia_tensor-0-1	inertia_tensor-0-1	n38	inertia tensor-0-1	Champ libre object_free fourni par EcoTaxa, stocke dans n38.
+object_free	fre.inertia_tensor-1-0	inertia_tensor-1-0	n39	inertia tensor-1-0	Champ libre object_free fourni par EcoTaxa, stocke dans n39.
+object_free	fre.inertia_tensor-1-1	inertia_tensor-1-1	n40	inertia tensor-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n40.
+object_free	fre.inertia_tensor_eigvals-0	inertia_tensor_eigvals-0	n41	inertia tensor eigvals-0	Champ libre object_free fourni par EcoTaxa, stocke dans n41.
+object_free	fre.inertia_tensor_eigvals-1	inertia_tensor_eigvals-1	n42	inertia tensor eigvals-1	Champ libre object_free fourni par EcoTaxa, stocke dans n42.
+object_free	fre.intensity_max	intensity_max	n43	intensity max	Champ libre object_free fourni par EcoTaxa, stocke dans n43.
+object_free	fre.intensity_mean	intensity_mean	n44	intensity mean	Champ libre object_free fourni par EcoTaxa, stocke dans n44.
+object_free	fre.intensity_min	intensity_min	n45	intensity min	Champ libre object_free fourni par EcoTaxa, stocke dans n45.
+object_free	fre.label_id_number	label_id_number	n46	label id number	Champ libre object_free fourni par EcoTaxa, stocke dans n46.
+object_free	fre.moments-0-0	moments-0-0	n47	moments-0-0	Champ libre object_free fourni par EcoTaxa, stocke dans n47.
+object_free	fre.moments-0-1	moments-0-1	n48	moments-0-1	Champ libre object_free fourni par EcoTaxa, stocke dans n48.
+object_free	fre.moments-0-2	moments-0-2	n49	moments-0-2	Champ libre object_free fourni par EcoTaxa, stocke dans n49.
+object_free	fre.moments-0-3	moments-0-3	n50	moments-0-3	Champ libre object_free fourni par EcoTaxa, stocke dans n50.
+object_free	fre.moments-1-0	moments-1-0	n51	moments-1-0	Champ libre object_free fourni par EcoTaxa, stocke dans n51.
+object_free	fre.moments-1-1	moments-1-1	n52	moments-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n52.
+object_free	fre.moments-1-2	moments-1-2	n53	moments-1-2	Champ libre object_free fourni par EcoTaxa, stocke dans n53.
+object_free	fre.moments-1-3	moments-1-3	n54	moments-1-3	Champ libre object_free fourni par EcoTaxa, stocke dans n54.
+object_free	fre.moments-2-0	moments-2-0	n55	moments-2-0	Champ libre object_free fourni par EcoTaxa, stocke dans n55.
+object_free	fre.moments-2-1	moments-2-1	n56	moments-2-1	Champ libre object_free fourni par EcoTaxa, stocke dans n56.
+object_free	fre.moments-2-2	moments-2-2	n57	moments-2-2	Champ libre object_free fourni par EcoTaxa, stocke dans n57.
+object_free	fre.moments-2-3	moments-2-3	n58	moments-2-3	Champ libre object_free fourni par EcoTaxa, stocke dans n58.
+object_free	fre.moments-3-0	moments-3-0	n59	moments-3-0	Champ libre object_free fourni par EcoTaxa, stocke dans n59.
+object_free	fre.moments-3-1	moments-3-1	n60	moments-3-1	Champ libre object_free fourni par EcoTaxa, stocke dans n60.
+object_free	fre.moments-3-2	moments-3-2	n61	moments-3-2	Champ libre object_free fourni par EcoTaxa, stocke dans n61.
+object_free	fre.moments-3-3	moments-3-3	n62	moments-3-3	Champ libre object_free fourni par EcoTaxa, stocke dans n62.
+object_free	fre.moments_central-0-0	moments_central-0-0	n63	moments central-0-0	Champ libre object_free fourni par EcoTaxa, stocke dans n63.
+object_free	fre.moments_central-0-1	moments_central-0-1	n64	moments central-0-1	Champ libre object_free fourni par EcoTaxa, stocke dans n64.
+object_free	fre.moments_central-0-2	moments_central-0-2	n65	moments central-0-2	Champ libre object_free fourni par EcoTaxa, stocke dans n65.
+object_free	fre.moments_central-0-3	moments_central-0-3	n66	moments central-0-3	Champ libre object_free fourni par EcoTaxa, stocke dans n66.
+object_free	fre.moments_central-1-0	moments_central-1-0	n67	moments central-1-0	Champ libre object_free fourni par EcoTaxa, stocke dans n67.
+object_free	fre.moments_central-1-1	moments_central-1-1	n68	moments central-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n68.
+object_free	fre.moments_central-1-2	moments_central-1-2	n69	moments central-1-2	Champ libre object_free fourni par EcoTaxa, stocke dans n69.
+object_free	fre.moments_central-1-3	moments_central-1-3	n70	moments central-1-3	Champ libre object_free fourni par EcoTaxa, stocke dans n70.
+object_free	fre.moments_central-2-0	moments_central-2-0	n71	moments central-2-0	Champ libre object_free fourni par EcoTaxa, stocke dans n71.
+object_free	fre.moments_central-2-1	moments_central-2-1	n72	moments central-2-1	Champ libre object_free fourni par EcoTaxa, stocke dans n72.
+object_free	fre.moments_central-2-2	moments_central-2-2	n73	moments central-2-2	Champ libre object_free fourni par EcoTaxa, stocke dans n73.
+object_free	fre.moments_central-2-3	moments_central-2-3	n74	moments central-2-3	Champ libre object_free fourni par EcoTaxa, stocke dans n74.
+object_free	fre.moments_central-3-0	moments_central-3-0	n75	moments central-3-0	Champ libre object_free fourni par EcoTaxa, stocke dans n75.
+object_free	fre.moments_central-3-1	moments_central-3-1	n76	moments central-3-1	Champ libre object_free fourni par EcoTaxa, stocke dans n76.
+object_free	fre.moments_central-3-2	moments_central-3-2	n77	moments central-3-2	Champ libre object_free fourni par EcoTaxa, stocke dans n77.
+object_free	fre.moments_central-3-3	moments_central-3-3	n78	moments central-3-3	Champ libre object_free fourni par EcoTaxa, stocke dans n78.
+object_free	fre.moments_hu-0	moments_hu-0	n79	moments hu-0	Champ libre object_free fourni par EcoTaxa, stocke dans n79.
+object_free	fre.moments_hu-1	moments_hu-1	n80	moments hu-1	Champ libre object_free fourni par EcoTaxa, stocke dans n80.
+object_free	fre.moments_hu-2	moments_hu-2	n81	moments hu-2	Champ libre object_free fourni par EcoTaxa, stocke dans n81.
+object_free	fre.moments_hu-3	moments_hu-3	n82	moments hu-3	Champ libre object_free fourni par EcoTaxa, stocke dans n82.
+object_free	fre.moments_hu-4	moments_hu-4	n83	moments hu-4	Champ libre object_free fourni par EcoTaxa, stocke dans n83.
+object_free	fre.moments_hu-5	moments_hu-5	n84	moments hu-5	Champ libre object_free fourni par EcoTaxa, stocke dans n84.
+object_free	fre.moments_hu-6	moments_hu-6	n85	moments hu-6	Champ libre object_free fourni par EcoTaxa, stocke dans n85.
+object_free	fre.moments_normalized-0-2	moments_normalized-0-2	n86	moments normalized-0-2	Champ libre object_free fourni par EcoTaxa, stocke dans n86.
+object_free	fre.moments_normalized-0-3	moments_normalized-0-3	n87	moments normalized-0-3	Champ libre object_free fourni par EcoTaxa, stocke dans n87.
+object_free	fre.moments_normalized-1-1	moments_normalized-1-1	n88	moments normalized-1-1	Champ libre object_free fourni par EcoTaxa, stocke dans n88.
+object_free	fre.moments_normalized-1-2	moments_normalized-1-2	n89	moments normalized-1-2	Champ libre object_free fourni par EcoTaxa, stocke dans n89.
+object_free	fre.moments_normalized-1-3	moments_normalized-1-3	n90	moments normalized-1-3	Champ libre object_free fourni par EcoTaxa, stocke dans n90.
+object_free	fre.moments_normalized-2-0	moments_normalized-2-0	n91	moments normalized-2-0	Champ libre object_free fourni par EcoTaxa, stocke dans n91.
+object_free	fre.moments_normalized-2-1	moments_normalized-2-1	n92	moments normalized-2-1	Champ libre object_free fourni par EcoTaxa, stocke dans n92.
+object_free	fre.moments_normalized-2-2	moments_normalized-2-2	n93	moments normalized-2-2	Champ libre object_free fourni par EcoTaxa, stocke dans n93.
+object_free	fre.moments_normalized-2-3	moments_normalized-2-3	n94	moments normalized-2-3	Champ libre object_free fourni par EcoTaxa, stocke dans n94.
+object_free	fre.moments_normalized-3-0	moments_normalized-3-0	n95	moments normalized-3-0	Champ libre object_free fourni par EcoTaxa, stocke dans n95.
+object_free	fre.moments_normalized-3-1	moments_normalized-3-1	n96	moments normalized-3-1	Champ libre object_free fourni par EcoTaxa, stocke dans n96.
+object_free	fre.moments_normalized-3-2	moments_normalized-3-2	n97	moments normalized-3-2	Champ libre object_free fourni par EcoTaxa, stocke dans n97.
+object_free	fre.moments_normalized-3-3	moments_normalized-3-3	n98	moments normalized-3-3	Champ libre object_free fourni par EcoTaxa, stocke dans n98.
+object_free	fre.moments_weighted-0-0	moments_weighted-0-0	n99	moments weighted-0-0	Champ libre object_free fourni par EcoTaxa, stocke dans n99.
+object_free	fre.double_prediction	double_prediction	t01	double prediction	Champ libre object_free fourni par EcoTaxa, stocke dans t01.
+object_free	fre.double_validation_status	double_validation_status	t02	double validation status	Champ libre object_free fourni par EcoTaxa, stocke dans t02.
+object_free	fre.double_probability	double_probability	t03	double probability	Champ libre object_free fourni par EcoTaxa, stocke dans t03.
+object_free	fre.double_of	double_of	t04	double of	Champ libre object_free fourni par EcoTaxa, stocke dans t04.
+sample	sample.station_name	station_name	t01	station name	Champ libre sample fourni par EcoTaxa, stocke dans t01.
+sample	sample.deployment_date_start	deployment_date_start	t02	deployment date start	Champ libre sample fourni par EcoTaxa, stocke dans t02.
+sample	sample.deployment_time_start	deployment_time_start	t03	deployment time start	Champ libre sample fourni par EcoTaxa, stocke dans t03.
+sample	sample.deployment_datetime_end	deployment_datetime_end	t04	deployment datetime end	Champ libre sample fourni par EcoTaxa, stocke dans t04.
+sample	sample.gear	gear	t05	gear	Champ libre sample fourni par EcoTaxa, stocke dans t05.
+sample	sample.tow_type	tow_type	t06	tow type	Champ libre sample fourni par EcoTaxa, stocke dans t06.
+sample	sample.cast_number	cast_number	t07	cast number	Champ libre sample fourni par EcoTaxa, stocke dans t07.
+sample	sample.bottom_depth	bottom_depth	t08	bottom depth	Champ libre sample fourni par EcoTaxa, stocke dans t08.
+sample	sample.latitude	latitude	t09	latitude	Champ libre sample fourni par EcoTaxa, stocke dans t09.
+sample	sample.longitude	longitude	t10	longitude	Champ libre sample fourni par EcoTaxa, stocke dans t10.
+sample	sample.deployment_comments	deployment_comments	t11	deployment comments	Champ libre sample fourni par EcoTaxa, stocke dans t11.
+sample	sample.gear_net_id	gear_net_id	t12	gear net id	Champ libre sample fourni par EcoTaxa, stocke dans t12.
+sample	sample.net_mesh_size	net_mesh_size	t13	net mesh size	Champ libre sample fourni par EcoTaxa, stocke dans t13.
+sample	sample.net_mouth_aperture	net_mouth_aperture	t14	net mouth aperture	Champ libre sample fourni par EcoTaxa, stocke dans t14.
+sample	sample.max_net_sampling_depth	max_net_sampling_depth	t15	max net sampling depth	Champ libre sample fourni par EcoTaxa, stocke dans t15.
+sample	sample.min_net_sampling_depth	min_net_sampling_depth	t16	min net sampling depth	Champ libre sample fourni par EcoTaxa, stocke dans t16.
+sample	sample.deployment_datetime_start	deployment_datetime_start	t17	deployment datetime start	Champ libre sample fourni par EcoTaxa, stocke dans t17.
+sample	sample.deployment_time_start_str	deployment_time_start_str	t18	deployment time start str	Champ libre sample fourni par EcoTaxa, stocke dans t18.
+acquisition	acq.original_telemetry_profil_folder	original_telemetry_profil_folder	t01	original telemetry profil folder	Champ libre acquisition fourni par EcoTaxa, stocke dans t01.
+acquisition	acq.vprm version	vprm version	t02	vprm version	Champ libre acquisition fourni par EcoTaxa, stocke dans t02.
+acquisition	acq.sound_velocity	sound_velocity	t03	sound velocity	Champ libre acquisition fourni par EcoTaxa, stocke dans t03.
+acquisition	acq.density_ctd	density_ctd	t04	density ctd	Champ libre acquisition fourni par EcoTaxa, stocke dans t04.
+acquisition	acq.temperature_ctd	temperature_ctd	t05	temperature ctd	Champ libre acquisition fourni par EcoTaxa, stocke dans t05.
+acquisition	acq.conductivity_ctd	conductivity_ctd	t06	conductivity ctd	Champ libre acquisition fourni par EcoTaxa, stocke dans t06.
+acquisition	acq.salinity_ctd	salinity_ctd	t07	salinity ctd	Champ libre acquisition fourni par EcoTaxa, stocke dans t07.
+acquisition	acq.oxygen_concent	oxygen_concent	t08	oxygen concent	Champ libre acquisition fourni par EcoTaxa, stocke dans t08.
+acquisition	acq.oxygen_saturation	oxygen_saturation	t09	oxygen saturation	Champ libre acquisition fourni par EcoTaxa, stocke dans t09.
+acquisition	acq.oxygen_temperature	oxygen_temperature	t10	oxygen temperature	Champ libre acquisition fourni par EcoTaxa, stocke dans t10.
+acquisition	acq.loki_temperature	loki_temperature	t11	loki temperature	Champ libre acquisition fourni par EcoTaxa, stocke dans t11.
+acquisition	acq.loki_voltage	loki_voltage	t12	loki voltage	Champ libre acquisition fourni par EcoTaxa, stocke dans t12.
+acquisition	acq.status_acquire	status_acquire	t13	status acquire	Champ libre acquisition fourni par EcoTaxa, stocke dans t13.
+acquisition	acq.speed	speed	t14	speed	Champ libre acquisition fourni par EcoTaxa, stocke dans t14.
+acquisition	acq.pitch	pitch	t15	pitch	Champ libre acquisition fourni par EcoTaxa, stocke dans t15.
+acquisition	acq.roll	roll	t16	roll	Champ libre acquisition fourni par EcoTaxa, stocke dans t16.
+acquisition	acq.fluo1	fluo1	t17	fluo1	Champ libre acquisition fourni par EcoTaxa, stocke dans t17.
+acquisition	acq.fluo2	fluo2	t18	fluo2	Champ libre acquisition fourni par EcoTaxa, stocke dans t18.
+acquisition	acq.fluo3	fluo3	t19	fluo3	Champ libre acquisition fourni par EcoTaxa, stocke dans t19.
+acquisition	acq.fluo4	fluo4	t20	fluo4	Champ libre acquisition fourni par EcoTaxa, stocke dans t20.
+acquisition	acq.pressure_sensor_press	pressure_sensor_press	t21	pressure sensor press	Champ libre acquisition fourni par EcoTaxa, stocke dans t21.
+acquisition	acq.pressure_sensor_temp	pressure_sensor_temp	t22	pressure sensor temp	Champ libre acquisition fourni par EcoTaxa, stocke dans t22.
+acquisition	acq.camera_status	camera_status	t23	camera status	Champ libre acquisition fourni par EcoTaxa, stocke dans t23.
+acquisition	acq.vprcl_status	vprcl_status	t24	vprcl status	Champ libre acquisition fourni par EcoTaxa, stocke dans t24.
+acquisition	acq.vprcl_picture_number	vprcl_picture_number	t25	vprcl picture number	Champ libre acquisition fourni par EcoTaxa, stocke dans t25.
+acquisition	acq.vprcl_framerate	vprcl_framerate	t26	vprcl framerate	Champ libre acquisition fourni par EcoTaxa, stocke dans t26.
+acquisition	acq.raw_depth	raw_depth	t27	raw depth	Champ libre acquisition fourni par EcoTaxa, stocke dans t27.
+acquisition	acq.depth_outlier	depth_outlier	t28	depth outlier	Champ libre acquisition fourni par EcoTaxa, stocke dans t28.
+acquisition	acq.pixel_um_size	pixel_um_size	t29	pixel um size	Champ libre acquisition fourni par EcoTaxa, stocke dans t29.
+process	process.footer_height_px	footer_height_px	t01	footer height px	Champ libre process fourni par EcoTaxa, stocke dans t01.
+process	process.python_img_feats_library	python_img_feats_library	t02	python img feats library	Champ libre process fourni par EcoTaxa, stocke dans t02.

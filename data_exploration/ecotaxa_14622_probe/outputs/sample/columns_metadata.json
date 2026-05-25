@@ -1,0 +1,2268 @@
+{
+  "project": {
+    "project_id": 14622,
+    "title": "LOKI_ArcticNet_2015",
+    "instrument": "Loki",
+    "object_count": 1687393.0,
+    "pct_validated": 10.078031614449035,
+    "pct_classified": 100.0
+  },
+  "counts": {
+    "standard": 23,
+    "classification_display": 4,
+    "object_free": 205,
+    "sample": 18,
+    "acquisition": 29,
+    "process": 2
+  },
+  "columns": [
+    {
+      "category": "object",
+      "field": "obj.orig_id",
+      "source_name": "orig_id",
+      "storage_slot": "",
+      "display_name": "Identifiant original de l'objet",
+      "definition": "Identifiant original de l'objet"
+    },
+    {
+      "category": "object",
+      "field": "obj.latitude",
+      "source_name": "latitude",
+      "storage_slot": "",
+      "display_name": "Latitude de l'objet",
+      "definition": "Latitude de l'objet"
+    },
+    {
+      "category": "object",
+      "field": "obj.longitude",
+      "source_name": "longitude",
+      "storage_slot": "",
+      "display_name": "Longitude de l'objet",
+      "definition": "Longitude de l'objet"
+    },
+    {
+      "category": "object",
+      "field": "obj.objdate",
+      "source_name": "objdate",
+      "storage_slot": "",
+      "display_name": "Date de l'objet",
+      "definition": "Date de l'objet"
+    },
+    {
+      "category": "object",
+      "field": "obj.objtime",
+      "source_name": "objtime",
+      "storage_slot": "",
+      "display_name": "Heure de l'objet",
+      "definition": "Heure de l'objet"
+    },
+    {
+      "category": "object",
+      "field": "obj.depth_min",
+      "source_name": "depth_min",
+      "storage_slot": "",
+      "display_name": "Profondeur minimale",
+      "definition": "Profondeur minimale"
+    },
+    {
+      "category": "object",
+      "field": "obj.depth_max",
+      "source_name": "depth_max",
+      "storage_slot": "",
+      "display_name": "Profondeur maximale",
+      "definition": "Profondeur maximale"
+    },
+    {
+      "category": "object",
+      "field": "obj.classif_qual",
+      "source_name": "classif_qual",
+      "storage_slot": "",
+      "display_name": "Statut de classification",
+      "definition": "Statut de classification"
+    },
+    {
+      "category": "object",
+      "field": "obj.classif_id",
+      "source_name": "classif_id",
+      "storage_slot": "",
+      "display_name": "Identifiant taxonomique retenu",
+      "definition": "Identifiant taxonomique retenu"
+    },
+    {
+      "category": "object",
+      "field": "obj.classif_who",
+      "source_name": "classif_who",
+      "storage_slot": "",
+      "display_name": "Validateur ou classificateur",
+      "definition": "Validateur ou classificateur"
+    },
+    {
+      "category": "object",
+      "field": "obj.classif_when",
+      "source_name": "classif_when",
+      "storage_slot": "",
+      "display_name": "Date de classification",
+      "definition": "Date de classification"
+    },
+    {
+      "category": "object",
+      "field": "obj.classif_auto_id",
+      "source_name": "classif_auto_id",
+      "storage_slot": "",
+      "display_name": "Identifiant taxonomique automatique",
+      "definition": "Identifiant taxonomique automatique"
+    },
+    {
+      "category": "object",
+      "field": "obj.classif_auto_score",
+      "source_name": "classif_auto_score",
+      "storage_slot": "",
+      "display_name": "Score de classification automatique",
+      "definition": "Score de classification automatique"
+    },
+    {
+      "category": "object",
+      "field": "obj.classif_auto_when",
+      "source_name": "classif_auto_when",
+      "storage_slot": "",
+      "display_name": "Date de classification automatique",
+      "definition": "Date de classification automatique"
+    },
+    {
+      "category": "object",
+      "field": "obj.complement_info",
+      "source_name": "complement_info",
+      "storage_slot": "",
+      "display_name": "Information complementaire objet",
+      "definition": "Information complementaire objet"
+    },
+    {
+      "category": "object",
+      "field": "obj.object_link",
+      "source_name": "object_link",
+      "storage_slot": "",
+      "display_name": "Lien objet",
+      "definition": "Lien objet"
+    },
+    {
+      "category": "object",
+      "field": "obj.random_value",
+      "source_name": "random_value",
+      "storage_slot": "",
+      "display_name": "Valeur aleatoire interne",
+      "definition": "Valeur aleatoire interne"
+    },
+    {
+      "category": "object",
+      "field": "obj.sunpos",
+      "source_name": "sunpos",
+      "storage_slot": "",
+      "display_name": "Position solaire calculee",
+      "definition": "Position solaire calculee"
+    },
+    {
+      "category": "taxonomy",
+      "field": "txo.display_name",
+      "source_name": "display_name",
+      "storage_slot": "",
+      "display_name": "Nom taxonomique affiche",
+      "definition": "Nom taxonomique affiche"
+    },
+    {
+      "category": "taxonomy",
+      "field": "txo.name",
+      "source_name": "name",
+      "storage_slot": "",
+      "display_name": "Nom taxonomique brut",
+      "definition": "Nom taxonomique brut"
+    },
+    {
+      "category": "taxonomy",
+      "field": "txo.id",
+      "source_name": "id",
+      "storage_slot": "",
+      "display_name": "Identifiant taxonomique EcoTaxa",
+      "definition": "Identifiant taxonomique EcoTaxa"
+    },
+    {
+      "category": "taxonomy",
+      "field": "txo.parent_id",
+      "source_name": "parent_id",
+      "storage_slot": "",
+      "display_name": "Identifiant du parent taxonomique",
+      "definition": "Identifiant du parent taxonomique"
+    },
+    {
+      "category": "taxonomy",
+      "field": "txo.aphia_id",
+      "source_name": "aphia_id",
+      "storage_slot": "",
+      "display_name": "Identifiant Aphia/WoRMS si disponible",
+      "definition": "Identifiant Aphia/WoRMS si disponible"
+    },
+    {
+      "category": "classification_display",
+      "field": "fre.equivalent_diameter_area",
+      "source_name": "equivalent_diameter_area",
+      "storage_slot": "",
+      "display_name": "ESD",
+      "definition": "Champ libre objet affiche dans la liste de classification sous le libelle ESD."
+    },
+    {
+      "category": "classification_display",
+      "field": "fre.axis_major_length",
+      "source_name": "axis_major_length",
+      "storage_slot": "",
+      "display_name": "Major",
+      "definition": "Champ libre objet affiche dans la liste de classification sous le libelle Major."
+    },
+    {
+      "category": "classification_display",
+      "field": "fre.axis_minor_length",
+      "source_name": "axis_minor_length",
+      "storage_slot": "",
+      "display_name": "Minor",
+      "definition": "Champ libre objet affiche dans la liste de classification sous le libelle Minor."
+    },
+    {
+      "category": "classification_display",
+      "field": "fre.Depth min",
+      "source_name": "Depth min",
+      "storage_slot": "",
+      "display_name": "Depth",
+      "definition": "Champ libre objet affiche dans la liste de classification sous le libelle Depth."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.frame_ms",
+      "source_name": "frame_ms",
+      "storage_slot": "n01",
+      "display_name": "frame ms",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n01."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.frame_vignette_number",
+      "source_name": "frame_vignette_number",
+      "storage_slot": "n02",
+      "display_name": "frame vignette number",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n02."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.vignette_x_pos",
+      "source_name": "vignette_x_pos",
+      "storage_slot": "n03",
+      "display_name": "vignette x pos",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n03."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.vignette_y_pos",
+      "source_name": "vignette_y_pos",
+      "storage_slot": "n04",
+      "display_name": "vignette y pos",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n04."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.orig_img_bmp_file_size",
+      "source_name": "orig_img_bmp_file_size",
+      "storage_slot": "n05",
+      "display_name": "orig img bmp file size",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n05."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.image_height",
+      "source_name": "image_height",
+      "storage_slot": "n06",
+      "display_name": "image height",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n06."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.image_width",
+      "source_name": "image_width",
+      "storage_slot": "n07",
+      "display_name": "image width",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n07."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.image_pixel_low_extrema",
+      "source_name": "image_pixel_low_extrema",
+      "storage_slot": "n08",
+      "display_name": "image pixel low extrema",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n08."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.image_pixel_high_extrema",
+      "source_name": "image_pixel_high_extrema",
+      "storage_slot": "n09",
+      "display_name": "image pixel high extrema",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n09."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.image_pixel_count",
+      "source_name": "image_pixel_count",
+      "storage_slot": "n10",
+      "display_name": "image pixel count",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n10."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-0-1",
+      "source_name": "moments_weighted-0-1",
+      "storage_slot": "n100",
+      "display_name": "moments weighted-0-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n100."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-0-2",
+      "source_name": "moments_weighted-0-2",
+      "storage_slot": "n101",
+      "display_name": "moments weighted-0-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n101."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-0-3",
+      "source_name": "moments_weighted-0-3",
+      "storage_slot": "n102",
+      "display_name": "moments weighted-0-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n102."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-1-0",
+      "source_name": "moments_weighted-1-0",
+      "storage_slot": "n103",
+      "display_name": "moments weighted-1-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n103."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-1-1",
+      "source_name": "moments_weighted-1-1",
+      "storage_slot": "n104",
+      "display_name": "moments weighted-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n104."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-1-2",
+      "source_name": "moments_weighted-1-2",
+      "storage_slot": "n105",
+      "display_name": "moments weighted-1-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n105."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-1-3",
+      "source_name": "moments_weighted-1-3",
+      "storage_slot": "n106",
+      "display_name": "moments weighted-1-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n106."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-2-0",
+      "source_name": "moments_weighted-2-0",
+      "storage_slot": "n107",
+      "display_name": "moments weighted-2-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n107."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-2-1",
+      "source_name": "moments_weighted-2-1",
+      "storage_slot": "n108",
+      "display_name": "moments weighted-2-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n108."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-2-2",
+      "source_name": "moments_weighted-2-2",
+      "storage_slot": "n109",
+      "display_name": "moments weighted-2-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n109."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.image_pixel_int_mean",
+      "source_name": "image_pixel_int_mean",
+      "storage_slot": "n11",
+      "display_name": "image pixel int mean",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n11."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-2-3",
+      "source_name": "moments_weighted-2-3",
+      "storage_slot": "n110",
+      "display_name": "moments weighted-2-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n110."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-3-0",
+      "source_name": "moments_weighted-3-0",
+      "storage_slot": "n111",
+      "display_name": "moments weighted-3-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n111."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-3-1",
+      "source_name": "moments_weighted-3-1",
+      "storage_slot": "n112",
+      "display_name": "moments weighted-3-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n112."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-3-2",
+      "source_name": "moments_weighted-3-2",
+      "storage_slot": "n113",
+      "display_name": "moments weighted-3-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n113."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-3-3",
+      "source_name": "moments_weighted-3-3",
+      "storage_slot": "n114",
+      "display_name": "moments weighted-3-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n114."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-0-0",
+      "source_name": "moments_weighted_central-0-0",
+      "storage_slot": "n115",
+      "display_name": "moments weighted central-0-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n115."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-0-1",
+      "source_name": "moments_weighted_central-0-1",
+      "storage_slot": "n116",
+      "display_name": "moments weighted central-0-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n116."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-0-2",
+      "source_name": "moments_weighted_central-0-2",
+      "storage_slot": "n117",
+      "display_name": "moments weighted central-0-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n117."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-0-3",
+      "source_name": "moments_weighted_central-0-3",
+      "storage_slot": "n118",
+      "display_name": "moments weighted central-0-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n118."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-1-0",
+      "source_name": "moments_weighted_central-1-0",
+      "storage_slot": "n119",
+      "display_name": "moments weighted central-1-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n119."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.image_pixel_int_variance",
+      "source_name": "image_pixel_int_variance",
+      "storage_slot": "n12",
+      "display_name": "image pixel int variance",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n12."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-1-1",
+      "source_name": "moments_weighted_central-1-1",
+      "storage_slot": "n120",
+      "display_name": "moments weighted central-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n120."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-1-2",
+      "source_name": "moments_weighted_central-1-2",
+      "storage_slot": "n121",
+      "display_name": "moments weighted central-1-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n121."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-1-3",
+      "source_name": "moments_weighted_central-1-3",
+      "storage_slot": "n122",
+      "display_name": "moments weighted central-1-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n122."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-2-0",
+      "source_name": "moments_weighted_central-2-0",
+      "storage_slot": "n123",
+      "display_name": "moments weighted central-2-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n123."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-2-1",
+      "source_name": "moments_weighted_central-2-1",
+      "storage_slot": "n124",
+      "display_name": "moments weighted central-2-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n124."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-2-2",
+      "source_name": "moments_weighted_central-2-2",
+      "storage_slot": "n125",
+      "display_name": "moments weighted central-2-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n125."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-2-3",
+      "source_name": "moments_weighted_central-2-3",
+      "storage_slot": "n126",
+      "display_name": "moments weighted central-2-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n126."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-3-0",
+      "source_name": "moments_weighted_central-3-0",
+      "storage_slot": "n127",
+      "display_name": "moments weighted central-3-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n127."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-3-1",
+      "source_name": "moments_weighted_central-3-1",
+      "storage_slot": "n128",
+      "display_name": "moments weighted central-3-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n128."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-3-2",
+      "source_name": "moments_weighted_central-3-2",
+      "storage_slot": "n129",
+      "display_name": "moments weighted central-3-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n129."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.image_pixel_int_stddev",
+      "source_name": "image_pixel_int_stddev",
+      "storage_slot": "n13",
+      "display_name": "image pixel int stddev",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n13."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_central-3-3",
+      "source_name": "moments_weighted_central-3-3",
+      "storage_slot": "n130",
+      "display_name": "moments weighted central-3-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n130."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_hu-0",
+      "source_name": "moments_weighted_hu-0",
+      "storage_slot": "n131",
+      "display_name": "moments weighted hu-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n131."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_hu-1",
+      "source_name": "moments_weighted_hu-1",
+      "storage_slot": "n132",
+      "display_name": "moments weighted hu-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n132."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_hu-2",
+      "source_name": "moments_weighted_hu-2",
+      "storage_slot": "n133",
+      "display_name": "moments weighted hu-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n133."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_hu-3",
+      "source_name": "moments_weighted_hu-3",
+      "storage_slot": "n134",
+      "display_name": "moments weighted hu-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n134."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_hu-4",
+      "source_name": "moments_weighted_hu-4",
+      "storage_slot": "n135",
+      "display_name": "moments weighted hu-4",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n135."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_hu-5",
+      "source_name": "moments_weighted_hu-5",
+      "storage_slot": "n136",
+      "display_name": "moments weighted hu-5",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n136."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_hu-6",
+      "source_name": "moments_weighted_hu-6",
+      "storage_slot": "n137",
+      "display_name": "moments weighted hu-6",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n137."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-0-2",
+      "source_name": "moments_weighted_normalized-0-2",
+      "storage_slot": "n138",
+      "display_name": "moments weighted normalized-0-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n138."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-0-3",
+      "source_name": "moments_weighted_normalized-0-3",
+      "storage_slot": "n139",
+      "display_name": "moments weighted normalized-0-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n139."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.area",
+      "source_name": "area",
+      "storage_slot": "n14",
+      "display_name": "area",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n14."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-1-1",
+      "source_name": "moments_weighted_normalized-1-1",
+      "storage_slot": "n140",
+      "display_name": "moments weighted normalized-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n140."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-1-2",
+      "source_name": "moments_weighted_normalized-1-2",
+      "storage_slot": "n141",
+      "display_name": "moments weighted normalized-1-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n141."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-1-3",
+      "source_name": "moments_weighted_normalized-1-3",
+      "storage_slot": "n142",
+      "display_name": "moments weighted normalized-1-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n142."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-2-0",
+      "source_name": "moments_weighted_normalized-2-0",
+      "storage_slot": "n143",
+      "display_name": "moments weighted normalized-2-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n143."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-2-1",
+      "source_name": "moments_weighted_normalized-2-1",
+      "storage_slot": "n144",
+      "display_name": "moments weighted normalized-2-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n144."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-2-2",
+      "source_name": "moments_weighted_normalized-2-2",
+      "storage_slot": "n145",
+      "display_name": "moments weighted normalized-2-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n145."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-2-3",
+      "source_name": "moments_weighted_normalized-2-3",
+      "storage_slot": "n146",
+      "display_name": "moments weighted normalized-2-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n146."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-3-0",
+      "source_name": "moments_weighted_normalized-3-0",
+      "storage_slot": "n147",
+      "display_name": "moments weighted normalized-3-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n147."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-3-1",
+      "source_name": "moments_weighted_normalized-3-1",
+      "storage_slot": "n148",
+      "display_name": "moments weighted normalized-3-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n148."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-3-2",
+      "source_name": "moments_weighted_normalized-3-2",
+      "storage_slot": "n149",
+      "display_name": "moments weighted normalized-3-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n149."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.area_bbox",
+      "source_name": "area_bbox",
+      "storage_slot": "n15",
+      "display_name": "area bbox",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n15."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted_normalized-3-3",
+      "source_name": "moments_weighted_normalized-3-3",
+      "storage_slot": "n150",
+      "display_name": "moments weighted normalized-3-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n150."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.orientation",
+      "source_name": "orientation",
+      "storage_slot": "n151",
+      "display_name": "orientation",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n151."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.perimeter",
+      "source_name": "perimeter",
+      "storage_slot": "n152",
+      "display_name": "perimeter",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n152."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.perimeter_crofton",
+      "source_name": "perimeter_crofton",
+      "storage_slot": "n153",
+      "display_name": "perimeter crofton",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n153."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.solidity",
+      "source_name": "solidity",
+      "storage_slot": "n154",
+      "display_name": "solidity",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n154."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.threshold",
+      "source_name": "threshold",
+      "storage_slot": "n155",
+      "display_name": "threshold",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n155."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.trimmed_masked_image_numb_of_regions",
+      "source_name": "trimmed_masked_image_numb_of_regions",
+      "storage_slot": "n156",
+      "display_name": "trimmed masked image numb of regions",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n156."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.trimmed_mask_numb_of_regions",
+      "source_name": "trimmed_mask_numb_of_regions",
+      "storage_slot": "n157",
+      "display_name": "trimmed mask numb of regions",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n157."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.trimmed_labeled_mask_numb_of_regions",
+      "source_name": "trimmed_labeled_mask_numb_of_regions",
+      "storage_slot": "n158",
+      "display_name": "trimmed labeled mask numb of regions",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n158."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_central-0-1",
+      "source_name": "log_moments_central-0-1",
+      "storage_slot": "n159",
+      "display_name": "log moments central-0-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n159."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.area_convex",
+      "source_name": "area_convex",
+      "storage_slot": "n16",
+      "display_name": "area convex",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n16."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_central-1-0",
+      "source_name": "log_moments_central-1-0",
+      "storage_slot": "n160",
+      "display_name": "log moments central-1-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n160."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_hu-1",
+      "source_name": "log_moments_hu-1",
+      "storage_slot": "n161",
+      "display_name": "log moments hu-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n161."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_hu-2",
+      "source_name": "log_moments_hu-2",
+      "storage_slot": "n162",
+      "display_name": "log moments hu-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n162."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_hu-3",
+      "source_name": "log_moments_hu-3",
+      "storage_slot": "n163",
+      "display_name": "log moments hu-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n163."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_hu-4",
+      "source_name": "log_moments_hu-4",
+      "storage_slot": "n164",
+      "display_name": "log moments hu-4",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n164."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_hu-5",
+      "source_name": "log_moments_hu-5",
+      "storage_slot": "n165",
+      "display_name": "log moments hu-5",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n165."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_hu-6",
+      "source_name": "log_moments_hu-6",
+      "storage_slot": "n166",
+      "display_name": "log moments hu-6",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n166."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-0-3",
+      "source_name": "log_moments_normalized-0-3",
+      "storage_slot": "n167",
+      "display_name": "log moments normalized-0-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n167."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-1-1",
+      "source_name": "log_moments_normalized-1-1",
+      "storage_slot": "n168",
+      "display_name": "log moments normalized-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n168."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-1-2",
+      "source_name": "log_moments_normalized-1-2",
+      "storage_slot": "n169",
+      "display_name": "log moments normalized-1-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n169."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.area_filled",
+      "source_name": "area_filled",
+      "storage_slot": "n17",
+      "display_name": "area filled",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n17."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-1-3",
+      "source_name": "log_moments_normalized-1-3",
+      "storage_slot": "n170",
+      "display_name": "log moments normalized-1-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n170."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-2-1",
+      "source_name": "log_moments_normalized-2-1",
+      "storage_slot": "n171",
+      "display_name": "log moments normalized-2-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n171."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-2-2",
+      "source_name": "log_moments_normalized-2-2",
+      "storage_slot": "n172",
+      "display_name": "log moments normalized-2-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n172."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-2-3",
+      "source_name": "log_moments_normalized-2-3",
+      "storage_slot": "n173",
+      "display_name": "log moments normalized-2-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n173."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-3-0",
+      "source_name": "log_moments_normalized-3-0",
+      "storage_slot": "n174",
+      "display_name": "log moments normalized-3-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n174."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-3-1",
+      "source_name": "log_moments_normalized-3-1",
+      "storage_slot": "n175",
+      "display_name": "log moments normalized-3-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n175."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-3-2",
+      "source_name": "log_moments_normalized-3-2",
+      "storage_slot": "n176",
+      "display_name": "log moments normalized-3-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n176."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_normalized-3-3",
+      "source_name": "log_moments_normalized-3-3",
+      "storage_slot": "n177",
+      "display_name": "log moments normalized-3-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n177."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_central-0-1",
+      "source_name": "log_moments_weighted_central-0-1",
+      "storage_slot": "n178",
+      "display_name": "log moments weighted central-0-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n178."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_central-1-0",
+      "source_name": "log_moments_weighted_central-1-0",
+      "storage_slot": "n179",
+      "display_name": "log moments weighted central-1-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n179."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.axis_major_length",
+      "source_name": "axis_major_length",
+      "storage_slot": "n18",
+      "display_name": "axis major length",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n18."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_hu-0",
+      "source_name": "log_moments_weighted_hu-0",
+      "storage_slot": "n180",
+      "display_name": "log moments weighted hu-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n180."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_hu-1",
+      "source_name": "log_moments_weighted_hu-1",
+      "storage_slot": "n181",
+      "display_name": "log moments weighted hu-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n181."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_hu-2",
+      "source_name": "log_moments_weighted_hu-2",
+      "storage_slot": "n182",
+      "display_name": "log moments weighted hu-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n182."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_hu-3",
+      "source_name": "log_moments_weighted_hu-3",
+      "storage_slot": "n183",
+      "display_name": "log moments weighted hu-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n183."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_hu-4",
+      "source_name": "log_moments_weighted_hu-4",
+      "storage_slot": "n184",
+      "display_name": "log moments weighted hu-4",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n184."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_hu-5",
+      "source_name": "log_moments_weighted_hu-5",
+      "storage_slot": "n185",
+      "display_name": "log moments weighted hu-5",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n185."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_hu-6",
+      "source_name": "log_moments_weighted_hu-6",
+      "storage_slot": "n186",
+      "display_name": "log moments weighted hu-6",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n186."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-0-2",
+      "source_name": "log_moments_weighted_normalized-0-2",
+      "storage_slot": "n187",
+      "display_name": "log moments weighted normalized-0-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n187."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-0-3",
+      "source_name": "log_moments_weighted_normalized-0-3",
+      "storage_slot": "n188",
+      "display_name": "log moments weighted normalized-0-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n188."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-1-1",
+      "source_name": "log_moments_weighted_normalized-1-1",
+      "storage_slot": "n189",
+      "display_name": "log moments weighted normalized-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n189."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.axis_minor_length",
+      "source_name": "axis_minor_length",
+      "storage_slot": "n19",
+      "display_name": "axis minor length",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n19."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-1-2",
+      "source_name": "log_moments_weighted_normalized-1-2",
+      "storage_slot": "n190",
+      "display_name": "log moments weighted normalized-1-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n190."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-1-3",
+      "source_name": "log_moments_weighted_normalized-1-3",
+      "storage_slot": "n191",
+      "display_name": "log moments weighted normalized-1-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n191."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-2-0",
+      "source_name": "log_moments_weighted_normalized-2-0",
+      "storage_slot": "n192",
+      "display_name": "log moments weighted normalized-2-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n192."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-2-1",
+      "source_name": "log_moments_weighted_normalized-2-1",
+      "storage_slot": "n193",
+      "display_name": "log moments weighted normalized-2-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n193."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-2-2",
+      "source_name": "log_moments_weighted_normalized-2-2",
+      "storage_slot": "n194",
+      "display_name": "log moments weighted normalized-2-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n194."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-2-3",
+      "source_name": "log_moments_weighted_normalized-2-3",
+      "storage_slot": "n195",
+      "display_name": "log moments weighted normalized-2-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n195."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-3-0",
+      "source_name": "log_moments_weighted_normalized-3-0",
+      "storage_slot": "n196",
+      "display_name": "log moments weighted normalized-3-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n196."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-3-1",
+      "source_name": "log_moments_weighted_normalized-3-1",
+      "storage_slot": "n197",
+      "display_name": "log moments weighted normalized-3-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n197."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-3-2",
+      "source_name": "log_moments_weighted_normalized-3-2",
+      "storage_slot": "n198",
+      "display_name": "log moments weighted normalized-3-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n198."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.log_moments_weighted_normalized-3-3",
+      "source_name": "log_moments_weighted_normalized-3-3",
+      "storage_slot": "n199",
+      "display_name": "log moments weighted normalized-3-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n199."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.bbox-0",
+      "source_name": "bbox-0",
+      "storage_slot": "n20",
+      "display_name": "bbox-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n20."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.double_position",
+      "source_name": "double_position",
+      "storage_slot": "n200",
+      "display_name": "double position",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n200."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.total_doubles",
+      "source_name": "total_doubles",
+      "storage_slot": "n201",
+      "display_name": "total doubles",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n201."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.bbox-1",
+      "source_name": "bbox-1",
+      "storage_slot": "n21",
+      "display_name": "bbox-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n21."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.bbox-2",
+      "source_name": "bbox-2",
+      "storage_slot": "n22",
+      "display_name": "bbox-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n22."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.bbox-3",
+      "source_name": "bbox-3",
+      "storage_slot": "n23",
+      "display_name": "bbox-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n23."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.centroid-0",
+      "source_name": "centroid-0",
+      "storage_slot": "n24",
+      "display_name": "centroid-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n24."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.centroid-1",
+      "source_name": "centroid-1",
+      "storage_slot": "n25",
+      "display_name": "centroid-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n25."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.centroid_local-0",
+      "source_name": "centroid_local-0",
+      "storage_slot": "n26",
+      "display_name": "centroid local-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n26."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.centroid_local-1",
+      "source_name": "centroid_local-1",
+      "storage_slot": "n27",
+      "display_name": "centroid local-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n27."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.centroid_weighted-0",
+      "source_name": "centroid_weighted-0",
+      "storage_slot": "n28",
+      "display_name": "centroid weighted-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n28."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.centroid_weighted-1",
+      "source_name": "centroid_weighted-1",
+      "storage_slot": "n29",
+      "display_name": "centroid weighted-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n29."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.centroid_weighted_local-0",
+      "source_name": "centroid_weighted_local-0",
+      "storage_slot": "n30",
+      "display_name": "centroid weighted local-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n30."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.centroid_weighted_local-1",
+      "source_name": "centroid_weighted_local-1",
+      "storage_slot": "n31",
+      "display_name": "centroid weighted local-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n31."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.eccentricity",
+      "source_name": "eccentricity",
+      "storage_slot": "n32",
+      "display_name": "eccentricity",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n32."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.equivalent_diameter_area",
+      "source_name": "equivalent_diameter_area",
+      "storage_slot": "n33",
+      "display_name": "equivalent diameter area",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n33."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.euler_number",
+      "source_name": "euler_number",
+      "storage_slot": "n34",
+      "display_name": "euler number",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n34."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.extent",
+      "source_name": "extent",
+      "storage_slot": "n35",
+      "display_name": "extent",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n35."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.feret_diameter_max",
+      "source_name": "feret_diameter_max",
+      "storage_slot": "n36",
+      "display_name": "feret diameter max",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n36."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.inertia_tensor-0-0",
+      "source_name": "inertia_tensor-0-0",
+      "storage_slot": "n37",
+      "display_name": "inertia tensor-0-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n37."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.inertia_tensor-0-1",
+      "source_name": "inertia_tensor-0-1",
+      "storage_slot": "n38",
+      "display_name": "inertia tensor-0-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n38."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.inertia_tensor-1-0",
+      "source_name": "inertia_tensor-1-0",
+      "storage_slot": "n39",
+      "display_name": "inertia tensor-1-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n39."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.inertia_tensor-1-1",
+      "source_name": "inertia_tensor-1-1",
+      "storage_slot": "n40",
+      "display_name": "inertia tensor-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n40."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.inertia_tensor_eigvals-0",
+      "source_name": "inertia_tensor_eigvals-0",
+      "storage_slot": "n41",
+      "display_name": "inertia tensor eigvals-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n41."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.inertia_tensor_eigvals-1",
+      "source_name": "inertia_tensor_eigvals-1",
+      "storage_slot": "n42",
+      "display_name": "inertia tensor eigvals-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n42."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.intensity_max",
+      "source_name": "intensity_max",
+      "storage_slot": "n43",
+      "display_name": "intensity max",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n43."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.intensity_mean",
+      "source_name": "intensity_mean",
+      "storage_slot": "n44",
+      "display_name": "intensity mean",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n44."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.intensity_min",
+      "source_name": "intensity_min",
+      "storage_slot": "n45",
+      "display_name": "intensity min",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n45."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.label_id_number",
+      "source_name": "label_id_number",
+      "storage_slot": "n46",
+      "display_name": "label id number",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n46."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-0-0",
+      "source_name": "moments-0-0",
+      "storage_slot": "n47",
+      "display_name": "moments-0-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n47."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-0-1",
+      "source_name": "moments-0-1",
+      "storage_slot": "n48",
+      "display_name": "moments-0-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n48."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-0-2",
+      "source_name": "moments-0-2",
+      "storage_slot": "n49",
+      "display_name": "moments-0-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n49."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-0-3",
+      "source_name": "moments-0-3",
+      "storage_slot": "n50",
+      "display_name": "moments-0-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n50."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-1-0",
+      "source_name": "moments-1-0",
+      "storage_slot": "n51",
+      "display_name": "moments-1-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n51."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-1-1",
+      "source_name": "moments-1-1",
+      "storage_slot": "n52",
+      "display_name": "moments-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n52."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-1-2",
+      "source_name": "moments-1-2",
+      "storage_slot": "n53",
+      "display_name": "moments-1-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n53."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-1-3",
+      "source_name": "moments-1-3",
+      "storage_slot": "n54",
+      "display_name": "moments-1-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n54."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-2-0",
+      "source_name": "moments-2-0",
+      "storage_slot": "n55",
+      "display_name": "moments-2-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n55."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-2-1",
+      "source_name": "moments-2-1",
+      "storage_slot": "n56",
+      "display_name": "moments-2-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n56."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-2-2",
+      "source_name": "moments-2-2",
+      "storage_slot": "n57",
+      "display_name": "moments-2-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n57."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-2-3",
+      "source_name": "moments-2-3",
+      "storage_slot": "n58",
+      "display_name": "moments-2-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n58."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-3-0",
+      "source_name": "moments-3-0",
+      "storage_slot": "n59",
+      "display_name": "moments-3-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n59."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-3-1",
+      "source_name": "moments-3-1",
+      "storage_slot": "n60",
+      "display_name": "moments-3-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n60."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-3-2",
+      "source_name": "moments-3-2",
+      "storage_slot": "n61",
+      "display_name": "moments-3-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n61."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments-3-3",
+      "source_name": "moments-3-3",
+      "storage_slot": "n62",
+      "display_name": "moments-3-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n62."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-0-0",
+      "source_name": "moments_central-0-0",
+      "storage_slot": "n63",
+      "display_name": "moments central-0-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n63."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-0-1",
+      "source_name": "moments_central-0-1",
+      "storage_slot": "n64",
+      "display_name": "moments central-0-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n64."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-0-2",
+      "source_name": "moments_central-0-2",
+      "storage_slot": "n65",
+      "display_name": "moments central-0-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n65."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-0-3",
+      "source_name": "moments_central-0-3",
+      "storage_slot": "n66",
+      "display_name": "moments central-0-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n66."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-1-0",
+      "source_name": "moments_central-1-0",
+      "storage_slot": "n67",
+      "display_name": "moments central-1-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n67."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-1-1",
+      "source_name": "moments_central-1-1",
+      "storage_slot": "n68",
+      "display_name": "moments central-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n68."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-1-2",
+      "source_name": "moments_central-1-2",
+      "storage_slot": "n69",
+      "display_name": "moments central-1-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n69."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-1-3",
+      "source_name": "moments_central-1-3",
+      "storage_slot": "n70",
+      "display_name": "moments central-1-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n70."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-2-0",
+      "source_name": "moments_central-2-0",
+      "storage_slot": "n71",
+      "display_name": "moments central-2-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n71."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-2-1",
+      "source_name": "moments_central-2-1",
+      "storage_slot": "n72",
+      "display_name": "moments central-2-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n72."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-2-2",
+      "source_name": "moments_central-2-2",
+      "storage_slot": "n73",
+      "display_name": "moments central-2-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n73."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-2-3",
+      "source_name": "moments_central-2-3",
+      "storage_slot": "n74",
+      "display_name": "moments central-2-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n74."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-3-0",
+      "source_name": "moments_central-3-0",
+      "storage_slot": "n75",
+      "display_name": "moments central-3-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n75."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-3-1",
+      "source_name": "moments_central-3-1",
+      "storage_slot": "n76",
+      "display_name": "moments central-3-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n76."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-3-2",
+      "source_name": "moments_central-3-2",
+      "storage_slot": "n77",
+      "display_name": "moments central-3-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n77."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_central-3-3",
+      "source_name": "moments_central-3-3",
+      "storage_slot": "n78",
+      "display_name": "moments central-3-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n78."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_hu-0",
+      "source_name": "moments_hu-0",
+      "storage_slot": "n79",
+      "display_name": "moments hu-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n79."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_hu-1",
+      "source_name": "moments_hu-1",
+      "storage_slot": "n80",
+      "display_name": "moments hu-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n80."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_hu-2",
+      "source_name": "moments_hu-2",
+      "storage_slot": "n81",
+      "display_name": "moments hu-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n81."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_hu-3",
+      "source_name": "moments_hu-3",
+      "storage_slot": "n82",
+      "display_name": "moments hu-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n82."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_hu-4",
+      "source_name": "moments_hu-4",
+      "storage_slot": "n83",
+      "display_name": "moments hu-4",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n83."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_hu-5",
+      "source_name": "moments_hu-5",
+      "storage_slot": "n84",
+      "display_name": "moments hu-5",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n84."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_hu-6",
+      "source_name": "moments_hu-6",
+      "storage_slot": "n85",
+      "display_name": "moments hu-6",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n85."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-0-2",
+      "source_name": "moments_normalized-0-2",
+      "storage_slot": "n86",
+      "display_name": "moments normalized-0-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n86."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-0-3",
+      "source_name": "moments_normalized-0-3",
+      "storage_slot": "n87",
+      "display_name": "moments normalized-0-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n87."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-1-1",
+      "source_name": "moments_normalized-1-1",
+      "storage_slot": "n88",
+      "display_name": "moments normalized-1-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n88."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-1-2",
+      "source_name": "moments_normalized-1-2",
+      "storage_slot": "n89",
+      "display_name": "moments normalized-1-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n89."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-1-3",
+      "source_name": "moments_normalized-1-3",
+      "storage_slot": "n90",
+      "display_name": "moments normalized-1-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n90."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-2-0",
+      "source_name": "moments_normalized-2-0",
+      "storage_slot": "n91",
+      "display_name": "moments normalized-2-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n91."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-2-1",
+      "source_name": "moments_normalized-2-1",
+      "storage_slot": "n92",
+      "display_name": "moments normalized-2-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n92."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-2-2",
+      "source_name": "moments_normalized-2-2",
+      "storage_slot": "n93",
+      "display_name": "moments normalized-2-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n93."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-2-3",
+      "source_name": "moments_normalized-2-3",
+      "storage_slot": "n94",
+      "display_name": "moments normalized-2-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n94."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-3-0",
+      "source_name": "moments_normalized-3-0",
+      "storage_slot": "n95",
+      "display_name": "moments normalized-3-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n95."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-3-1",
+      "source_name": "moments_normalized-3-1",
+      "storage_slot": "n96",
+      "display_name": "moments normalized-3-1",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n96."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-3-2",
+      "source_name": "moments_normalized-3-2",
+      "storage_slot": "n97",
+      "display_name": "moments normalized-3-2",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n97."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_normalized-3-3",
+      "source_name": "moments_normalized-3-3",
+      "storage_slot": "n98",
+      "display_name": "moments normalized-3-3",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n98."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.moments_weighted-0-0",
+      "source_name": "moments_weighted-0-0",
+      "storage_slot": "n99",
+      "display_name": "moments weighted-0-0",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans n99."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.double_prediction",
+      "source_name": "double_prediction",
+      "storage_slot": "t01",
+      "display_name": "double prediction",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans t01."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.double_validation_status",
+      "source_name": "double_validation_status",
+      "storage_slot": "t02",
+      "display_name": "double validation status",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans t02."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.double_probability",
+      "source_name": "double_probability",
+      "storage_slot": "t03",
+      "display_name": "double probability",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans t03."
+    },
+    {
+      "category": "object_free",
+      "field": "fre.double_of",
+      "source_name": "double_of",
+      "storage_slot": "t04",
+      "display_name": "double of",
+      "definition": "Champ libre object_free fourni par EcoTaxa, stocke dans t04."
+    },
+    {
+      "category": "sample",
+      "field": "sample.station_name",
+      "source_name": "station_name",
+      "storage_slot": "t01",
+      "display_name": "station name",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t01."
+    },
+    {
+      "category": "sample",
+      "field": "sample.deployment_date_start",
+      "source_name": "deployment_date_start",
+      "storage_slot": "t02",
+      "display_name": "deployment date start",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t02."
+    },
+    {
+      "category": "sample",
+      "field": "sample.deployment_time_start",
+      "source_name": "deployment_time_start",
+      "storage_slot": "t03",
+      "display_name": "deployment time start",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t03."
+    },
+    {
+      "category": "sample",
+      "field": "sample.deployment_datetime_end",
+      "source_name": "deployment_datetime_end",
+      "storage_slot": "t04",
+      "display_name": "deployment datetime end",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t04."
+    },
+    {
+      "category": "sample",
+      "field": "sample.gear",
+      "source_name": "gear",
+      "storage_slot": "t05",
+      "display_name": "gear",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t05."
+    },
+    {
+      "category": "sample",
+      "field": "sample.tow_type",
+      "source_name": "tow_type",
+      "storage_slot": "t06",
+      "display_name": "tow type",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t06."
+    },
+    {
+      "category": "sample",
+      "field": "sample.cast_number",
+      "source_name": "cast_number",
+      "storage_slot": "t07",
+      "display_name": "cast number",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t07."
+    },
+    {
+      "category": "sample",
+      "field": "sample.bottom_depth",
+      "source_name": "bottom_depth",
+      "storage_slot": "t08",
+      "display_name": "bottom depth",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t08."
+    },
+    {
+      "category": "sample",
+      "field": "sample.latitude",
+      "source_name": "latitude",
+      "storage_slot": "t09",
+      "display_name": "latitude",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t09."
+    },
+    {
+      "category": "sample",
+      "field": "sample.longitude",
+      "source_name": "longitude",
+      "storage_slot": "t10",
+      "display_name": "longitude",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t10."
+    },
+    {
+      "category": "sample",
+      "field": "sample.deployment_comments",
+      "source_name": "deployment_comments",
+      "storage_slot": "t11",
+      "display_name": "deployment comments",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t11."
+    },
+    {
+      "category": "sample",
+      "field": "sample.gear_net_id",
+      "source_name": "gear_net_id",
+      "storage_slot": "t12",
+      "display_name": "gear net id",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t12."
+    },
+    {
+      "category": "sample",
+      "field": "sample.net_mesh_size",
+      "source_name": "net_mesh_size",
+      "storage_slot": "t13",
+      "display_name": "net mesh size",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t13."
+    },
+    {
+      "category": "sample",
+      "field": "sample.net_mouth_aperture",
+      "source_name": "net_mouth_aperture",
+      "storage_slot": "t14",
+      "display_name": "net mouth aperture",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t14."
+    },
+    {
+      "category": "sample",
+      "field": "sample.max_net_sampling_depth",
+      "source_name": "max_net_sampling_depth",
+      "storage_slot": "t15",
+      "display_name": "max net sampling depth",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t15."
+    },
+    {
+      "category": "sample",
+      "field": "sample.min_net_sampling_depth",
+      "source_name": "min_net_sampling_depth",
+      "storage_slot": "t16",
+      "display_name": "min net sampling depth",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t16."
+    },
+    {
+      "category": "sample",
+      "field": "sample.deployment_datetime_start",
+      "source_name": "deployment_datetime_start",
+      "storage_slot": "t17",
+      "display_name": "deployment datetime start",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t17."
+    },
+    {
+      "category": "sample",
+      "field": "sample.deployment_time_start_str",
+      "source_name": "deployment_time_start_str",
+      "storage_slot": "t18",
+      "display_name": "deployment time start str",
+      "definition": "Champ libre sample fourni par EcoTaxa, stocke dans t18."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.original_telemetry_profil_folder",
+      "source_name": "original_telemetry_profil_folder",
+      "storage_slot": "t01",
+      "display_name": "original telemetry profil folder",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t01."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.vprm version",
+      "source_name": "vprm version",
+      "storage_slot": "t02",
+      "display_name": "vprm version",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t02."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.sound_velocity",
+      "source_name": "sound_velocity",
+      "storage_slot": "t03",
+      "display_name": "sound velocity",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t03."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.density_ctd",
+      "source_name": "density_ctd",
+      "storage_slot": "t04",
+      "display_name": "density ctd",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t04."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.temperature_ctd",
+      "source_name": "temperature_ctd",
+      "storage_slot": "t05",
+      "display_name": "temperature ctd",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t05."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.conductivity_ctd",
+      "source_name": "conductivity_ctd",
+      "storage_slot": "t06",
+      "display_name": "conductivity ctd",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t06."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.salinity_ctd",
+      "source_name": "salinity_ctd",
+      "storage_slot": "t07",
+      "display_name": "salinity ctd",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t07."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.oxygen_concent",
+      "source_name": "oxygen_concent",
+      "storage_slot": "t08",
+      "display_name": "oxygen concent",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t08."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.oxygen_saturation",
+      "source_name": "oxygen_saturation",
+      "storage_slot": "t09",
+      "display_name": "oxygen saturation",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t09."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.oxygen_temperature",
+      "source_name": "oxygen_temperature",
+      "storage_slot": "t10",
+      "display_name": "oxygen temperature",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t10."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.loki_temperature",
+      "source_name": "loki_temperature",
+      "storage_slot": "t11",
+      "display_name": "loki temperature",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t11."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.loki_voltage",
+      "source_name": "loki_voltage",
+      "storage_slot": "t12",
+      "display_name": "loki voltage",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t12."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.status_acquire",
+      "source_name": "status_acquire",
+      "storage_slot": "t13",
+      "display_name": "status acquire",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t13."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.speed",
+      "source_name": "speed",
+      "storage_slot": "t14",
+      "display_name": "speed",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t14."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.pitch",
+      "source_name": "pitch",
+      "storage_slot": "t15",
+      "display_name": "pitch",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t15."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.roll",
+      "source_name": "roll",
+      "storage_slot": "t16",
+      "display_name": "roll",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t16."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.fluo1",
+      "source_name": "fluo1",
+      "storage_slot": "t17",
+      "display_name": "fluo1",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t17."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.fluo2",
+      "source_name": "fluo2",
+      "storage_slot": "t18",
+      "display_name": "fluo2",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t18."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.fluo3",
+      "source_name": "fluo3",
+      "storage_slot": "t19",
+      "display_name": "fluo3",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t19."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.fluo4",
+      "source_name": "fluo4",
+      "storage_slot": "t20",
+      "display_name": "fluo4",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t20."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.pressure_sensor_press",
+      "source_name": "pressure_sensor_press",
+      "storage_slot": "t21",
+      "display_name": "pressure sensor press",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t21."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.pressure_sensor_temp",
+      "source_name": "pressure_sensor_temp",
+      "storage_slot": "t22",
+      "display_name": "pressure sensor temp",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t22."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.camera_status",
+      "source_name": "camera_status",
+      "storage_slot": "t23",
+      "display_name": "camera status",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t23."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.vprcl_status",
+      "source_name": "vprcl_status",
+      "storage_slot": "t24",
+      "display_name": "vprcl status",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t24."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.vprcl_picture_number",
+      "source_name": "vprcl_picture_number",
+      "storage_slot": "t25",
+      "display_name": "vprcl picture number",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t25."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.vprcl_framerate",
+      "source_name": "vprcl_framerate",
+      "storage_slot": "t26",
+      "display_name": "vprcl framerate",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t26."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.raw_depth",
+      "source_name": "raw_depth",
+      "storage_slot": "t27",
+      "display_name": "raw depth",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t27."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.depth_outlier",
+      "source_name": "depth_outlier",
+      "storage_slot": "t28",
+      "display_name": "depth outlier",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t28."
+    },
+    {
+      "category": "acquisition",
+      "field": "acq.pixel_um_size",
+      "source_name": "pixel_um_size",
+      "storage_slot": "t29",
+      "display_name": "pixel um size",
+      "definition": "Champ libre acquisition fourni par EcoTaxa, stocke dans t29."
+    },
+    {
+      "category": "process",
+      "field": "process.footer_height_px",
+      "source_name": "footer_height_px",
+      "storage_slot": "t01",
+      "display_name": "footer height px",
+      "definition": "Champ libre process fourni par EcoTaxa, stocke dans t01."
+    },
+    {
+      "category": "process",
+      "field": "process.python_img_feats_library",
+      "source_name": "python_img_feats_library",
+      "storage_slot": "t02",
+      "display_name": "python img feats library",
+      "definition": "Champ libre process fourni par EcoTaxa, stocke dans t02."
+    }
+  ]
+}

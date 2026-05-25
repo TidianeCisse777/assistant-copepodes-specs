@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+outputs/raw/
+outputs/clean/*.tsv
+outputs/sample/project_*_metadata.json
