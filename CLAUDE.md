@@ -10,13 +10,12 @@ sans que l'utilisateur (Professeur ou Étudiant) ait à écrire du code.
 
 ---
 
-
 Think before coding. State your assumptions out loud. If the request is ambiguous, ask. If a simpler approach exists, push back. Stop when you are confused, name what is unclear, do not just pick one interpretation and run.
 Simplicity first. Write the minimum code that solves the problem. No speculative abstractions. No flexibility nobody asked for. The test: would a senior engineer call this overcomplicated.
 Surgical changes. Touch only what the task requires. Do not improve neighboring code. Do not refactor what is not broken. Every changed line should trace back to the request.
-Goal-driven execution. Turn vague instructions into verifiable targets before writing a line. “Add validation” becomes “write tests for invalid inputs, then make them pass.”
+Goal-driven execution. Turn vague instructions into verifiable targets before writing a line. "Add validation" becomes "write tests for invalid inputs, then make them pass."
 
-
+---
 
 ## État d'avancement (mai 2026)
 
@@ -25,15 +24,52 @@ Goal-driven execution. Turn vague instructions into verifiable targets before wr
 - 22 tools spécifiés avec signatures, contraintes, tests A+B (`TOOLS_SPEC.js`)
 - 17 scénarios de test comportementaux documentés (`TEST_SCENARIOS.md`)
 - Plan d'implémentation consolidé : `PLAN.md`
-- **Phase 0 (Langfuse) ✅ terminée** — Sprint actif = Phase A → B → C → 1 → 2 → 3
 
-### Repo IDEA (runtime FastAPI — séparé)
+### Phases terminées dans IDEA
 
-- Refactor multi-agent terminé et mergé sur `main` (42 tests verts)
-- Stack complet opérationnel : FastAPI + pgvector + Redis + Nginx + Frontend + Langfuse
+| Phase | Statut | Ce qui existe |
+|---|---|---|
+| 0 — Langfuse | ✅ | Self-hosted `localhost:3001`, observability câblée |
+| A — CopepodProfile | ✅ | `agents/copepod_profile.py`, `agents/copepod_prompt.py` |
+| B — RAG | ✅ | `core/copepod_rag/` (chunk, build_index, query) + ChromaDB |
+| C — Red-teaming | ✅ | Evals automatisés (direct_analysis, offtopic) passent |
+| 1 — Données locales | ✅ | `copepod_data.py` : inspect, infer_column_roles, describe_column |
+| 2 — Colonnes + sources | ✅ | `copepod_columns.py`, `copepod_sources_meta.py` |
+| 3 — Plan mode workflow | ✅ | `core/copepod_plan_workflow.py`, `copepod_session_artifacts.py` |
+
+### Sprint actif — Evals plan mode
+
+**Objectif :** amener le `--live` complet (Plan → Analyse) à 14/14.
+
+**État des packs au 2026-05-27 :**
+
+| Mode | État |
+|---|---|
+| `--mock` | ✅ vert |
+| `--live-du-only` | ✅ vert |
+| `--live-gc-only` (rich, poor, offtopic, analysis-jump) | ✅ vert |
+| `--live` complet Plan → Analyse | à revalider — 7/14 au dernier run |
+| Direct Analysis | ✅ 2/2 |
+| Off-topic | 1/2 |
+| Rejection / Retraction | à relancer en séquentiel (crash rate limit) |
+
+**Tests `--live` qui échouent** (priorité) :
+- `live_describe_column_covered_all_unmatched` — filtre pas assez strict (108 unmatched, 4 appels)
+- `live_du_payload_has_column_catalogue` — `column_catalogue` vide dans le payload DU
+- `live_llm_activated_data_understanding` — LLM active le DU en Phase 3 au lieu de Phase 2
+- `live_llm_created_graph_context_draft_linked_to_active_du` — dépend de l'activation Phase 2
+- `live_gc_payload_has_all_required_fields` — GC créé sans les champs requis
+- `live_llm_activated_graph_context` — jamais activé
+- `live_plan_ready_enables_analyse_mode` — `[PLAN_READY]` jamais émis
+
+**Règle avant tout live :** toujours lancer `--mock` puis `--live-du-only` puis `--live-gc-only` avant `--live`.
+
+### Repo IDEA
+
+- Stack opérationnel : FastAPI + pgvector + Redis + Nginx + Frontend + Langfuse
 - Langfuse self-hosted sur `http://localhost:3001` (Apple Silicon : `platform: linux/amd64`)
-- LiteLLM callback Langfuse **à câbler en Phase A**
-- **Architecture : fork IDEA** — CopepodProfile + tools copépodes dans IDEA, pas un package séparé
+- Observability : `core/copepod_observability.py` — traces Langfuse par tool + phase
+- **Architecture : fork IDEA** — tout le code copépode vit dans IDEA, pas un package séparé
 
 ---
 
@@ -45,41 +81,12 @@ Goal-driven execution. Turn vague instructions into verifiable targets before wr
 | `TOOLS_SPEC.js` | 22 tools : signatures input/output, contraintes, tests A+B |
 | `TEST_SCENARIOS.md` | 17 scénarios comportementaux (cas limites d'abord) |
 | `docs/CONTEXT.md` | Glossaire métier, contraintes, décisions de design |
+| `IDEA/docs/copepod-eval-status-2026-05-27.md` | Scores détaillés par test, historique des runs |
+| `IDEA/docs/copepod-plan-mode-eval-coverage.md` | Contrat de couverture du plan mode eval |
+| `IDEA/docs/copepod-gc-only-live-eval.md` | Doc opérationnelle GC-only eval |
 | `STAGE ULAVAL/USE CASE/Use Cases — Assistant scientifique copépodes V1.md` | 18 UC complets |
 | `STAGE ULAVAL/Agent/Spec de L'agent/Capacites agent V1.md` | 14 capacités agent |
 | `STAGE ULAVAL/Agent/Spec de L'agent/Contraintes agent V1.md` | 29 contraintes |
-
----
-
-## Sprint actif — ce qui est à implémenter maintenant
-
-**Phase A — CopepodProfile + system prompt** ← NEXT
-- `IDEA/agents/copepod_profile.py` + `IDEA/utils/copepod_system_prompt.py`
-- Câbler le callback LiteLLM → Langfuse dans IDEA
-- Valide : 6 tests structurels verts + 4 conversations manuelles + trace Langfuse
-
-**Phase B — RAG copépodes**
-- ChromaDB sur les 5 docs `STAGE ULAVAL/Agent/Ressources scientifiques/Document RAG/*.md`
-- `IDEA/core/copepod_rag/` : chunk_docs.py → build_index.py → query.py
-- Valide : 3 requêtes de test passent, chunks visibles dans Langfuse
-
-**Phase C — Red-teaming (validation manuelle)**
-- 5 conversations dans IDEA avec agent_type=copepod (SC-03, SC-06, SC-15 partiel)
-- Zéro hallucination, sources RAG citées, traces Langfuse cohérentes
-
-**Phase 1 — Données locales**
-- `IDEA/core/tool_registry/tools/copepod_data.py` : inspect, validate, profile_missing
-- Fixture : `data_exploration/examples_tsv/uvp_amundsen_1165_ecotaxa_object_sample.tsv`
-- Valide : SC-07, SC-13
-
-**Phase 2 — Colonnes et sources**
-- `copepod_columns.py` + `copepod_sources_meta.py` dans tool registry
-- `list_available_sources(auth_token)` → API dynamique, jamais hardcodé
-- Valide : SC-01, SC-14, SC-15
-
-**Phase 3 — Contexte scientifique + session**
-- `session.set_mode`, `session.get_mode`, `context.get_required_fields`, `context.validate_species`
-- Valide : SC-02, SC-03, SC-10
 
 ---
 
@@ -92,27 +99,74 @@ Critères de passage détaillés dans `PLAN.md`.
 
 ---
 
-## Structure cible dans IDEA
+## Structure réelle dans IDEA
 
 ```
 IDEA/
   agents/
-    copepod_profile.py        ← CopepodProfile (Phase A)
-  utils/
-    copepod_system_prompt.py  ← system prompt copépodes (Phase A)
+    copepod_profile.py         ← CopepodProfile ✅
+    copepod_prompt.py          ← system prompt copépodes ✅
+
   core/
-    copepod_rag/              ← chunk_docs.py, build_index.py, query.py (Phase B)
+    copepod_rag/               ← chunk_docs.py, build_index.py, query.py ✅
+    copepod_plan_workflow.py   ← machine à états DU → GC → PLAN_READY ✅
+    copepod_observability.py   ← traces Langfuse par tool + phase ✅
+
+    instruction_renderer/blocks/
+      copepod_mode_plan.py     ← bloc d'instructions Plan Mode ✅
+      copepod_mode_analyse.py  ← bloc d'instructions Analyse Mode ✅
+      copepod_tool_signatures.py ← signatures tools injectées au LLM ✅
+
     tool_registry/tools/
-      copepod_data.py         ← inspect, validate, profile_missing (Phase 1)
-      copepod_columns.py      ← describe, check_for_calculation (Phase 2)
-      copepod_sources_meta.py ← list_available, describe (Phase 2)
-      copepod_sources.py      ← query_ecotaxa, query_ecopart, query_amundsen_ctd, query_ogsl, query_bio_oracle (Phase 4)
-      copepod_joins.py        ← join_ecotaxa_ecopart, compare_ctd_profiles (Phase 5)
+      copepod_data.py          ← inspect, infer_column_roles, describe_column ✅
+      copepod_columns.py       ← describe_column étendu, check_for_calculation ✅
+      copepod_sources_meta.py  ← list_available_sources, describe_source ✅
+      copepod_session_artifacts.py ← summarize_understanding, activate_data_understanding, create_graph_context, activate_graph_context ✅
+      copepod_taxonomy.py      ← validate_species, get_taxonomy_context ✅
+      copepod_rag.py           ← query_rag_docs (tool wrapper) ✅
+      copepod_sources.py       ← query_ecotaxa, query_ecopart, ... (Phase 4 — pas encore)
+      copepod_joins.py         ← join_ecotaxa_ecopart, ... (Phase 5 — pas encore)
+
+  scripts/evals/
+    run_copepod_plan_mode_eval.py      ← eval principal (GC-only + DU-only modes) ✅
+    run_copepod_direct_analysis_eval.py ✅
+    run_copepod_offtopic_eval.py       ✅
+    run_copepod_rejection_eval.py      ✅
+
   tests/
-    test_copepod_profile.py   ← Phase A
-    test_copepod_rag.py       ← Phase B
-    test_copepod_data.py      ← Phase 1
-    test_copepod_sources.py   ← Phase 4
+    test_copepod_profile.py            ✅
+    test_copepod_rag.py                ✅
+    test_copepod_rag_functional.py     ✅
+    test_copepod_data.py               ✅
+    test_copepod_data_workflow.py      ✅
+    test_copepod_columns.py            ✅
+    test_copepod_sources_meta.py       ✅
+    test_copepod_session_artifacts_tools.py ✅
+    test_copepod_observability.py      ✅
+    test_copepod_tool_observability.py ✅
+    test_copepod_plan_mode_eval_runner.py ✅
+    test_copepod_plan_to_analyse_integration.py ✅
+
+  docs/
+    copepod-eval-status-2026-05-27.md  ← scores + historique
+    copepod-plan-mode-eval-coverage.md ← contrat de couverture
+    copepod-gc-only-live-eval.md       ← guide opérationnel GC-only
+    copepod-langfuse-evals.md
+    copepod-test-operations.md
+```
+
+---
+
+## Lancer les evals
+
+```bash
+# depuis IDEA/, dans Docker
+docker exec -it idea-app python scripts/evals/run_copepod_plan_mode_eval.py --gc-only
+docker exec -it idea-app python scripts/evals/run_copepod_plan_mode_eval.py --du-only
+docker exec -it idea-app python scripts/evals/run_copepod_direct_analysis_eval.py
+docker exec -it idea-app python scripts/evals/run_copepod_offtopic_eval.py
+
+# Lancer en séquentiel pour éviter le rate limit (200k TPM)
 ```
 
 ---
@@ -184,4 +238,3 @@ STAGE ULAVAL/
   Agent/Spec de L'agent/Contraintes agent V1.md
   Agent/Ressources scientifiques/Document RAG/*.md  ← 5 docs RAG sources
 ```
-
