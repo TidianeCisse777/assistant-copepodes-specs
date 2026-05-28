@@ -248,3 +248,174 @@ Le plan est considéré prêt à implémenter si :
 - aucune donnée brute n'est écrasée ;
 - aucun secret n'est exposé.
 
+## Squelettes de code attendus
+
+Les blocs ci-dessous montrent la forme cible du code, pas l'implémentation finale.
+
+### 1. Connecteur MCP source-specific
+
+```python
+# core/mcp/connectors/ogsl.py
+
+from dataclasses import dataclass
+from typing import Any
+
+
+@dataclass
+class OGSLQuery:
+    start_date: str
+    end_date: str
+    station: str | None = None
+    zone: str | None = None
+    variables: list[str] | None = None
+    depth_min: float | None = None
+    depth_max: float | None = None
+
+
+class OGSLConnector:
+    def list_datasets(self) -> list[dict[str, Any]]:
+        ...
+
+    def query_profile(self, query: OGSLQuery) -> list[dict[str, Any]]:
+        ...
+
+    def export_table(self, query: OGSLQuery) -> str:
+        ...
+```
+
+```python
+# core/mcp/connectors/bio_oracle.py
+
+from dataclasses import dataclass
+from typing import Any
+
+
+@dataclass
+class BioOracleQuery:
+    variable: str
+    scenario: str
+    start_year: int
+    end_year: int
+    lat_min: float
+    lat_max: float
+    lon_min: float
+    lon_max: float
+
+
+class BioOracleConnector:
+    def list_variables(self) -> list[str]:
+        ...
+
+    def extract_grid(self, query: BioOracleQuery) -> list[dict[str, Any]]:
+        ...
+
+    def export_table(self, query: BioOracleQuery) -> str:
+        ...
+```
+
+### 2. Tool local de normalisation
+
+```python
+# core/tool_registry/tools/ogsl_tools.py
+
+from pathlib import Path
+
+
+def inspect_ogsl_export(path: Path) -> dict:
+    """Inspecte un export OGSL deja recupere et resume colonnes, dates et limites."""
+    ...
+
+
+def normalize_ogsl_table(rows: list[dict]) -> list[dict]:
+    """Normalise les noms de colonnes, les dates et les unites."""
+    ...
+```
+
+```python
+# core/tool_registry/tools/bio_oracle_tools.py
+
+from pathlib import Path
+
+
+def inspect_bio_oracle_export(path: Path) -> dict:
+    """Inspecte un extrait Bio-ORACLE deja recupere."""
+    ...
+
+
+def couple_bio_oracle_with_local_data(
+    local_rows: list[dict],
+    bio_oracle_rows: list[dict],
+) -> list[dict]:
+    """Couple les donnees locales avec Bio-ORACLE sans ecraser les sources brutes."""
+    ...
+```
+
+### 3. Résolution des paramètres depuis le langage naturel
+
+```python
+# core/instruction_renderer/blocks/copepod_mode_plan.py
+
+def resolve_ogsl_request(message: str) -> dict:
+    """
+    Extrait la periode, la station, la zone, la profondeur et les variables.
+    Pose une question si un parametre bloque le fetch.
+    """
+    ...
+
+
+def resolve_bio_oracle_request(message: str) -> dict:
+    """
+    Extrait variable, scenario, periode et emprise geographique.
+    Demande precision si la requete est incomplete.
+    """
+    ...
+```
+
+### 4. Flux de sauvegarde de table de travail
+
+```python
+# core/session_store.py (concept)
+
+def save_derived_table(
+    session_key: str,
+    name: str,
+    rows: list[dict],
+    provenance: dict,
+) -> str:
+    """
+    Sauve une table derivee et retourne son identifiant.
+    """
+    ...
+```
+
+### 5. Convention de sortie technique
+
+```text
+source: OGSL
+mode: MCP
+period: 2024-01-01 -> 2024-03-31
+variables: PRES, TE90, PSAL
+coverage: partial
+limits: missing depth for some profiles
+artifact: session://derived/ogsl_profile_001
+```
+
+```text
+source: Bio-ORACLE
+mode: MCP + local tool
+scenario: SSP126
+period: 2020 -> 2100
+variable: si_mean
+coverage: sufficient
+limits: land cells excluded
+artifact: session://derived/bio_oracle_021
+```
+
+## Ce que ce code ne doit pas faire
+
+- ne pas appeler une source distante si elle n'est pas active ;
+- ne pas inventer de parametre manquant ;
+- ne pas ecrire dans le brut ;
+- ne pas cacher l'origine du jeu de donnees ;
+- ne pas imposer un unique format de sortie si la source demande un autre format ;
+- ne pas masquer les limites de couverture.
