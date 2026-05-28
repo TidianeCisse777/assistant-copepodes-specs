@@ -1,0 +1,35 @@
+Title,Zooplankton Abundance Normalized by Depth- and Flowmeter-Calculated Volumes (2010–2025),,,,,,
+Description,"Taxonomic-abundance summary for zooplankton net samples analyzed between 2010 and 2025 (excluding analyses under the contracts 'KEBABB' and 'DFO-D. Côté'). Each output row corresponds to one analysis/taxon combination further split by life-development stage and size category, and is annotated with the sampling context (sample ID, station, deployment date/time, cast, gear/tow type, net mesh, net identifier(s), and min/max sampled depths) plus taxonomic classification (kingdom to family). For each row, it computes and reports taxon abundances normalized by: (1) depth-calculated filtered volume for vertically towed net sampling (V-Tow) when sampling depth boundaries are available, (2) flowmeter-calculated filtered volume for both vertically and oblique towed net sampling (V-Tow and O-Tow) when flowmeter measurements are available, separately for the “Large Fraction ($> 1\text{ mm}$)” and “Small Fraction ($< 1\text{ mm}$)” fractions and as their totals, alongside the underlying volume estimates (DEPTH_CALC_VOL and FLOWMETER_CALC_VOL).",,,,,,
+,,,,,,,
+,,,,,,,
+column_ordinal,column_name,is_aggregated,is_computed,type,domain_group,units_or_scale,description
+1,SAMPLE_ID,0,0,int,Sample metadata,NA,Unique identifier of the sample.
+2,ANALYSIS_ID,0,0,int,Analysis metadata,NA,Unique identifier of the analysis record for the sample.
+3,ANALYSIS_CONTRACT,0,0,varchar,Analysis metadata,NA,Contract name under which the analysis was performed (filtered to exclude KEBABB and DFO-D. Côté).
+4,STATION_NAME,0,0,varchar,Sampling context,NA,Station identifier/name for the deployment.
+5,DEPLOYMENT_DATE_START,0,0,date,Deployment identification & timing,NA,Deployment start date (filtered to years 2010–2025 inclusive).
+6,DEPLOYMENT_TIME_START,0,0,time,Deployment identification & timing,NA,Deployment start time.
+7,CAST_NUMBER,0,0,varchar,Deployment identification & timing,NA,Cast number/order for the gear at the station.
+8,GEAR,0,0,varchar,Deployment identification & method,NA,Gear identifier/name used for the deployment.
+9,TOW_TYPE,0,0,varchar,Deployment identification & method,NA,Tow/deployment method category.
+10,NET_MESH_SIZE,0,0,int,Net sampling configuration,um,Net mesh size in micrometer (um).
+11,SAMPLING_NET_ID,0,1,longtext,Net sampling configuration,NA,Represents the net(s) associated with the sample; sometimes an aggregated inventory/list rather than a single net_sampling_id.
+12,MIN_SAMPLE_DEPTH,0,0,decimal,Net sampling configuration,m (depth),Minimum (shallowest) sampling depth for the net sampling.
+13,MAX_SAMPLE_DEPTH,0,0,decimal,Net sampling configuration,m (depth),Maximum (deepest) sampling depth for the net sampling.
+14,ZOOPLANKTON_CATEGORY,0,0,varchar,Taxonomy,NA,"Zooplankton category (copepod, non-copepod, fish, egg-like)."
+15,TAXON_ID,0,0,varchar,Taxonomy,NA,Taxonomic reference identifier for the counted/derived organism.
+16,KINGDOM,0,0,varchar,Taxonomy,NA,Taxonomic kingdom.
+17,PHYLUM,0,0,varchar,Taxonomy,NA,Taxonomic phylum.
+18,CLASS,0,0,varchar,Taxonomy,NA,Taxonomic class.
+19,ORDER,0,0,varchar,Taxonomy,NA,Taxonomic order.
+20,FAMILY,0,0,varchar,Taxonomy,NA,Taxonomic family.
+21,TAXON_LIFE_DEVELOPMENT_STAGE,0,0,varchar,Taxonomy,NA,"Life development stage descriptor (e.g., copepodid/nauplius stages, adult sex classes, etc., depending on naming conventions)."
+22,TAXON_SIZE_CATEGORY,0,0,varchar,Taxonomy,NA,Optional size category for the taxon (may be NULL/blank depending on records).
+23,Large Fract (ind./m3 depth vol),1,1,double,Abundance & volume metrics,ind./m3 (depth-calculated volume),Sum of depth-volume-normalized abundance for taxon restricted to fraction type 'Large Fraction (>1mm)' within the GROUP BY grain (analysis_id + taxon + stage + size_category).
+24,Small Fract (ind./m3 depth vol),1,1,double,Abundance & volume metrics,ind./m3 (depth-calculated volume),Sum of depth-volume-normalized abundance for taxon restricted to fraction type 'Small Fraction (<1mm)' within the GROUP BY grain (analysis_id + taxon + stage + size_category).
+25,Total abundance (ind./m3 depth vol),1,1,double,Abundance & volume metrics,ind./m3 (depth-calculated volume),Total depth-volume-normalized abundance across the two targeted fraction types (large + small) for the grouped taxon/stage/size in the analysis.
+26,DEPTH_CALC_VOL,0,1,decimal,Abundance & volume metrics,m3,Depth-based estimate of net filtered/visited volume.
+27,Large Fract (ind./m3 flowmeter vol),1,1,double,Abundance & volume metrics,ind./m3 (flowmeter-calculated volume),Sum of flowmeter-volume-normalized abundance for taxon restricted to 'Large Fraction (>1mm)' within the GROUP BY grain (analysis_id + taxon + stage + size_category).
+28,Small Fract (ind./m3 flowmeter vol),1,1,double,Abundance & volume metrics,ind./m3 (flowmeter-calculated volume),Sum of flowmeter-volume-normalized abundance for taxon restricted to 'Small Fraction (<1mm)' within the GROUP BY grain (analysis_id + taxon + stage + size_category).
+29,Total abundance (ind./m3 flowmeter vol),1,1,double,Abundance & volume metrics,ind./m3 (flowmeter-calculated volume),Total flowmeter-volume-normalized abundance across targeted fraction types (large + small) for the grouped taxon/stage/size in the analysis.
+30,FLOWMETER_CALC_VOL,0,0,decimal,Abundance & volume metrics,m3,Flowmeter-based estimate of filtered volume.

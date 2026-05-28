@@ -178,3 +178,108 @@ Il ne produit pas une nouvelle analyse scientifique. Il organise, documente et r
 Le livrable correspond aux specs `deliverable.build` : contexte de session, méthodes, figures, résultats descriptifs attachés aux figures, citations vérifiées dans le corpus RAG ou les métadonnées, limites techniques, analyses incomplètes et drapeaux de révision humaine.
 
 Il s'agit d'un document technique préparatoire pour révision humaine, pas d'un rapport interprétatif final. Les sections de résultats restent descriptives et traçables aux graphiques produits. Aucune discussion biologique, conclusion écologique, hypothèse scientifique ou citation inventée ne doit être ajoutée.
+
+### Workflow de chargement des données
+
+Le chargement des données suit un chemin séquentiel en deux phases de validation avant d'entrer en Mode Analyse.
+
+**Étape 1 — Sélection et envoi des fichiers**
+L'utilisateur sélectionne ses fichiers par glisser-déposer ou via le bouton « Ajouter un fichier » dans la conversation. Les fichiers sont mis en attente (visibles dans le champ de saisie). L'utilisateur confirme l'envoi en cliquant sur le bouton « Envoyer ». Un message visible dans la conversation liste les fichiers joints avec leurs chemins.
+
+**Étape 2 — Analyse automatique (Phase 1 Plan Mode)**
+Après réception du message avec fichiers, le LLM inspecte les fichiers via `inspect_file`, infère les rôles des colonnes via `infer_column_roles`, et consulte le RAG pour les colonnes inconnues via `describe_column`. Il produit un **artefact Data Understanding** structuré en session, puis affiche dans la conversation un résumé lisible dérivé de cet artefact. Le résumé conversationnel est persisté dans l'historique Redis, mais l'artefact structuré est la source de vérité utilisée pour la suite du plan et du Mode Analyse.
+
+**Étape 3 — Validation de la compréhension des données**
+L'utilisateur lit le résumé et valide (ou corrige). Pas de bouton — validation conversationnelle libre.
+
+**Étape 4 — Description de l'objectif (Phase 2 Plan Mode)**
+L'utilisateur décrit ce qu'il veut faire. Le LLM produit un **artefact Graph Context** structuré, puis affiche dans la conversation un résumé lisible dérivé de cet artefact : colonnes, filtres, unités, type de graphique, langage, faisabilité.
+
+**Étape 5 — Passage en Mode Analyse**
+L'utilisateur clique le bouton [Passer en Mode Analyse]. Ce bouton :
+- appelle `set_session_mode("analyse")` → stocke le mode dans Redis
+- le prochain rendu des instruction_blocks injecte uniquement `copepod_mode_analyse` (retire `copepod_mode_plan`)
+- déclenche un changement visuel dans l'UI (indicateur de mode)
+
+Le passage en Mode Analyse est refusé côté backend si la session ne possède pas à la fois un Data Understanding `active` et un Graph Context `active`. Le bouton [Passer en Mode Analyse] ne suffit pas à lui seul : il déclenche la demande de transition, mais l'état structuré validé fait foi. Si les artefacts actifs manquent, le backend retourne un `409 Conflict` et le frontend affiche un message de blocage clair.
+
+### Mode de session (session_mode)
+
+La session copépode a deux modes : `plan` (défaut) et `analyse`.
+
+Le mode est stocké dans Redis via `set_session_mode(mode)` / `get_session_mode()`. Le `CopepodProfile` vérifie ce mode au moment de rendre les `instruction_blocks` : en mode `plan`, les deux blocs sont injectés ; en mode `analyse`, seul `copepod_mode_analyse` est injecté. Le LLM ne voit jamais les deux modes simultanément en mode `analyse`.
+
+Le mode `plan` est le mode par défaut et le seul dans lequel le Data Understanding et le Graph Context sont construits. Le mode `analyse` est irréversible dans une session — il n'y a pas de bouton "retour au plan".
+
+### Upload en Mode Analyse
+
+En Mode Analyse, l'upload de fichier est possible sans avertissement ni réversion. Le LLM gère l'intégration : il appelle `inspect_file` + `infer_column_roles` sur le nouveau fichier, puis crée une nouvelle version `draft` du Data Understanding comparée à la version `active`. Le Graph Context `active` reste inchangé tant qu'un nouveau Graph Context n'a pas été explicitement créé et activé.
+
+La session reste en Mode Analyse sauf si le nouveau fichier révèle un bloqueur qui invalide le plan verrouillé. Dans ce cas, le LLM bloque l'exécution, explique que le Graph Context `active` ne couvre pas ou ne permet plus l'exécution avec ce fichier, et ne change pas le mode automatiquement.
+
+Le Mode Analyse est strictement l'exécution du Graph Context `active`. Si l'objectif graphique, le contexte scientifique, les sources ou les fichiers nécessaires changent au point d'exiger un nouveau Graph Context, l'utilisateur doit créer une nouvelle conversation. Le système ne recrée pas un Mode Plan caché dans une session déjà passée en Mode Analyse.
+
+En V1, une nouvelle conversation ne dérive pas automatiquement des artefacts d'une conversation précédente. Elle démarre avec ses propres versions de Data Understanding et de Graph Context.
+
+### Structure du Data Understanding (multi-fichiers)
+
+Le **Data Understanding** est un artefact structuré et versionné de session qui décrit la compréhension validable des fichiers chargés.
+_Éviter_ : le traiter comme un simple résumé conversationnel.
+
+Chaque nouvelle compréhension significative des données crée une nouvelle version de l'artefact. Une seule version est active à la fois et sert de référence pour le Graph Context puis le Mode Analyse.
+
+En V1, les versions et pointeurs actifs du Data Understanding sont stockés dans Redis au niveau de la session.
+
+Le LLM écrit et active les versions du Data Understanding via des tools de session explicites et séparés, accessibles uniquement au profil `copepod` : création de brouillon d'un côté, activation de version de l'autre. Le backend ne doit pas parser le Markdown du résumé conversationnel pour reconstruire l'état canonique.
+
+Une version produite automatiquement après inspection commence avec le statut `draft`. Elle devient la version `active` seulement après validation ou correction conversationnelle par l'utilisateur.
+
+Après validation utilisateur, le LLM active explicitement la version concernée via le tool d'activation. Le backend ne doit pas déduire automatiquement une validation à partir de formulations comme "ok" ou "oui".
+
+Le système conserve les versions précédentes afin de comparer la compréhension validée au moment du plan avec une compréhension produite après l'ajout de nouveaux fichiers, notamment si un upload en Mode Analyse révèle un bloqueur.
+
+Quand plusieurs fichiers sont chargés, l'artefact Data Understanding contient deux niveaux :
+
+**Niveau 1 — Par fichier** : pour chaque fichier, source type probable, colonnes utiles, rôles identifiés, limites qualité, statut de validation taxonomique si applicable.
+
+Chaque entrée fichier de l'artefact inclut au minimum : `file_path`, `original_filename`, `size_bytes`, `content_hash`, `uploaded_at` et `inspection_tool_version`. Le `content_hash` sert à détecter qu'un fichier portant le même nom a été remplacé ou modifié.
+
+Les corrections utilisateur sur la compréhension des données sont stockées comme overrides structurés dans l'artefact, pas seulement comme texte libre dans l'historique. Ces overrides incluent notamment les corrections de rôle de colonne, de type de source, d'unité et de statut de validation taxonomique, avec une raison et un marqueur de confirmation utilisateur.
+
+**Niveau 2 — Global** : jointures détectées entre les fichiers (ex. EcoTaxa + EcoPart via `profile_id`), colonnes croisées disponibles, faisabilité des calculs avec les fichiers combinés, lacunes bloquantes.
+
+Le résumé final affiché dans la conversation est consolidé (pas une liste de résumés séparés), mais chaque fichier est clairement identifié dans la section par fichier. Ce résumé est le rendu humain de l'artefact, pas l'état canonique.
+
+En V1, le Data Understanding doit être lisible via un endpoint debug ou admin afin de diagnostiquer les versions `draft`, la version `active`, les overrides utilisateur et les raisons de blocage. Cette visibilité sert au développement et au support, pas à une fonctionnalité utilisateur finale. L'endpoint retourne l'artefact complet, y compris noms de fichiers, chemins, hashes, colonnes, échantillons limités, statuts et overrides, mais jamais de secrets, credentials ou contenu brut massif des fichiers.
+
+### Structure du Graph Context
+
+Le **Graph Context** est un artefact structuré et versionné de session qui décrit le plan graphique validable avant le passage en Mode Analyse.
+_Éviter_ : le traiter comme un simple résumé conversationnel.
+
+Chaque version du Graph Context référence explicitement la version active du Data Understanding utilisée pour construire le plan. Cette référence lie le plan graphique à une compréhension précise des fichiers, colonnes, unités, limites qualité et overrides utilisateur.
+
+En V1, les versions et pointeurs actifs du Graph Context sont stockés dans Redis au niveau de la session.
+
+Le LLM écrit et active les versions du Graph Context via des tools de session explicites et séparés, accessibles uniquement au profil `copepod` : création de brouillon d'un côté, activation de version de l'autre. Le backend ne doit pas parser le Markdown du résumé conversationnel pour reconstruire l'état canonique.
+
+Une version produite automatiquement commence avec le statut `draft`. Elle devient la version `active` seulement après validation ou correction conversationnelle par l'utilisateur.
+
+Après validation utilisateur, le LLM active explicitement la version concernée via le tool d'activation. Le backend ne doit pas déduire automatiquement une validation à partir de formulations comme "ok" ou "oui".
+
+Le résumé Graph Context affiché dans la conversation est le rendu humain de l'artefact, pas l'état canonique.
+
+En V1, le Graph Context doit être lisible via un endpoint debug ou admin afin de diagnostiquer la version `active`, son lien avec le Data Understanding, l'émission de `[PLAN_READY]` et les refus de passage en Mode Analyse. Cette visibilité sert au développement et au support, pas à une fonctionnalité utilisateur finale. L'endpoint retourne l'artefact complet, mais jamais de secrets, credentials ou contenu brut massif des fichiers.
+
+### Signal [PLAN_READY] et bouton [Passer en Mode Analyse]
+
+Quand le contexte scientifique et graphique a été validé par l'utilisateur, le LLM active explicitement le Graph Context concerné, puis émet le tag `[PLAN_READY]` à la fin de sa réponse. `[PLAN_READY]` signifie donc qu'un Graph Context `active` existe déjà pour la session ; il ne doit pas être émis au simple affichage d'un résumé Graph Context encore `draft`. Le backend détecte ce tag, le retire du texte affiché, et envoie un chunk de type `action_button` au frontend. Le frontend affiche le bouton [Passer en Mode Analyse] directement dans la conversation, attaché au message Graph Context validé.
+
+Quand l'utilisateur clique [Passer en Mode Analyse] :
+1. Le frontend appelle `POST /session/mode` avec `{"mode": "analyse"}`
+2. Redis stocke `session_mode = analyse` pour cette session
+3. Le `CopepodProfile` injecte uniquement `copepod_mode_analyse` (retire `copepod_mode_plan`) pour tous les tours suivants
+4. Le frontend insère un bandeau dans la conversation : `──── Mode Analyse activé ────`
+5. Le frontend met à jour le badge de mode dans le header
+
+Le tag `[PLAN_READY]` ne doit jamais apparaître dans le texte visible par l'utilisateur.

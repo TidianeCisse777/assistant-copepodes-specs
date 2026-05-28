@@ -1,0 +1,23 @@
+LOKI Profil Metadata,
+Description,This worksheet contains validated LOKI profil deployment metadata. Each row represents a sampling/deployment record.
+field_name,description
+sample_station,Sampling station identifier or station code for the deployment/cast.
+sample_sampling_date,Calendar date associated with the sampling event. In the source workbook this may be stored as an Excel date value.
+sample_time_in_deploy,Time when the deployment started or when the instrument/net went in the water.
+sample_cast_number,Cast identifier for repeated deployments at the same station.
+sample_time_bottom_deploy,Time when the deployment reached the bottom or target deepest point.
+sample_time_out_deploy,Time when the deployment ended or the instrument/net came out.
+Sampling_depth_max,Maximum sampling or profiling depth associated with the profil.
+numb_folder_profils,Count/index field related to profil folders in the original workflow. The exact convention should be confirmed against the project protocol.
+zipped_profils,Whether the profil data were stored as zipped archives in the original workflow.
+sample_bottom_datetime,Combined date-time for the bottom or deepest point of the sampling event.
+sample_out_datetime,Combined date-time for the end of the sampling event or recovery.
+object_latitude,Latitude recorded for the sampling event.
+object_longitude,Longitude recorded for the sampling event.
+sample_net_mesh,Net mesh size used for sampling.
+sample_net_aperture,Net aperture/opening used for sampling.
+acq_instrument,"Instrument name used for acquisition, such as LOKI."
+acq_camera_type,Camera type or camera configuration used during acquisition.
+sample_max_sampling_depth_deploy,Maximum sampling depth recorded for the deployment.
+sample_station_depth_in,Station depth/deployment depth field from the source metadata. The exact convention should be confirmed from the acquisition protocol.
+profil_folder_name,"Name of the matched profil folder only, without the parent directory path."
