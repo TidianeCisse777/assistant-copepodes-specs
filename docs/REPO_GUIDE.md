@@ -73,6 +73,8 @@ L'assistant ne doit pas :
 | `TEST_SCENARIOS.md` | Scénarios de test comportemental |
 | `docs/CONTEXT.md` | Glossaire métier et règles agent |
 | `docs/DATA_ACCESS_METHODS.md` | Comment les sources ont été obtenues |
+| `docs/SCRIPT_TO_TOOL_MCP_MAP.md` | Carte de translation des probes/scripts vers tools ou MCP |
+| `data_exploration/IMPLEMENTATION_PLAN_OGSL_BIO_ORACLE.md` | Plan d'implémentation OGSL / Bio-ORACLE pour la phase d'exploration |
 | `STAGE ULAVAL/.../Document RAG/*.md` | Corpus de référence utilisé par le RAG |
 | `visualization/` | Visualisation interactive des use cases, capacités et contraintes |
 

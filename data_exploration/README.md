@@ -33,6 +33,13 @@ Les probes sont des preuves de méthode. Ils ne sont pas encore l'API finale de 
 | `ecotaxa_green_edge_probe/` | Export et inspection EcoTaxa authentifié pour un projet UVP5 |
 | `ecopart_1165_link_probe/` | Exploration EcoPart et jointure EcoTaxa/EcoPart |
 | `amundsen_data_probe/` | Exploration catalogue, ERDDAP et CTD externe |
+| `bio_oracle_probe/` | Extrait Bio-ORACLE public minimal pour tests environnementaux |
+| `ogsl_probe/` | Extrait OGSL CTD public minimal pour tests de contexte régional |
+
+## Documentation utile
+
+- [`copepod_jointure_hierarchy.md`](./copepod_jointure_hierarchy.md) : hiérarchie des jointures et couplages entre données labo, EcoTaxa, EcoPart, Amundsen CTD, OGSL et Bio-ORACLE.
+- [`IMPLEMENTATION_PLAN_OGSL_BIO_ORACLE.md`](./IMPLEMENTATION_PLAN_OGSL_BIO_ORACLE.md) : plan d'implémentation des connecteurs et tools OGSL / Bio-ORACLE.
 
 ## Credentials
 

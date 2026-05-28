@@ -68,6 +68,7 @@ Scripts d'exploration et preuves d'accès aux données. Ce dossier sert à appre
 | `ecotaxa_green_edge_probe/` | Export/inspection EcoTaxa authentifié pour un projet UVP5 | Scripts, `.env.example`, rapports et dictionnaires légers |
 | `ecopart_1165_link_probe/` | Exploration EcoPart et jointure avec EcoTaxa | Scripts, rapports légers |
 | `amundsen_data_probe/` | Exploration catalogue/ERDDAP CTD externe | Scripts, rapports légers |
+| `IMPLEMENTATION_PLAN_OGSL_BIO_ORACLE.md` | Plan d'implémentation OGSL / Bio-ORACLE | Oui |
 
 À ne pas commiter :
 
