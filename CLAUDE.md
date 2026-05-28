@@ -77,16 +77,12 @@ Goal-driven execution. Turn vague instructions into verifiable targets before wr
 
 | Fichier | Contenu |
 |---|---|
-| `PLAN.md` | **Référence unique** : architecture, phases, critères de test |
-| `TOOLS_SPEC.js` | 22 tools : signatures input/output, contraintes, tests A+B |
-| `TEST_SCENARIOS.md` | 17 scénarios comportementaux (cas limites d'abord) |
-| `docs/CONTEXT.md` | Glossaire métier, contraintes, décisions de design |
-| `IDEA/docs/copepod-eval-status-2026-05-27.md` | Scores détaillés par test, historique des runs |
-| `IDEA/docs/copepod-plan-mode-eval-coverage.md` | Contrat de couverture du plan mode eval |
-| `IDEA/docs/copepod-gc-only-live-eval.md` | Doc opérationnelle GC-only eval |
-| `STAGE ULAVAL/USE CASE/Use Cases — Assistant scientifique copépodes V1.md` | 18 UC complets |
-| `STAGE ULAVAL/Agent/Spec de L'agent/Capacites agent V1.md` | 14 capacités agent |
-| `STAGE ULAVAL/Agent/Spec de L'agent/Contraintes agent V1.md` | 29 contraintes |
+| `PLAN.md` | Architecture, phases, critères de test Phase 4+ |
+| `docs/CONTEXT.md` | Glossaire métier |
+| `TOOLS_SPEC.js` | 22 tools : signatures, contraintes (Phase 4+ non implémentées) |
+| `IDEA/docs/copepod-test-operations.md` | Routine de test, niveaux, comment ajouter un test |
+| `IDEA/docs/copepod-plan-mode-eval-coverage.md` | Contrat de couverture : quels checks existent et pourquoi |
+| `IDEA/docs/copepod-eval-status-2026-05-27.md` | Scores par test, historique des runs |
 
 ---
 
