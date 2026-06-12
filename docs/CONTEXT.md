@@ -60,7 +60,17 @@ Le prompt copépodes part du prompt runtime IDEA existant, mais toutes les consi
 
 OBIS est supprimé du périmètre du system prompt copépodes cible. Les anciennes mentions OBIS dans les specs ou documents RAG doivent être considérées comme du contenu à réviser avant implémentation des tools correspondants.
 
-Le system prompt doit piloter trois concepts : Mode Analyse, Mode En Ligne par source, et étape de planification graphique. Le Mode Analyse concerne les données, colonnes et contexte préparés pour produire les graphiques. Le Mode En Ligne contrôle l'accès aux sources externes par source. L'étape de planification graphique verrouille contexte, qualité des données, langage, format de sortie et artefacts avant génération.
+Le system prompt pilote un agent unique de type ReAct (LangGraph). Tous les outils — locaux et en ligne — sont déclarés à la construction de l'agent et restent disponibles en permanence. Il n'y a pas d'état de session « mode » : le comportement de l'agent est entièrement dicté par le prompt et par les règles de routage des outils qui y figurent.
+
+Le prompt distingue deux usages opérationnels : l'analyse de fichier (lecture et calculs sur des données chargées) et la base de connaissances (RAG, méthodes et règles métier). Ces usages ne sont pas des modes verrouillés : ils décrivent quel outil appeler en premier selon la question posée.
+
+Avant toute production graphique, l'agent charge des skills (`graph_planner` puis `graph_writer`) qui jouent le rôle d'étape de planification : ils verrouillent contexte scientifique, qualité des données, type de graphique, colonnes, unités, format de sortie et artefacts avant exécution. Cette planification n'est plus un état de session, c'est un skill chargé à la demande. Le plan est affiché dans un bloc `<details>`, pas négocié par dialogue.
+
+Pour les opérations coûteuses — extractions complètes de sources en ligne (`query_ecotaxa`, `query_ecopart`, `query_amundsen_ctd`), extractions Bio-ORACLE régionales, couplage zooplancton–Bio-ORACLE > 10 lignes, requêtes SQL sans `LIMIT`, calcul de variable dérivée, jointures non standard, génération de livrable PDF — l'agent annonce la méthode et **attend une confirmation utilisateur explicite** (« oui », « go », « lance », « confirme »). Les opérations légères (chargement, listing, aperçu, calculs sur données déjà en session, rendu d'un graphique planifié) restent immédiates.
+
+Le ton est clinique : pas de « je », pas de « moi », pas de formules de politesse décoratives, pas d'« en tant qu'IA ». Pour les résultats analytiques — graphique, calcul, jointure, livrable — la réponse s'articule autour de Résultat / Source / Méthode / Limite / Prochaine action. Pour les questions courtes — un chiffre, un nom de colonne, un oui/non, une clarification — l'agent répond directement en une ou deux phrases sans imposer la structure analytique.
+
+L'incertitude est visible. Chaque graphique classe ses lignes en confirmé, exploratoire ou identification incertaine, calcule un niveau de confiance (high, medium, low) et l'affiche dans un stamp en bas-droite. Une palette dédiée (saturation pleine, désaturation + hachure, gris ouvert) garantit qu'une donnée exploratoire et une donnée confirmée ne sont jamais visuellement indistinguables. Une annotation rouge en haut-gauche signale un niveau `low`.
 
 OGSL est la source prioritaire pour les informations et profils régionaux disponibles sur le golfe du Saint-Laurent. L'agent doit consulter les outils ou le RAG avant d'affirmer quels jeux de données OGSL sont disponibles.
 
@@ -72,11 +82,11 @@ L'agent n'utilise pas EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE ou des do
 
 Si un graphique ou calcul nécessite une source qui n'est pas chargée ou activée, l'agent signale que les données requises ne sont pas chargées et n'essaie pas de produire une approximation.
 
-L'accès aux sources en ligne doit être contrôlé par un mode explicite de type "Mode En Ligne", activé par source. Quand ce mode n'est pas activé pour une source, l'agent travaille avec les données déjà chargées, les colonnes identifiées et le RAG local. Quand ce mode est activé pour une source donnée, l'agent peut utiliser les outils autorisés pour récupérer ou vérifier des données auprès de cette source.
+L'accès aux sources en ligne se fait à la demande explicite de l'utilisateur. Aucun « mode en ligne » n'est activé ou désactivé en session : les outils sont toujours déclarés à l'agent, mais le prompt impose que l'agent ne les déclenche que sur instruction utilisateur claire (« charge », « exporte », « récupère », nom de projet, etc.). Une question ouverte ne déclenche pas d'extraction.
 
-Les sources autorisées en Mode En Ligne sont EcoTaxa, EcoPart, Amundsen CTD, OGSL et Bio-ORACLE. OBIS n'est pas une source autorisée dans le system prompt cible.
+Les sources autorisées sont EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE et les fichiers labo. OBIS n'est pas une source autorisée.
 
-Si le Mode En Ligne est désactivé et qu'une demande nécessite une source externe, l'agent ne lance pas de requête. Il signale que la source nécessite le Mode En Ligne et propose de l'activer ou de charger un fichier local équivalent.
+Si une demande nécessite une source externe et que l'identifiant ou les paramètres requis ne sont pas fournis, l'agent commence par un outil de découverte (`list_ecotaxa_projects`, `list_ecopart_samples`, `list_bio_oracle_datasets`, `list_amundsen_datasets`) avant de proposer une requête concrète.
 
 L'agent peut combiner des données locales chargées avec une source en ligne activée, par exemple des données de zooplancton locales avec Bio-ORACLE. Ce couplage est autorisé seulement si les clés nécessaires sont disponibles, comme coordonnées, date ou période, profondeur si nécessaire. La méthode de couplage doit être documentée dans les métadonnées, sans interprétation scientifique.
 
@@ -88,21 +98,25 @@ Bio-ORACLE est une source de référence pour coupler les données de zooplancto
 
 Quand Bio-ORACLE est utilisé, les métadonnées doivent obligatoirement inclure la variable environnementale, le scénario ou modèle si disponible, la période future, les coordonnées ou la zone, la méthode d'extraction ou d'interpolation, et la source Bio-ORACLE.
 
-Les documents RAG copépodes ont des rôles distincts :
+Les documents RAG copépodes ont des rôles distincts. Le corpus actuel compte neuf documents :
 
 - `colonnes_sources.md` : sources, identifiants, accès et jointures.
 - `colonnes_instruments.md` : définitions de colonnes EcoTaxa, EcoPart et Amundsen.
+- `colonnes_labo.md` : conventions et exemples de colonnes pour fichiers labo utilisateur.
 - `copepodes_domaine.md` : périmètre taxonomique et avertissements d'identification.
+- `taxonomie_worms.md` : références taxonomiques WoRMS pour aligner les noms.
 - `methodes_calcul.md` : formules, variables dérivées, unités et limites de calcul.
-- `sources_en_ligne.md` : accès et limites des sources en ligne, à réviser pour supprimer OBIS et intégrer OGSL/Bio-ORACLE.
+- `jointures_environnementales.md` : règles de jointure entre données biologiques et environnementales (clé, tolérance temporelle/spatiale, pertes).
+- `zones_geographiques.md` : zones et stations de référence.
+- `sources_en_ligne.md` : accès et limites des sources en ligne (EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE). OBIS est exclu.
 
 L'agent cite les documents RAG lorsqu'ils justifient une définition de colonne, une méthode de calcul, une limite technique ou une référence bibliographique. Il ne cite pas le RAG de façon décorative.
 
 L'agent ne produit aucune interprétation scientifique des résultats. Sa responsabilité principale est de produire des graphiques à partir de données déjà validées dans le Mode Analyse, avec titres, axes, unités, sources et limites nécessaires à leur lecture.
 
-Dans le Mode Analyse, l'inspection des fichiers, la validation des colonnes et l'identification des variables utilisables ont normalement déjà été faites. L'agent utilise ces colonnes identifiées pour produire le graphique demandé.
+L'inspection des fichiers, la validation des colonnes et l'identification des variables utilisables se font à la volée via `load_file` (qui auto-inspecte) et `run_pandas`. L'agent utilise ensuite les colonnes identifiées pour produire le graphique demandé.
 
-L'étape de planification graphique sert à vérifier que le contexte scientifique, les paramètres du graphique et la qualité des données sont bien posés avant génération : espèce ou taxon cible si pertinent, zone, période, variable d'intérêt, type de graphique, colonnes, filtres, unités, source des données, valeurs manquantes, statut de validation, jointures, disponibilité des colonnes, langage de génération (Python ou R), format de sortie et artefacts à sauvegarder. Une fois ce contexte verrouillé, l'agent peut générer le graphique sans redemander une validation conversationnelle inutile.
+Pour toute production graphique, l'agent charge d'abord le skill `graph_planner` qui retourne le plan (type de graphique, colonnes, filtres, unités, qualité des données, format de sortie), puis le skill `graph_writer` qui fournit le template de code exécutable. Le code est ensuite exécuté via `run_graph` (visuel) ou `run_pandas` (table). Cette planification est mécanique — pas un dialogue de validation. Une fois le plan posé, l'agent exécute sans redemander une confirmation conversationnelle.
 
 Les graphiques sont statiques par défaut afin d'être reproductibles et exportables. Les graphiques interactifs sont autorisés uniquement si l'utilisateur les demande explicitement ou si le format est nécessaire au livrable.
 
@@ -140,6 +154,22 @@ Si le graphique demandé est impossible avec les colonnes identifiées, l'agent 
 Le format standard d'un blocage est : graphique non généré, demande, blocage, données ou colonnes requises, données ou colonnes disponibles, action nécessaire.
 
 Quand un graphique est produit, le texte d'accompagnement est strictement technique et limité à la reproductibilité : source des données, colonnes utilisées, filtres appliqués, unités, méthode de calcul si une variable dérivée est utilisée, et limites techniques. Les limites techniques incluent notamment valeurs manquantes, jointure partielle, profondeur absente pour certains points, ou données issues d'images non validées.
+
+### Skills
+
+Un skill est un document Markdown chargé à la demande par l'agent via l'outil `load_skill(name)`. Il joue le rôle d'instruction complémentaire : il enrichit le contexte de l'agent au moment où une capacité spécialisée devient nécessaire, sans alourdir le system prompt permanent.
+
+Les skills couvrent deux usages : (1) guider la production graphique (`graph_planner`, `graph_writer`), et (2) documenter une source ou une opération technique (`ecotaxa_query`, `ecopart_query`, `amundsen_ctd_query`, `bio_oracle_query`, `environmental_join`, `sql_workspace_query`, `uvp_ecotaxa`, `uvp_ecopart`, `deliverable_writer`).
+
+Un skill se distingue d'un document RAG : le RAG est interrogé par recherche vectorielle (`query_copepod_knowledge_base`) pour répondre à une question ; le skill est chargé en bloc avant d'exécuter une action. Le RAG sert au savoir, le skill sert au geste.
+
+### Workspace SQL
+
+L'agent peut se connecter à un serveur SQL en lecture seule via `DATABASE_URL` (SQLAlchemy). Trois outils sont exposés : `list_sql_tables`, `preview_sql_table`, `copy_sql_query_to_workspace`. Aucune écriture n'est possible sur la source.
+
+Les résultats d'une requête SQL sont matérialisés dans le workspace de la conversation comme une copie locale, puis traités comme un fichier tabulaire ordinaire (load via `run_pandas`, graphique via `graph_planner` + `graph_writer` + `run_graph`). Cette copie n'écrase pas la source : elle vit le temps de la session.
+
+Le skill `sql_workspace_query` documente les règles d'usage. Si `DATABASE_URL` n'est pas configurée, l'agent demande à l'utilisateur de fournir l'URL SQLAlchemy avant toute requête.
 
 ### Validation humaine EcoTaxa
 

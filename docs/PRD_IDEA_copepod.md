@@ -47,6 +47,8 @@ Il s'adresse à toute personne qui veut comprendre ce que l'assistant fait, pour
 | Version | Date | Description |
 |---|---|---|
 | 1.0 | 2026-05-25 | Version initiale |
+| 1.2 | 2026-06-12 | Alignement avec le runtime IDEA réel : suppression des Modes Contexte/Analyse/En Ligne par source (l'agent est unique, comportement piloté par le system prompt) ; introduction des skills et du workspace SQL ; suppression des UC-02/UC-07/UC-08 et renumérotation ; retrait des contraintes anti-streaming. |
+| 1.3 | 2026-06-12 | Durcissement des contraintes CT-AG-06 (validation utilisateur explicite avant opération coûteuse, liste limitative), CT-AG-23 (interdiction explicite « je/moi », format Résultat/Source/Méthode/Limite/Prochaine action) et CT-AG-24 (palette d'incertitude confirmé/exploratoire/incertain, stamp de confiance high/medium/low, alerte rouge si low). |
 
 ---
 
@@ -82,34 +84,16 @@ Aucune fonctionnalité n'est réservée à l'un ou l'autre même s'ils auraient 
 
 ## 4. Vue d'ensemble
 
-### 4.1 Modes de travail
+### 4.1 Pilotage de l'agent
 
-```mermaid
-stateDiagram-v2
-    [*] --> MC
+L'assistant est un agent unique de type ReAct (LangGraph). Il n'a pas de « modes » de session : tous les outils sont déclarés à la construction et restent disponibles en permanence. Le comportement — quel outil appeler, dans quel ordre, avec quelles règles — est entièrement dicté par le system prompt copépodes.
 
-    state "Mode Contexte" as MC {
-        [*] --> Chargement
-        Chargement --> Inspection : données chargées
-        Inspection --> Questions : données comprises
-        Questions --> Reformulation : contexte décrit
-        Reformulation --> Questions : utilisateur corrige
-        Reformulation --> [*] : contexte validé
-    }
+Le system prompt distingue deux usages opérationnels :
 
-    state "Mode Analyse" as MA {
-        [*] --> Demande
-        Demande --> Bloque : colonne manquante
-        Bloque --> Demande : utilisateur complète
-        Demande --> Generation : paramètres validés
-        Generation --> Graphique : succès
-        Graphique --> [*]
-    }
+- **Analyse de fichier** : lecture et calculs sur des données chargées (`load_file`, `run_pandas`, `run_graph`).
+- **Base de connaissances** : recherche RAG sur les documents copépodes (`query_copepod_knowledge_base`).
 
-    MC --> MA : contexte validé
-    MA --> MC : nouvelle demande
-    MA --> [*] : session terminée
-```
+Pour la production graphique, l'agent charge à la demande des **skills** spécialisés (`graph_planner` puis `graph_writer`) qui jouent le rôle d'étape de planification. Pour les sources en ligne, des skills dédiés (`ecotaxa_query`, `bio_oracle_query`, etc.) documentent les règles d'extraction.
 
 ### 4.2 Cycle de vie d'une session
 
@@ -128,32 +112,30 @@ flowchart LR
 ```mermaid
 flowchart TD
     subgraph P[Plateforme]
-        UC00[S'inscrire] --> UC01[Se connecter] --> UC02[Choisir le mode]
+        UC00[S'inscrire] --> UC01[Se connecter]
     end
-    subgraph D[Donnees]
-        UC03[Charger données] --> UC05[Valider]
-        UC04[Source en ligne] --> UC05
-        UC05 --> UC06[Nettoyer]
+    subgraph D[Données]
+        UC02[Charger fichier local] --> UC04[Valider]
+        UC03[Interroger source en ligne] --> UC04
+        UC04 --> UC05[Nettoyer copie]
     end
     subgraph G[Graphique]
-        UC07[Décrire contexte] --> UC08[Valider contexte]
-        UC08 --> UC09[Générer graphique]
-        UC09 --> UC10[Distribution verticale]
-        UC09 --> UC11[Spatio-temporel]
-        UC09 --> UC12[Taxonomie]
-        UC09 --> UC13[CTD]
-        UC09 --> UC14[Lacunes]
-        UC09 --> UC15[Variable dérivée]
+        UC06[Générer graphique] --> UC07[Distribution verticale]
+        UC06 --> UC08[Spatio-temporel]
+        UC06 --> UC09[Taxonomie]
+        UC06 --> UC10[CTD]
+        UC06 --> UC11[Lacunes]
+        UC06 --> UC12[Variable dérivée]
     end
     subgraph L[Livrables]
-        UC16[Résumé session]
-        UC17[Livrable scientifique]
+        UC13[Résumé session]
+        UC14[Livrable scientifique]
     end
 
-    UC02 --> UC03
-    UC06 --> UC07
-    UC09 --> UC16
-    UC09 --> UC17
+    UC01 --> UC02
+    UC05 --> UC06
+    UC06 --> UC13
+    UC06 --> UC14
 ```
 
 ---
@@ -164,37 +146,31 @@ flowchart TD
 
 **UC-01 — Se connecter** : accéder à son espace de travail. Hors périmètre de l'agent.
 
-**UC-02 — Choisir le mode de travail** : sélectionner Mode Contexte (discussion guidée, pas d'exécution) ou Mode Analyse (formulaire structuré → rapport statique).
+**UC-02 — Charger des données** : déposer un fichier local (CSV, TSV, Excel, JSON, exports EcoTaxa/EcoPart, fichier labo). L'agent appelle `load_file`, qui inspecte automatiquement colonnes, types et valeurs manquantes. Pour les exports UVP, un skill spécialisé (`uvp_ecotaxa`, `uvp_ecopart`) est chargé automatiquement.
 
-**UC-03 — Charger des données** : déposer un fichier local (CSV, TSV, Excel, JSON, exports EcoTaxa/EcoPart). L'assistant inspecte les colonnes, types et valeurs manquantes automatiquement.
+**UC-03 — Interroger une source en ligne** : à la demande explicite de l'utilisateur, l'agent appelle un outil de découverte (`list_ecotaxa_projects`, `list_bio_oracle_datasets`, `list_amundsen_datasets`, `list_ecopart_samples`), un outil d'aperçu (`preview_ecotaxa_project`, `preview_bio_oracle_point`, `preview_amundsen_profile`, `preview_ecopart_sample`), puis un outil d'extraction (`query_ecotaxa`, `query_bio_oracle`, `query_amundsen_ctd`, `query_ecopart`). Sources autorisées : EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE.
 
-**UC-04 — Interroger une source en ligne** : activer une source (EcoTaxa, EcoPart, Amundsen CTD, OGSL, Bio-ORACLE) et lancer une requête paramétrée. Chaque source est activée individuellement.
+**UC-04 — Valider les données chargées** : `load_file` retourne un aperçu — colonnes, types, valeurs manquantes, hints (ex. fichier UVP détecté). Les outils SQL `preview_sql_table` et `list_sql_tables` jouent le même rôle pour les tables d'un serveur SQL.
 
-**UC-05 — Valider les données chargées** : l'assistant retourne un rapport de colonnes disponibles, anomalies et analyses bloquées. Il ne modifie rien.
+**UC-05 — Nettoyer les données** : l'agent applique le nettoyage via `run_pandas` sur une copie nommée — jamais sur les données originales. La méthode est annoncée avant exécution.
 
-**UC-06 — Nettoyer les données** : l'assistant propose une méthode de nettoyage, l'utilisateur valide, le nettoyage s'applique sur une copie — jamais sur les données originales.
+**UC-06 — Générer un graphique** : l'agent charge `graph_planner` (plan : type, colonnes, filtres, unités), puis `graph_writer` (template de code), puis exécute via `run_graph` (visuel) ou `run_pandas` (tableau). Aucun graphique approximatif si une colonne requise est absente.
 
-**UC-07 — Décrire le contexte graphique** : en Mode Contexte, l'assistant guide par questions ciblées (espèce, zone, variable, période, source). Aucune analyse n'est lancée.
+**UC-07 — Analyser la distribution verticale** : graphiques de distribution en profondeur depuis EcoTaxa et EcoPart. Nécessite la jointure `obj_orig_id` → `profile_id` pour accéder au volume échantillonné (EcoPart) — orchestrée par `join_ecotaxa_ecopart`. Calcule concentration (ind/m³) ou biovolume par taxon ou stade. Bloqué si le volume échantillonné est absent.
 
-**UC-08 — Valider la reformulation du contexte** : l'assistant soumet une reformulation structurée. Une fois validée, le contexte est verrouillé pour la génération.
+**UC-08 — Analyser la distribution spatio-temporelle** : répartition des observations entre stations et campagnes. Identifie et représente les lacunes géographiques ou temporelles.
 
-**UC-09 — Générer un graphique** : l'assistant produit le graphique avec titre, axes, unités et source. Aucun graphique approximatif si une colonne requise est absente.
+**UC-09 — Analyser la taxonomie et les stades** : composition taxonomique et répartition par stades de vie, sur annotations validées (statut V EcoTaxa). Si le statut de validation est absent, l'assistant demande inclusion/exclusion avant de générer.
 
-**UC-10 — Analyser la distribution verticale** : graphiques de distribution en profondeur depuis EcoTaxa et EcoPart. Nécessite la jointure `obj_orig_id` → `profile_id` pour accéder au volume échantillonné (EcoPart). Calcule concentration (ind/m³) ou biovolume par taxon ou stade. Bloqué si le volume échantillonné est absent.
+**UC-10 — Analyser les variables environnementales CTD** : graphiques des variables CTD (température, salinité, oxygène, fluorescence) associées aux données biologiques. La jointure est orchestrée par le skill `environmental_join`, qui documente clé, tolérance temporelle et spatiale, et pertes éventuelles. Priorité Amundsen CTD sur OGSL pour le même besoin.
 
-**UC-11 — Analyser la distribution spatio-temporelle** : répartition des observations entre stations et campagnes. Identifie et représente les lacunes géographiques ou temporelles.
+**UC-11 — Évaluer la complétude et les lacunes** : rapport de remplissage par colonne clé — disponible, partiel, absent. Identifie les variables qui bloquent des analyses spécifiques. Exportable pour demande de subvention.
 
-**UC-12 — Analyser la taxonomie et les stades** : composition taxonomique et répartition par stades de vie, sur annotations validées (statut V EcoTaxa). Si le statut de validation est absent, l'assistant demande inclusion/exclusion avant de générer.
+**UC-12 — Calculer une variable dérivée** : concentration (ind/m³), biomasse carbone (mg C/m²), longueur prosome, indice de plénitude lipidique. La méthode (formule, colonnes, unités, limites) est annoncée avant exécution. Aucun calcul si une colonne obligatoire manque.
 
-**UC-13 — Analyser les variables environnementales CTD** : graphiques des variables CTD (température, salinité, oxygène, fluorescence) associées aux données biologiques. La jointure entre sources est documentée avec clé, tolérance temporelle et spatiale, et pertes éventuelles. Priorité Amundsen CTD sur OGSL pour le même besoin.
+**UC-13 — Exporter le résumé de session** : résumé structuré — contexte, sources, méthodes, résultats, limites.
 
-**UC-14 — Évaluer la complétude et les lacunes** : rapport de remplissage par colonne clé — disponible, partiel, absent. Identifie les variables qui bloquent des analyses spécifiques. Exportable pour demande de subvention.
-
-**UC-15 — Calculer une variable dérivée** : concentration (ind/m³), biomasse carbone (mg C/m²), longueur prosome, indice de plénitude lipidique. La méthode (formule, colonnes, unités, limites) est soumise pour validation avant exécution. Aucun calcul si une colonne obligatoire manque.
-
-**UC-16 — Exporter le résumé de session** : résumé structuré — contexte, sources, méthodes, résultats, limites.
-
-**UC-17 — Préparer un livrable scientifique** : document structuré avec figures, titres, légendes, méthodes, citations vérifiées et limites. Support de révision pour le chercheur — pas une publication finale.
+**UC-14 — Préparer un livrable scientifique** : l'agent charge le skill `deliverable_writer` (structure et templates de citation), compile la markdown depuis l'historique, puis appelle `export_deliverable` qui génère un PDF via WeasyPrint. Document structuré avec figures, titres, légendes, méthodes, citations vérifiées et limites. Support de révision pour le chercheur — pas une publication finale.
 
 ---
 
@@ -221,7 +197,7 @@ flowchart TD
 | CT-AG-03 | Chaque résultat est qualifié : fiable / exploratoire / impossible. |
 | CT-AG-04 | Aucune analyse sans contexte validé (espèce, zone, variable, période, source). |
 | CT-AG-05 | Les colonnes requises sont vérifiées avant tout calcul. Calcul bloqué si absent. |
-| CT-AG-06 | La méthode (colonnes, formule, limites) est soumise pour validation avant exécution. |
+| CT-AG-06 | La méthode (colonnes, formule, limites) est soumise pour validation utilisateur explicite avant toute exécution coûteuse : `query_*` complète, calcul de variable dérivée, jointure non standard, `couple_zooplankton_bio_oracle` > 10 lignes, requête SQL sans `LIMIT`, `export_deliverable`. Les opérations légères (load, list, preview, run_pandas sur données déjà chargées, run_graph après plan) restent immédiates. |
 | CT-AG-07 | Toute jointure est documentée : clé, tolérance, pertes, qualité du rapprochement. |
 | CT-AG-08 | L'assistant communique ce que chaque source permet ou ne permet pas. |
 | CT-AG-09 | Le code généré est traçable, visible sur demande, et ses erreurs sont expliquées. |
@@ -237,14 +213,14 @@ flowchart TD
 | CT-AG-19 | Toute affirmation factuelle est reliée à une source, colonne ou calcul. |
 | CT-AG-20 | Chaque résultat inclut l'identifiant de source, les colonnes utilisées et le script. |
 | CT-AG-21 | L'assistant vérifie la cohérence entre les sorties et les données sources. |
-| CT-AG-22 | Les analyses longues retournent un rapport statique complet — pas de streaming. |
-| CT-AG-23 | Mode Contexte : discussion guidée, pas d'exécution. Mode Analyse : formulaire structuré → rapport statique. |
-| CT-AG-24 | Les résultats s'affichent en bloc complet — pas de streaming progressif. |
-| CT-AG-25 | Une demande vague ne déclenche pas d'analyse. Un contexte minimal est exigé. |
-| CT-AG-26 | Vocabulaire technique et neutre — pas de ton anthropomorphique. |
-| CT-AG-27 | Les résultats incertains sont visuellement distincts des résultats confirmés. |
-| CT-AG-28 | Les livrables soutiennent la rédaction du chercheur — ils ne la remplacent pas. |
-| CT-AG-29 | Les absences dans les données distinguent : absence confirmée, biais d'échantillonnage, incertitude d'identification. |
+| CT-AG-22 | Une demande vague ne déclenche pas d'analyse. Un contexte minimal est exigé. |
+| CT-AG-23 | Vocabulaire technique et neutre — pas de ton anthropomorphique. Interdiction explicite de « je », « moi », « en tant qu'IA », des compliments, des formules de politesse décoratives. Format Résultat / Source / Méthode / Limite / Prochaine action utilisé pour les résultats analytiques (graphique, calcul, jointure, livrable) ; les questions courtes (un chiffre, un nom de colonne, oui/non, clarification) sont répondues directement sans imposer la structure. |
+| CT-AG-24 | Les résultats incertains sont visuellement distincts des résultats confirmés. Trois statuts par ligne : confirmé / exploratoire / identification incertaine. Palette dédiée (saturation pleine vs désaturée vs gris ouvert), hachure pour exploratoire, annotation du niveau de confiance (high / medium / low) imposée sur chaque graphique. Annotation d'alerte rouge si confiance `low`. |
+| CT-AG-25 | Les livrables soutiennent la rédaction du chercheur — ils ne la remplacent pas. |
+| CT-AG-26 | Les absences dans les données distinguent : absence confirmée, biais d'échantillonnage, incertitude d'identification. |
+| CT-AG-27 | L'agent ne révèle, ne devine et ne discute jamais les credentials EcoTaxa, EcoPart, SQL ou tout autre service. |
+| CT-AG-28 | L'agent ne fabrique pas de citation scientifique — il dirige vers Google Scholar ou Web of Science si la source vérifiée manque. |
+| CT-AG-29 | L'accès SQL est en lecture seule. Les résultats d'une requête SQL sont matérialisés comme copie locale dans le workspace de la conversation. |
 
 ---
 
@@ -258,6 +234,7 @@ flowchart TD
 | **EcoPart** | Plateforme complémentaire à EcoTaxa : profils UVP, volumes échantillonnés, CTD associée. |
 | **CTD** | Conductivity-Temperature-Depth. Instrument de mesure des propriétés physiques de l'eau. |
 | **Statut V** | Annotation validée par un humain dans EcoTaxa. Seul statut utilisé pour les graphiques taxonomiques par défaut. |
-| **Corpus RAG** | 5 documents de référence : colonnes_sources, colonnes_instruments, copepodes_domaine, methodes_calcul, sources_en_ligne. |
-| **Mode En Ligne** | État de session dans lequel une source externe est activée.  |
-| **Artefact** | Fichier produit et sauvegardé par l'assistant (graphique PNG/SVG, table de travail, résumé). |
+| **Corpus RAG** | 9 documents de référence : colonnes_sources, colonnes_instruments, colonnes_labo, copepodes_domaine, taxonomie_worms, methodes_calcul, jointures_environnementales, zones_geographiques, sources_en_ligne. |
+| **Skill** | Document Markdown chargé à la demande via `load_skill(name)` pour enrichir le contexte de l'agent au moment où une capacité spécialisée devient nécessaire. 11 skills disponibles : `graph_planner`, `graph_writer`, `ecotaxa_query`, `ecopart_query`, `amundsen_ctd_query`, `bio_oracle_query`, `environmental_join`, `sql_workspace_query`, `uvp_ecotaxa`, `uvp_ecopart`, `deliverable_writer`. |
+| **Workspace SQL** | Couche d'accès SQL lecture seule (SQLAlchemy) avec matérialisation des résultats comme copies locales dans la conversation. |
+| **Artefact** | Fichier produit et sauvegardé par l'assistant (graphique PNG/SVG, table de travail, résumé, PDF de livrable). |
