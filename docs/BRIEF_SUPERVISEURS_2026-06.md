@@ -18,7 +18,7 @@ lang: fr
 
 ## Résumé en une page
 
-L'assistant graphique copépodes est opérationnel en local sur la machine de développement : un chercheur peut charger un fichier de données EcoTaxa, EcoPart, Amundsen CTD, Bio-ORACLE ou un export labo, puis demander en langage naturel un graphique, un calcul ou un livrable PDF. Le système combine un grand modèle de langage (LLM), un corpus de neuf documents de référence (RAG) et 23 outils Python dédiés au domaine. Il refuse toute interprétation biologique : sa mission est de produire des graphiques reproductibles et traçables, pas de remplacer le chercheur.
+L'assistant graphique copépodes est opérationnel en local sur la machine de développement : un chercheur peut charger un fichier de données EcoTaxa, EcoPart, Amundsen CTD, Bio-ORACLE, un export labo, ou connecter une base SQL en lecture seule, puis demander en langage naturel un graphique, un calcul, une jointure ou un livrable PDF. Le système combine un grand modèle de langage (LLM), un corpus de neuf documents de référence (RAG) et 23 outils Python dédiés au domaine. Il refuse toute interprétation biologique : sa mission est de produire des graphiques reproductibles et traçables, pas de remplacer le chercheur.
 
 L'agent est piloté par un *system prompt* unique qui fixe les règles de comportement (sources autorisées, ton clinique, refus d'interprétation, marquage des incertitudes). Onze *skills* spécialisés sont chargés à la demande pour les opérations spécifiques (extraction EcoTaxa, planification graphique, livrable PDF, etc.). Les use cases du PRD V1.3 (charger des données, interroger une source en ligne, générer des graphiques standards, préparer un livrable) sont couverts, sauf trois points reportés en V2 : la génération en R, les graphiques interactifs et l'intégration OGSL.
 
@@ -45,14 +45,16 @@ flowchart TB
 
     subgraph T[Outils et savoirs]
         OR[OpenRouter<br/>proxy LLM multi-fournisseur<br/>GPT / Claude / Llama]
-        TOOLS[23 outils Python<br/>chargement fichier, requêtes EcoTaxa/<br/>EcoPart/Amundsen/Bio-ORACLE,<br/>calculs pandas, graphiques matplotlib,<br/>workspace SQL, livrables PDF]
+        TOOLS[23 outils Python<br/>chargement fichier, requêtes EcoTaxa/<br/>EcoPart/Amundsen/Bio-ORACLE,<br/>calculs pandas, graphiques matplotlib,<br/>workspace SQL lecture seule avancé,<br/>livrables PDF]
         SKILLS[11 skills<br/>graph_planner, graph_writer,<br/>ecotaxa_query, deliverable_writer…<br/>chargés à la demande]
         RAG[Corpus RAG<br/>9 documents NeoLab<br/>colonnes, méthodes, taxonomie,<br/>jointures, biais arctiques]
     end
 
     subgraph D[Données et observabilité]
         DATA[(Données utilisateur<br/>EcoTaxa / EcoPart / Amundsen /<br/>Bio-ORACLE / fichiers labo)]
+        SQLDB[(Bases SQL externes<br/>SQLite / PostgreSQL / MySQL / MariaDB<br/>lecture seule)]
         LS[LangSmith<br/>traces des conversations<br/>+ hub system prompt et skills]
+        MEM[(PostgreSQL<br/>mémoire longue terme par utilisateur<br/>+ métadonnées sessions)]
     end
 
     H --> OW
@@ -63,7 +65,9 @@ flowchart TB
     A --> SKILLS
     A --> RAG
     TOOLS <--> DATA
+    TOOLS -.DATABASE_URL<br/>read-only.-> SQLDB
     A --> LS
+    A <--> MEM
     SKILLS -.versionnés.-> LS
 ```
 
@@ -97,7 +101,7 @@ Pour le déploiement ULaval (section 4), cela implique deux dépendances cloud e
 | **EcoPart** | Profils UVP, volumes échantillonnés, CTD associée | opérationnel |
 | **Amundsen CTD** | CTD officielle Amundsen via ERDDAP | opérationnel |
 | **Bio-ORACLE** | Variables environnementales actuelles et futures | opérationnel |
-| **Workspace SQL** | Connexion lecture seule à un serveur SQL, copie locale des résultats | opérationnel |
+| **Workspace SQL** | Connexion lecture seule à SQLite, PostgreSQL, MySQL ou MariaDB ; cartographie tables/vues/PK/FK ; preview filtré ; copie locale TSV des résultats | opérationnel |
 | **OGSL** | Profils régionaux golfe du Saint-Laurent | annoncé, livraison V2 |
 
 OBIS est hors périmètre.
@@ -111,7 +115,7 @@ Les outils sont les actions concrètes que l'agent peut exécuter. Le LLM décid
 | Données fichiers | `load_file`, `run_pandas`, `run_graph` | Chargement, calculs tabulaires, rendu de graphiques |
 | Sources en ligne | `list_*`, `preview_*`, `query_*` pour EcoTaxa, EcoPart, Amundsen, Bio-ORACLE | Découverte, aperçu, extraction |
 | Jointures | `join_ecotaxa_ecopart`, `couple_zooplankton_bio_oracle` | Croiser biologique et environnemental |
-| Workspace SQL | `list_sql_tables`, `preview_sql_table`, `copy_sql_query_to_workspace` | Lecture seule de tables SQL externes |
+| Workspace SQL | `list_sql_tables`, `preview_sql_table`, `copy_sql_query_to_workspace` | Cartographie d'une base SQL externe, inspection filtrée, jointures guidées par FK, copie TSV locale exploitable par pandas |
 | Base de connaissances | `query_copepod_knowledge_base` | Recherche dans les 9 documents RAG |
 | Skills et livrables | `load_skill`, `export_deliverable` | Chargement d'instructions spécialisées, PDF |
 
@@ -125,7 +129,7 @@ Un skill est un document chargé en mémoire de l'agent au moment où une capaci
 | `graph_writer` | Écrire le code matplotlib, appliquer la palette d'incertitude |
 | `ecotaxa_query`, `ecopart_query`, `amundsen_ctd_query`, `bio_oracle_query` | Règles d'extraction pour chaque source en ligne |
 | `environmental_join` | Stratégie de jointure biologique ↔ environnemental |
-| `sql_workspace_query` | Règles d'usage du workspace SQL |
+| `sql_workspace_query` | Règles d'usage du workspace SQL : lecture seule, jointures guidées par FK, limites de copie |
 | `uvp_ecotaxa`, `uvp_ecopart` | Chargés automatiquement quand un export UVP est détecté |
 | `deliverable_writer` | Structure et règles de citation d'un livrable PDF |
 
@@ -133,7 +137,31 @@ Un skill est un document chargé en mémoire de l'agent au moment où une capaci
 
 Le corpus est interrogeable par recherche sémantique avant chaque affirmation factuelle. Il couvre les colonnes des trois sources principales, les colonnes des fichiers labo, le périmètre taxonomique, les méthodes de calcul, les jointures environnementales, les zones géographiques de référence et la taxonomie WoRMS. Les documents sont en `core/copepod_rag/docs/`, indexés dans une base vectorielle ChromaDB locale.
 
-### 2.5 Garde-fous principaux
+### 2.5 Mémoire entre conversations
+
+L'agent dispose d'une mémoire à deux niveaux qui survit aux redémarrages et aux changements de conversation.
+
+**Mémoire courte terme** (par conversation) : l'historique complet du chat courant est conservé dans une base SQLite. Si le serveur redémarre en cours de conversation, l'agent reprend exactement là où il s'était arrêté, sans que le chercheur ait à tout répéter.
+
+**Mémoire longue terme** (entre conversations) : après chaque échange, un modèle de langage analyse la conversation et extrait les faits durables — corrections, préférences, conventions de nommage, règles métier données par le chercheur. Ces faits sont stockés dans PostgreSQL et rattachés à l'identifiant de l'utilisateur Open WebUI.
+
+Exemple concret : si un chercheur indique en session 1 « nos stations s'appellent toujours HC-XX », cette convention est mémorisée. En session 2, une nouvelle conversation, l'agent la connaît déjà sans qu'on ait besoin de la répéter.
+
+```
+Session 1
+  Chercheur : "ne mets jamais les unités en µg/L, on travaille en mg/m³"
+  → LangMem extrait et écrit en mémoire longue terme
+
+Session 2 (nouvelle conversation, lendemain)
+  → l'agent relit la mémoire au démarrage
+  → respecte automatiquement la convention mg/m³
+```
+
+Ce qui est mémorisé : corrections sur les unités, préférences de style graphique, conventions de nommage propres au laboratoire, règles métier répétées. Ce qui n'est pas mémorisé : le contenu brut des données, les résultats numériques, les transcripts complets. La mémoire reste compacte et factuelle.
+
+Chaque chercheur a sa propre mémoire isolée — les préférences de l'un ne contaminent pas les sessions d'un autre.
+
+### 2.6 Garde-fous principaux
 
 Quatre règles cardinales pilotent toutes les réponses de l'agent.
 
@@ -155,11 +183,13 @@ Le PRD V1.3 liste 14 use cases (UC-02 à UC-14 après renumérotation). Le runti
 | Chargement, validation, nettoyage | opérationnel |
 | Requêtes EcoTaxa / EcoPart / Amundsen / Bio-ORACLE | opérationnel |
 | Production de graphiques (distribution verticale, spatio-temporel, taxonomie, CTD, lacunes, variable dérivée) | opérationnel |
-| Workspace SQL lecture seule | opérationnel |
+| Workspace SQL lecture seule | opérationnel : SQLite/PostgreSQL/MySQL/MariaDB, découverte tables/vues/PK/FK, preview filtré, jointures guidées, copies TSV plafonnées |
 | Livrable PDF (avec citations vérifiées) | opérationnel |
 | Génération en R | reporté V2 |
 | Graphiques interactifs | reporté V2 |
 | Intégration OGSL | reporté V2 |
+| Mémoire courte terme (reprise après restart) | opérationnel : SQLite checkpoints par conversation |
+| Mémoire longue terme (entre conversations) | opérationnel : LangMem + PostgreSQL, isolée par utilisateur |
 | Tests automatisés | 42 tests verts au dernier *merge* sur la branche principale |
 
 Toute la documentation a été refondue en juin 2026 (CONTEXT, PRD V1.3, brief runtime, inventaire des outils, traçabilité UC). Le system prompt et les skills sont versionnés sur LangSmith Hub et rechargés automatiquement par l'agent.
